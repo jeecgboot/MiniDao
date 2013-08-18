@@ -5,6 +5,11 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
 import examples.dao.JeecgDemoDao;
 import examples.entity.JeecgDemo;
 
+/**
+ * 实体维护方式测试
+ * @author Administrator
+ *
+ */
 public class HiberClient {
 	public static void main(String args[]) {
 		BeanFactory factory = new ClassPathXmlApplicationContext(
