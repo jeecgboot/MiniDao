@@ -1,0 +1,23 @@
+K 25
+svn:wc:ra_dav:version-url
+V 88
+/svn/jeecgdev/!svn/ver/1233/v3/MiniDao-example/src/org/jeecgframework/minidao/datasource
+END
+DynamicDataSource.java
+K 25
+svn:wc:ra_dav:version-url
+V 111
+/svn/jeecgdev/!svn/ver/1069/v3/MiniDao-example/src/org/jeecgframework/minidao/datasource/DynamicDataSource.java
+END
+DataSourceType.java
+K 25
+svn:wc:ra_dav:version-url
+V 108
+/svn/jeecgdev/!svn/ver/1069/v3/MiniDao-example/src/org/jeecgframework/minidao/datasource/DataSourceType.java
+END
+DataSourceContextHolder.java
+K 25
+svn:wc:ra_dav:version-url
+V 117
+/svn/jeecgdev/!svn/ver/1233/v3/MiniDao-example/src/org/jeecgframework/minidao/datasource/DataSourceContextHolder.java
+END

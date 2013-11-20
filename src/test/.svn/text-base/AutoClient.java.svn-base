@@ -1,0 +1,21 @@
+package test;
+
+import org.springframework.beans.factory.BeanFactory;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
+
+import examples.service.EmployeeService;
+
+public class AutoClient {
+	public static void main(String args[]) {
+		BeanFactory factory = new ClassPathXmlApplicationContext("applicationContext.xml");
+		EmployeeService employeeService = (EmployeeService) factory.getBean("employeeService");
+		//EmployeeDao employeeDao = (EmployeeDao) factory.getBean("employeeDao");
+		//employeeService.setEmployeeDao(employeeDao);
+		employeeService.sayHello();
+		
+		
+//		BeanFactory factory = new ClassPathXmlApplicationContext("applicationContext.xml");
+//		EmployeeDao employeeDao = (EmployeeDao) factory.getBean("employeeDao");
+//		employeeDao.getCount();
+	}
+}

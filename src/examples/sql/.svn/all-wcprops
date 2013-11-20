@@ -1,0 +1,53 @@
+K 25
+svn:wc:ra_dav:version-url
+V 63
+/svn/jeecgdev/!svn/ver/1213/v3/MiniDao-example/src/examples/sql
+END
+EmployeeDao_getEmployee.sql
+K 25
+svn:wc:ra_dav:version-url
+V 91
+/svn/jeecgdev/!svn/ver/1164/v3/MiniDao-example/src/examples/sql/EmployeeDao_getEmployee.sql
+END
+EmployeeDao_getAllEmployees_condition.sql
+K 25
+svn:wc:ra_dav:version-url
+V 105
+/svn/jeecgdev/!svn/ver/1213/v3/MiniDao-example/src/examples/sql/EmployeeDao_getAllEmployees_condition.sql
+END
+EmployeeDao_update.sql
+K 25
+svn:wc:ra_dav:version-url
+V 86
+/svn/jeecgdev/!svn/ver/1164/v3/MiniDao-example/src/examples/sql/EmployeeDao_update.sql
+END
+EmployeeDao_insert.sql
+K 25
+svn:wc:ra_dav:version-url
+V 86
+/svn/jeecgdev/!svn/ver/1164/v3/MiniDao-example/src/examples/sql/EmployeeDao_insert.sql
+END
+EmployeeDao_getCount.sql
+K 25
+svn:wc:ra_dav:version-url
+V 88
+/svn/jeecgdev/!svn/ver/1069/v3/MiniDao-example/src/examples/sql/EmployeeDao_getCount.sql
+END
+EmployeeDao_getAllEmployees.sql
+K 25
+svn:wc:ra_dav:version-url
+V 95
+/svn/jeecgdev/!svn/ver/1069/v3/MiniDao-example/src/examples/sql/EmployeeDao_getAllEmployees.sql
+END
+JeecgDemoDao_getNameById.sql
+K 25
+svn:wc:ra_dav:version-url
+V 92
+/svn/jeecgdev/!svn/ver/1100/v3/MiniDao-example/src/examples/sql/JeecgDemoDao_getNameById.sql
+END
+EmployeeDao_getMap.sql
+K 25
+svn:wc:ra_dav:version-url
+V 86
+/svn/jeecgdev/!svn/ver/1213/v3/MiniDao-example/src/examples/sql/EmployeeDao_getMap.sql
+END

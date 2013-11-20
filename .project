@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <projectDescription>
-	<name>MiniDao</name>
-	<comment></comment>
+	<name>MiniDao-example</name>
+	<comment>MiniDao_1.1</comment>
 	<projects>
 	</projects>
 	<buildSpec>
