@@ -1,1 +1,0 @@
-select * from user where age <= ${parm_age}
