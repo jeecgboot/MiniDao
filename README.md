@@ -16,7 +16,7 @@ MiniDao是一种持久化解决方案，具备实体维护和SQL分离的两大�
 * 8.MiniDao吸收了Hibernate+mybatis的优势，支持实体维护和SQL分离
 * 9.SQL支持脚本语言
 
-※实体的增删改查SQL自动生成
+※实体的增删改查不需要写sql,支持SQL自动生成
 
 
 
