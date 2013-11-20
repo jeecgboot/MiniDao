@@ -4,7 +4,7 @@ MiniDao
 
 MiniDao简介及特征
 
-MiniDao是一种持久化解决方案，具备实体维护和SQL分离的两大优势，考虑了mybatis和hibernate的不足。 具有以下特征:
+MiniDao是一种持久化解决方案，具备了实体维护和SQL分离的两大优势，考虑了mybatis和hibernate的不足。 具有以下特征:
 
 * 1.O/R mapping不用设置xml，零配置便于维护
 * 2.不需要了解JDBC的知识
