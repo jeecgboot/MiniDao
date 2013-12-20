@@ -1,6 +1,10 @@
 package org.jeecgframework.minidao.aop;
 
+import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
+import java.lang.reflect.ParameterizedType;
+import java.lang.reflect.Type;
+import java.lang.reflect.TypeVariable;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -19,9 +23,11 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.hibernate.engine.jdbc.internal.BasicFormatterImpl;
 import org.jeecgframework.minidao.annotation.Arguments;
+import org.jeecgframework.minidao.annotation.ResultType;
 import org.jeecgframework.minidao.annotation.Sql;
 import org.jeecgframework.minidao.def.MiniDaoConstants;
 import org.jeecgframework.minidao.hibernate.dao.IGenericBaseCommonDao;
+import org.jeecgframework.minidao.spring.rowMapper.GenericRowMapper;
 import org.jeecgframework.minidao.spring.rowMapper.MiniColumnMapRowMapper;
 import org.jeecgframework.minidao.spring.rowMapper.MiniColumnOriginalMapRowMapper;
 import org.jeecgframework.minidao.util.FreemarkerParseFactory;
@@ -237,14 +243,32 @@ public class MiniDaoHandler implements MethodInterceptor {
 					return number.doubleValue();
 				}
 			} else if (returnType.isAssignableFrom(List.class)) {
-				// 判断是否是List类型
-				//TODO [判断泛型]
-				if(paramMap!=null){
-					return namedParameterJdbcTemplate.query(executeSql, paramMap,getColumnMapRowMapper());
-				}else{
-					return jdbcTemplate.query(executeSql,getColumnMapRowMapper());
+				// update-begin--Author:fancq  Date:20131219 for：支持返回Map和实体 list
+				ResultType resultType = method.getAnnotation(ResultType.class);
+				String[] values = null;
+				if (resultType != null) {
+					values = resultType.value();
 				}
-				
+				if (values == null || values.length == 0 || "java.util.Map".equals(values[0])) {
+					if(paramMap!=null){
+						return namedParameterJdbcTemplate.query(executeSql, paramMap,getColumnMapRowMapper());
+					}else{
+						return jdbcTemplate.query(executeSql,getColumnMapRowMapper());
+					}
+				} else {
+					Class clazz = null;
+					try {
+						clazz = Class.forName(values[0]);
+					} catch (Exception e) {
+						e.printStackTrace();
+					}
+					if(paramMap!=null){
+						return namedParameterJdbcTemplate.query(executeSql, paramMap, new GenericRowMapper(clazz));
+					}else{
+						return jdbcTemplate.query(executeSql, new GenericRowMapper(clazz));
+					}
+				}
+				// update-end--Author:fancq  Date:20131219 for：支持返回Map和实体 list
 			} else if (returnType.isAssignableFrom(Map.class)) {
 				//Map类型
 				if(paramMap!=null){

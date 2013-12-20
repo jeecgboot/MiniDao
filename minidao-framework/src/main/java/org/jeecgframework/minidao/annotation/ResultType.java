@@ -1,3 +1,6 @@
+/**
+ * 
+ */
 package org.jeecgframework.minidao.annotation;
 
 import java.lang.annotation.ElementType;
@@ -6,17 +9,15 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
-
 /**
- * @description:MiniDao   
- * @author 张代浩
- * @mail zhangdaiscott@163.com
- * @category www.jeecg.org
- * @date 20130817
- * @version V1.0
+ * @author fancq
+ * 
+ * 定义返回的List中的具体类型，便于返回类型的确认，如果没有或者是java.util.Map，则为java.util.Map，否则为对应的实体类全名
+ *
  */
 @Inherited
 @Retention(RetentionPolicy.RUNTIME)
-@Target(ElementType.TYPE)
-public @interface MiniDao{
+@Target(ElementType.METHOD)
+public @interface ResultType {
+	String[] value() default {};
 }
