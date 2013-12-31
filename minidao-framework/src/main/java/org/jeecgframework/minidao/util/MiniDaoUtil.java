@@ -4,8 +4,13 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
+import java.util.Iterator;
+import java.util.Map;
+
+import org.apache.commons.beanutils.BeanUtils;
 import org.apache.log4j.Logger;
 
 
@@ -86,4 +91,35 @@ public class MiniDaoUtil {
 		}
 		
 	}
+
+	/**
+	 * Map转为实体Bean
+	 * @param bean
+	 * @param properties
+	 * @throws IllegalAccessException
+	 * @throws InvocationTargetException
+	 */
+    public static void populate(Object bean, Map properties)
+    		throws IllegalAccessException, InvocationTargetException {
+        // Do nothing unless both arguments have been specified
+        if ((bean == null) || (properties == null)) {
+            return;
+        }
+        // Loop through the property name/value pairs to be set
+        Iterator names = properties.keySet().iterator();
+        while (names.hasNext()) {
+
+            // Identify the property name and value(s) to be assigned
+            String name = (String) names.next();
+            if (name == null) {
+                continue;
+            }
+            Object value = properties.get(name);
+            String camelName = CamelCaseUtils.toCamelCase(name);
+
+            // Perform the assignment for this property
+            BeanUtils.setProperty(bean, camelName, value);
+        }
+    }
+		
 }

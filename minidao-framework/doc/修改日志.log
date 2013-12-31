@@ -1,0 +1,11 @@
+﻿--author： fancq----------date:20131223--------for: 支持返回实体List
+	src/main/java/org/jeecgframework/minidao/aop/MiniDaoHandler.java
+	src/main/java/org/jeecgframework/minidao/util/MiniDaoUtil.java
+	src/main/java/org/jeecgframework/minidao/util/BigDecimalConverter.java
+	src/main/java/org/jeecgframework/minidao/util/CamelCaseUtils.java
+	src/main/java/org/jeecgframework/minidao/util/DateConverter.java
+	src/main/java/org/jeecgframework/minidao/spring/rowMapper/GenericRowMapper.java
+--author： fancq----------date:20131223--------for: 支持返回实体List
+--author： fancq----------date:20131225--------for: sql放到dao层同样目录
+	src/main/java/org/jeecgframework/minidao/aop/MiniDaoHandler.java
+--author： fancq----------date:20131225--------for: sql放到dao层同样目录

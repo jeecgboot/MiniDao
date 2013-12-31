@@ -174,7 +174,9 @@ public class MiniDaoHandler implements MethodInterceptor {
 			executeSql = new FreemarkerParseFactory().parseTemplateContent(templateSql, sqlParamsMap);
 		}else{
 			//String sqlTempletPath = "/examples/sql/EmployeeDao_getCount.sql";
-			String sqlTempletPath = "/"+method.getDeclaringClass().getName().replace(".", "/").replace("/dao/", "/sql/")+"_"+method.getName()+".sql";
+			// update-begin--Author:fancq  Date:20131225 for：sql放到dao层同样目录
+			String sqlTempletPath = "/"+method.getDeclaringClass().getName().replace(".", "/")+"_"+method.getName()+".sql";
+			// update-end--Author:fancq  Date:20131225 for：sql放到dao层同样目录
 			logger.debug("MiniDao-SQL-Path:"+sqlTempletPath);
 			executeSql = new FreemarkerParseFactory().parseTemplate(sqlTempletPath, sqlParamsMap);
 		}
