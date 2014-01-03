@@ -9,3 +9,7 @@
 --author： fancq----------date:20131225--------for: sql放到dao层同样目录
 	src/main/java/org/jeecgframework/minidao/aop/MiniDaoHandler.java
 --author： fancq----------date:20131225--------for: sql放到dao层同样目录
+--author： fancq----------date:20140102--------for: 支持多数据库分页
+	src/main/java/org/jeecgframework/minidao/aop/MiniDaoHandler.java
+	src/main/java/org/jeecgframework/minidao/util/MiniDaoUtil.java
+--author： fancq----------date:20140102--------for: 支持多数据库分页
