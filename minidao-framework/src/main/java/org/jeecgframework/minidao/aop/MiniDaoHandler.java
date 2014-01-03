@@ -61,6 +61,11 @@ public class MiniDaoHandler implements MethodInterceptor {
 	
 	private String UPPER_KEY = "upper";
 	private String LOWER_KEY = "lower";
+	
+	// update-begin--Author:fancq  Date:20140102 for：支持多数据分页
+	private int page;
+	private int rows;
+	// update-end--Author:fancq  Date:20140102 for：支持多数据分页
 	/**
 	 * map的关键字类型  三个值
 	 */
@@ -245,6 +250,9 @@ public class MiniDaoHandler implements MethodInterceptor {
 					return number.doubleValue();
 				}
 			} else if (returnType.isAssignableFrom(List.class)) {
+				// update-begin--Author:fancq  Date:20140102 for：支持多数据分页
+				executeSql = MiniDaoUtil.createPageSql(executeSql, page, rows);
+				// update-begin--Author:fancq  Date:20140102 for：支持多数据分页
 				// update-begin--Author:fancq  Date:20131219 for：支持返回Map和实体 list
 				ResultType resultType = method.getAnnotation(ResultType.class);
 				String[] values = null;
@@ -393,6 +401,14 @@ public class MiniDaoHandler implements MethodInterceptor {
             // step.2.将args转换成键值对，封装成Map对象
             int args_num = 0;
             for(String v:arguments.value()){
+            	// update-begin--Author:fancq  Date:20140102 for：支持多数据分页
+            	if (v.equalsIgnoreCase("page")) {
+            		page = Integer.parseInt(args[args_num].toString());
+            	}
+            	if (v.equalsIgnoreCase("rows")) {
+            		rows = Integer.parseInt(args[args_num].toString());
+            	}
+            	// update-end--Author:fancq  Date:20140102 for：支持多数据分页
             	sqlParamsMap.put(v, args[args_num]);
             	args_num++;
             }
