@@ -16,6 +16,7 @@
 		<commons-collections.version>3.2.1</commons-collections.version>
 		<commons-lang.version>2.6</commons-lang.version>
 		<commons-logging.version>1.0.4</commons-logging.version>
+		<commons-beanutils.version>1.7.0</commons-beanutils.version>
 		<dom4j.version>1.6.1</dom4j.version>
 		<druid.version>0.2.9</druid.version>
 		<freemarker.version>2.3.19</freemarker.version>
@@ -193,6 +194,17 @@
 			<groupId>commons-collections</groupId>
 			<artifactId>commons-collections</artifactId>
 			<version>${commons-collections.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>commons-beanutils</groupId>
+			<artifactId>commons-beanutils</artifactId>
+			<version>${commons-beanutils.version}</version>
+			<exclusions>
+				<exclusion>
+					<groupId>commons-logging</groupId>
+					<artifactId>commons-logging</artifactId>
+				</exclusion>
+			</exclusions>
 		</dependency>
 		<dependency>
 			<groupId>org.junit</groupId>
