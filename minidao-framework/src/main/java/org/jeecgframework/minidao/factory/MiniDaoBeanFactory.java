@@ -29,7 +29,7 @@ public class MiniDaoBeanFactory implements BeanFactoryPostProcessor {
 
 	public void postProcessBeanFactory(ConfigurableListableBeanFactory beanFactory)
 			throws BeansException {
-		logger.debug("................MiniDaoBeanFactory................ContextRefreshed...................");
+		logger.debug("................MiniDaoBeanFactory................ContextRefreshed................begin...................");
 		try {
 			//循环传入的MiniDao配置
 			for(String pack : packagesToScan){
@@ -56,6 +56,7 @@ public class MiniDaoBeanFactory implements BeanFactoryPostProcessor {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+		logger.debug("................MiniDaoBeanFactory................ContextRefreshed................end...................");
 	}
 	
 
