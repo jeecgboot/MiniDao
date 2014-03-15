@@ -23,6 +23,7 @@ import org.jeecgframework.minidao.annotation.ResultType;
 import org.jeecgframework.minidao.annotation.Sql;
 import org.jeecgframework.minidao.def.MiniDaoConstants;
 import org.jeecgframework.minidao.hibernate.dao.IGenericBaseCommonDao;
+import org.jeecgframework.minidao.pojo.MiniDaoPage;
 import org.jeecgframework.minidao.spring.rowMapper.GenericRowMapper;
 import org.jeecgframework.minidao.spring.rowMapper.MiniColumnMapRowMapper;
 import org.jeecgframework.minidao.spring.rowMapper.MiniColumnOriginalMapRowMapper;
@@ -58,16 +59,13 @@ public class MiniDaoHandler implements MethodInterceptor {
 	private String UPPER_KEY = "upper";
 	private String LOWER_KEY = "lower";
 	
-	// update-begin--Author:fancq  Date:20140102 for：支持多数据分页
-	private int page;
-	private int rows;
-	// update-end--Author:fancq  Date:20140102 for：支持多数据分页
 	/**
 	 * map的关键字类型  三个值
 	 */
 	private String keyType = "origin";
 	private boolean formatSql = false;
 	private boolean showSql = false;
+	private String dbType;
 
 	public Object invoke(MethodInvocation methodInvocation) throws Throwable {
 		Method method = methodInvocation.getMethod();
@@ -78,7 +76,8 @@ public class MiniDaoHandler implements MethodInterceptor {
 		String templateSql = null;
 		//SQL模板参数
 		Map<String, Object> sqlParamsMap = new HashMap<String, Object>();
-		
+		//分页参数
+		MiniDaoPage pageSetting = new MiniDaoPage();
 		
 		//check.1:判断是否是抽象方法，如果是非抽象方法，则不执行MiniDao拦截器
 		if (!MiniDaoUtil.isAbstract(method)) {
@@ -90,7 +89,7 @@ public class MiniDaoHandler implements MethodInterceptor {
 			return rs.get("returnObj");
 		}
 		//Step.1装载SQL模板，所需参数
-		templateSql = installDaoMetaData(method, sqlParamsMap, args);
+		templateSql = installDaoMetaData(pageSetting,method, sqlParamsMap, args);
 	
 		//Step.3解析SQL模板，返回可执行SQL
 		String executeSql = parseSqlTemplate(method, templateSql, sqlParamsMap);
@@ -99,7 +98,7 @@ public class MiniDaoHandler implements MethodInterceptor {
 		Map<String,Object> sqlMap = installPlaceholderSqlParam(executeSql,sqlParamsMap);
 		
 		//Step.5 获取SQL执行返回值
-		returnObj = getReturnMinidaoResult(jdbcTemplate, method, executeSql,sqlMap);
+		returnObj = getReturnMinidaoResult(dbType,pageSetting,jdbcTemplate, method, executeSql,sqlMap);
 		//TODO SQL缓存机制
 		if(showSql){
 			logger.info("MiniDao-SQL:\n\n"+(formatSql == true?formatter.format(executeSql):executeSql)+"\n");
@@ -215,12 +214,14 @@ public class MiniDaoHandler implements MethodInterceptor {
 	
 	/**
 	 *  获取MiniDao处理结果集
+	 * @param dbType 
+	 * @param pageSetting 
 	 * @param jdbcTemplate
 	 * @param method
 	 * @param executeSql
 	 * @return  结果集
 	 */
-	private Object getReturnMinidaoResult(JdbcTemplate jdbcTemplate,Method method,String executeSql,Map<String,Object> paramMap){
+	private Object getReturnMinidaoResult(String dbType, MiniDaoPage pageSetting, JdbcTemplate jdbcTemplate,Method method,String executeSql,Map<String,Object> paramMap){
 		// step.4.调用SpringJdbc引擎，执行SQL返回值
 		// 5.1获取返回值类型[Map/Object/List<Object>/List<Map>/基本类型]
 		String methodName = method.getName();
@@ -247,7 +248,11 @@ public class MiniDaoHandler implements MethodInterceptor {
 				}
 			} else if (returnType.isAssignableFrom(List.class)) {
 				// update-begin--Author:fancq  Date:20140102 for：支持多数据分页
-				executeSql = MiniDaoUtil.createPageSql(executeSql, page, rows);
+				int page = pageSetting.getPage();
+				int rows = pageSetting.getRows();
+				if(page!=0 && rows!=0){
+					executeSql = MiniDaoUtil.createPageSql(dbType,executeSql, page, rows);
+				}
 				// update-begin--Author:fancq  Date:20140102 for：支持多数据分页
 				// update-begin--Author:fancq  Date:20131219 for：支持返回Map和实体 list
 				ResultType resultType = method.getAnnotation(ResultType.class);
@@ -375,6 +380,7 @@ public class MiniDaoHandler implements MethodInterceptor {
 
 	/**
 	 * 装载SQL模板参数
+	 * @param pageSetting 
 	 * 
 	 * @param method
 	 * @param sqlParamsMap 返回(装载模板参数)
@@ -382,7 +388,7 @@ public class MiniDaoHandler implements MethodInterceptor {
 	 * @return   templateSql(@SQL标签的SQL)
 	 * @throws Exception
 	 */
-	private String installDaoMetaData(Method method,Map<String, Object> sqlParamsMap,Object[] args) throws Exception{
+	private String installDaoMetaData(MiniDaoPage pageSetting, Method method,Map<String, Object> sqlParamsMap,Object[] args) throws Exception{
 		String templateSql = null;
 		//如果方法参数大于1个的话，方法必须使用注释标签Arguments
 		boolean arguments_flag = method.isAnnotationPresent(Arguments.class);
@@ -399,10 +405,10 @@ public class MiniDaoHandler implements MethodInterceptor {
             for(String v:arguments.value()){
             	// update-begin--Author:fancq  Date:20140102 for：支持多数据分页
             	if (v.equalsIgnoreCase("page")) {
-            		page = Integer.parseInt(args[args_num].toString());
+            		pageSetting.setPage(Integer.parseInt(args[args_num].toString()));
             	}
             	if (v.equalsIgnoreCase("rows")) {
-            		rows = Integer.parseInt(args[args_num].toString());
+            		pageSetting.setRows(Integer.parseInt(args[args_num].toString()));
             	}
             	// update-end--Author:fancq  Date:20140102 for：支持多数据分页
             	sqlParamsMap.put(v, args[args_num]);
@@ -513,4 +519,18 @@ public class MiniDaoHandler implements MethodInterceptor {
 	public void setShowSql(boolean showSql) {
 		this.showSql = showSql;
 	}
+
+
+
+	public String getDbType() {
+		return dbType;
+	}
+
+
+
+	public void setDbType(String dbType) {
+		this.dbType = dbType;
+	}
+	
+	
 }

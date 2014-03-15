@@ -13,3 +13,9 @@
 	src/main/java/org/jeecgframework/minidao/aop/MiniDaoHandler.java
 	src/main/java/org/jeecgframework/minidao/util/MiniDaoUtil.java
 --author： fancq----------date:20140102--------for: 支持多数据库分页
+--author： zhaojunfu----------date:20140315--------for: 数据库分页代码的一些调整
+	/minidao-framework/src/main/java/org/jeecgframework/minidao/aop/MiniDaoHandler.java--将page,rows成员变量改为方法内定义，避免造成并发冲突
+	/minidao-framework/src/main/java/org/jeecgframework/minidao/pojo/MiniDaoPage.java--将page,rows封装成对象便于方法间传递
+	/minidao-framework/src/main/java/org/jeecgframework/minidao/util/MiniDaoUtil.java--将数据库类型强制读取dbconfig.properties文件改为读取spring-minidao.xml中的配置
+--author： zhaojunfu----------date:20140315--------for: 数据库分页代码的一些调整
+
