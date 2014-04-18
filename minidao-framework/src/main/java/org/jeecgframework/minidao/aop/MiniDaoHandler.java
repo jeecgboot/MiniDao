@@ -1,5 +1,6 @@
 package org.jeecgframework.minidao.aop;
 
+import java.io.File;
 import java.lang.reflect.Method;
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -15,6 +16,7 @@ import ognl.OgnlException;
 
 import org.aopalliance.intercept.MethodInterceptor;
 import org.aopalliance.intercept.MethodInvocation;
+import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.hibernate.engine.jdbc.internal.BasicFormatterImpl;
@@ -173,10 +175,15 @@ public class MiniDaoHandler implements MethodInterceptor {
 		if(StringUtils.isNotEmpty(templateSql)){
 			executeSql = new FreemarkerParseFactory().parseTemplateContent(templateSql, sqlParamsMap);
 		}else{
-			//String sqlTempletPath = "/examples/sql/EmployeeDao_getCount.sql";
 			// update-begin--Author:fancq  Date:20131225 for：sql放到dao层同样目录
-			String sqlTempletPath = "/"+method.getDeclaringClass().getName().replace(".", "/")+"_"+method.getName()+".sql";
+			// update-begin--Author:zhaojunfu  Date:20140418 for：扫描规则-首先扫描同位置sql目录,如果没找到文件再搜索dao目录
+			String sqlTempletPath = "/"+method.getDeclaringClass().getName().replace(".", "/").replace("/dao/", "/sql/")+"_"+method.getName()+".sql";
+			File sqlDirFile = new File(sqlTempletPath);
+			if(!sqlDirFile.exists()){
+				sqlTempletPath = "/"+method.getDeclaringClass().getName().replace(".", "/")+"_"+method.getName()+".sql";
+			}
 			// update-end--Author:fancq  Date:20131225 for：sql放到dao层同样目录
+			// update-end--Author:zhaojunfu  Date:20140418 for：扫描规则：首先扫描同位置sql目录,如果没找到文件再搜索dao目录
 			logger.debug("MiniDao-SQL-Path:"+sqlTempletPath);
 			executeSql = new FreemarkerParseFactory().parseTemplate(sqlTempletPath, sqlParamsMap);
 		}
