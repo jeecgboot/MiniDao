@@ -3,6 +3,8 @@ package org.jeecgframework.minidao.aop;
 import java.io.File;
 import java.lang.reflect.Method;
 import java.math.BigDecimal;
+import java.net.URISyntaxException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -178,8 +180,8 @@ public class MiniDaoHandler implements MethodInterceptor {
 			// update-begin--Author:fancq  Date:20131225 for：sql放到dao层同样目录
 			// update-begin--Author:zhaojunfu  Date:20140418 for：扫描规则-首先扫描同位置sql目录,如果没找到文件再搜索dao目录
 			String sqlTempletPath = "/"+method.getDeclaringClass().getName().replace(".", "/").replace("/dao/", "/sql/")+"_"+method.getName()+".sql";
-			File sqlDirFile = new File(sqlTempletPath);
-			if(!sqlDirFile.exists()){
+			URL sqlFileUrl = this.getClass().getClassLoader().getResource(sqlTempletPath);
+			if(sqlFileUrl==null){
 				sqlTempletPath = "/"+method.getDeclaringClass().getName().replace(".", "/")+"_"+method.getName()+".sql";
 			}
 			// update-end--Author:fancq  Date:20131225 for：sql放到dao层同样目录
