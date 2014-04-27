@@ -143,14 +143,22 @@ public class MiniDaoUtil {
 		
 	/**
 	 * 按照数据库类型，封装SQL
+	 * @param dbType 数据库类型
+	 * @param sql
+	 * @param page
+	 * @param rows
+	 * @return
 	 */
-	public static String createPageSql(String sql, int page, int rows){
+	public static String createPageSql(String dbType, String sql, int page, int rows){
 		int beginNum = (page - 1) * rows;
 		String[] sqlParam = new String[3];
 		sqlParam[0] = sql;
 		sqlParam[1] = beginNum+"";
 		sqlParam[2] = rows+"";
-		String jdbcType = ResourceBundle.getBundle("dbconfig").getString("jdbc.dbType");
+		String jdbcType = dbType;
+		if(jdbcType==null||"".equals(jdbcType)){
+			throw new RuntimeException("org.jeecgframework.minidao.aop.MiniDaoHandler:(数据库类型:dbType)没有设置,请检查配置文件");
+		}
 		if(jdbcType.indexOf(DATABSE_TYPE_MYSQL)!=-1){
 			sql = MessageFormat.format(MYSQL_SQL, sqlParam);
 		}else if(jdbcType.indexOf(DATABSE_TYPE_POSTGRE)!=-1){
