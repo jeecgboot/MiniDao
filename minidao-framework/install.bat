@@ -1,0 +1,1 @@
+cmd /k mvn clean install -DskipTest

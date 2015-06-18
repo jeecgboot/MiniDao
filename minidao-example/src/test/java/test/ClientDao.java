@@ -1,10 +1,13 @@
 package test;
 
+import examples.dao.EmployeeDao;
 import org.springframework.beans.factory.BeanFactory;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 import examples.dao.JeecgDemoDao;
 import examples.entity.Employee;
+
+import java.net.URL;
 
 public class ClientDao {
 	public static void main(String args[]) {
@@ -14,6 +17,11 @@ public class ClientDao {
 		Employee employee = new Employee();
 		employee.setName("张开忠");
 		//employeeDao.getCount();
+
+
+        URL sqlFileUrl =
+                ClientDao.class.getClassLoader().getResource("examples/sql/EmployeeDao_insert.sql");
+        System.err.print(sqlFileUrl);
 		
 		
 		

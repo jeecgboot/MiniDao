@@ -1,4 +1,4 @@
-update user set birthday = '${birthday?string("yyyy-MM-dd")}' where  1=1
+update user set birthday = '${birthday?string("yyyy-MM-dd")}' where
 <#if name ?exists>
 	and name = '${name}'
 </#if>

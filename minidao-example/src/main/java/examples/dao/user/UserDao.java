@@ -13,12 +13,14 @@ import examples.entity.user.User;
 @MiniDao
 public interface UserDao extends MiniDaoSupportHiber<User> {
 	
-	@SuppressWarnings("unchecked")
 	@Arguments("parm_age")
-	public List<Map> listUserByAge(Integer age);
+	public List<Map<String,Object>> listUserByAge(Integer age);
 
 	@Arguments({"name","age","birthday"})
 	public void updateUserBirthday(String name,Integer age,Date birthday);
 	
 	String sle();
+
+	@Arguments({"name","age","birthday"})
+	void updateDynamicUserBirthday(String name, Integer age, Date date);
 }

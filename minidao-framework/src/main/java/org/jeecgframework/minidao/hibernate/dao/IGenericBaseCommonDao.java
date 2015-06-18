@@ -5,7 +5,6 @@ import java.util.List;
 
 import org.hibernate.Session;
 
-
 /**
  * 
  * 类描述：DAO层泛型基类接口
@@ -15,19 +14,29 @@ import org.hibernate.Session;
  * @version 1.0
  */
 public interface IGenericBaseCommonDao {
-	public <T> void save(T entity);
-	public <T> void saveOrUpdate(T entity);
+
 	public <T> void delete(T entitie);
-	public <T> T get(T entitie);
-	public <T> List<T> loadAll(T entitie);
-	public <T> T get(Class<T> entityClass, final Serializable id);
-	public Session getSession();
-	public <T> T findUniqueByProperty(Class<T> entityClass, String propertyName, Object value);
+
 	/**
 	 * 根据主键删除指定的实体
 	 * 
 	 * @param <T>
 	 * @param pojo
 	 */
-	public <T> void deleteEntityById(Class entityName, Serializable id);
+	public <T> void deleteEntityById(Class<?> entityName, Serializable id);
+
+	public <T> T findUniqueByProperty(Class<T> entityClass,
+			String propertyName, Object value);
+
+	public <T> T get(Class<T> entityClass, final Serializable id);
+
+	public <T> T get(T entitie);
+
+	public Session getSession();
+
+	public <T> List<T> loadAll(T entitie);
+
+	public <T> void save(T entity);
+
+	public <T> void saveOrUpdate(T entity);
 }

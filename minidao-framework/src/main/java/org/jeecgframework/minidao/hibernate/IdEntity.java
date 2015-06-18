@@ -5,6 +5,7 @@ import javax.persistence.Id;
 import javax.persistence.MappedSuperclass;
 
 import org.hibernate.annotations.GenericGenerator;
+
 @MappedSuperclass
 public abstract class IdEntity {
 	private String id;

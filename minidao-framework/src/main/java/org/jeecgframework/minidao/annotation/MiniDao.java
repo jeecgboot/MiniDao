@@ -6,9 +6,10 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
+import org.springframework.stereotype.Component;
 
 /**
- * @description:MiniDao   
+ * @description:MiniDao
  * @author 张代浩
  * @mail zhangdaiscott@163.com
  * @category www.jeecg.org
@@ -18,5 +19,8 @@ import java.lang.annotation.Target;
 @Inherited
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.TYPE)
-public @interface MiniDao{
+@Component
+public @interface MiniDao {
+
+	String value() default "";
 }

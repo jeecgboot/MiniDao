@@ -11,7 +11,7 @@
            http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-3.0.xsd"
 	default-autowire="byName" default-lazy-init="false">
 	<aop:aspectj-autoproxy />
-	
+
 	<context:component-scan base-package="examples.*" />
 	<!-- 引入属性文件 -->
 	<context:property-placeholder location="classpath:dbconfig.properties" />
@@ -57,22 +57,19 @@
 		<property name="targetDataSources">
 			<map key-type="org.jeecgframework.minidao.datasource.DataSourceType">
 				<entry key="dataSource_jeecg" value-ref="dataSource_jeecg" />
-				<!-- <entry key="mapdataSource" value-ref="mapdataSource" />
-    -->
+				<!-- <entry key="mapdataSource" value-ref="mapdataSource" /> -->
 			</map>
 		</property>
 		<property name="defaultTargetDataSource" ref="dataSource_jeecg" />
 	</bean>
-	
+
 	<!-- Hibernate sessionFactory 配置 -->
 	<bean id="sessionFactory"
 		class="org.springframework.orm.hibernate4.LocalSessionFactoryBean">
 		<property name="dataSource" ref="dataSource" />
 		<property name="hibernateProperties">
 			<props>
-				<!--
-					<prop key="hibernate.hbm2ddl.auto">${hibernate.hbm2ddl.auto}</prop>
-				-->
+				<!-- <prop key="hibernate.hbm2ddl.auto">${hibernate.hbm2ddl.auto}</prop> -->
 				<prop key="hibernate.dialect">${hibernate.dialect}</prop>
 				<prop key="hibernate.hbm2ddl.auto">${hibernate.hbm2ddl.auto}</prop>
 				<prop key="hibernate.show_sql">true</prop>
@@ -94,9 +91,10 @@
 			<ref bean="dataSource" />
 		</property>
 	</bean>
-	
+
 	<!-- JDBC 占位符配置 -->
-	<bean id="namedParameterJdbcTemplate" class="org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate"> 
+	<bean id="namedParameterJdbcTemplate"
+		class="org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate">
 		<constructor-arg ref="dataSource" />
 	</bean>
 
@@ -106,49 +104,39 @@
 		<property name="sessionFactory" ref="sessionFactory"></property>
 	</bean>
 	<tx:annotation-driven transaction-manager="transactionManager" />
-	
-	<!-- Hibernate工具栏配置 -->
-	<bean id="miniDaoHiberCommonDao"
-		class="org.jeecgframework.minidao.hibernate.dao.impl.GenericBaseCommonDao">
-		<property name="sessionFactory">
-			<ref bean="sessionFactory" />
-		</property>
-	</bean>
-	
+
 	<!-- 事务管理 -->
-	<tx:advice id="txAdvice" transaction-manager="transactionManager"> 
-		<tx:attributes> 
-		<tx:method name="save*" propagation="REQUIRED"/> 
-		<tx:method name="add*" propagation="REQUIRED"/> 
-		<tx:method name="create*" propagation="REQUIRED"/> 
-		<tx:method name="insert*" propagation="REQUIRED"/> 
-		<tx:method name="update*" propagation="REQUIRED"/> 
-		<tx:method name="delete*" propagation="REQUIRED"/> 
-		<tx:method name="*" read-only="true" /> 
-		</tx:attributes> 
-	</tx:advice> 
-	
+	<tx:advice id="txAdvice" transaction-manager="transactionManager">
+		<tx:attributes>
+			<tx:method name="save*" propagation="REQUIRED" />
+			<tx:method name="add*" propagation="REQUIRED" />
+			<tx:method name="create*" propagation="REQUIRED" />
+			<tx:method name="insert*" propagation="REQUIRED" />
+			<tx:method name="update*" propagation="REQUIRED" />
+			<tx:method name="delete*" propagation="REQUIRED" />
+			<tx:method name="*" read-only="true" />
+		</tx:attributes>
+	</tx:advice>
+
 	<aop:config proxy-target-class="true">
-	 <aop:advisor advice-ref="txAdvice" pointcut="execution(* examples..service..*.*(..))" />
+		<aop:advisor advice-ref="txAdvice"
+			pointcut="execution(* examples..service..*.*(..))" />
 	</aop:config>
 
-	<!-- MiniDao动态代理类 -->
-	<bean id="miniDaoHandler" class="org.jeecgframework.minidao.aop.MiniDaoHandler">
-		<property name="jdbcTemplate" ref="jdbcTemplate"></property>
+	<!-- MiniDao扫描类 -->
+	<bean class="org.jeecgframework.minidao.factory.MiniDaoBeanScannerConfigurer">
 		<!-- 是使用什么字母做关键字Map的关键字 默认值origin 即和sql保持一致,lower小写(推荐),upper 大写 -->
 		<property name="keyType" value="origin"></property>
 		<!-- 格式化sql -->
 		<property name="formatSql" value="true"></property>
 		<!-- 输出sql -->
 		<property name="showSql" value="true"></property>
+		<!-- 数据库类型 -->
+		<property name="dbType" value="mysql"></property>
+		<!-- dao地址,配置符合spring方式 -->
+		<property name="basePackage" value="examples.dao"></property>
+		<!-- 使用的注解,默认是Minidao,推荐 Repository -->
+		<property name="annotation" value="org.springframework.stereotype.Repository"></property>
 	</bean>
-	
-	<!-- 注册MiniDao接口 -->
-	<bean class="org.jeecgframework.minidao.factory.MiniDaoBeanFactory">
-		<property name="packagesToScan">
-			<list>
-				<value>examples.dao.*</value>
-			</list>
-		</property>
-	</bean>
+
 </beans>

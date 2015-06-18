@@ -8,8 +8,8 @@ import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import test.spring.SpringTxTestCase;
-import examples.dao.user.UserDao;
 import examples.entity.user.User;
+import examples.service.UserServer;
 
 /**
  * 单元测试
@@ -21,10 +21,9 @@ import examples.entity.user.User;
 public class UserDaoJunit extends SpringTxTestCase {
 
 	@Autowired
-	private UserDao userDao;
+	private UserServer userServer;
 	
-	String  id = "402880e740a648990140a6489c470000";
-	
+	String  id = "402880e74a2f3678014a2f367b790000";
 	
 	//@Test
 	public void testInsert() {
@@ -32,7 +31,7 @@ public class UserDaoJunit extends SpringTxTestCase {
 		user.setName("张代浩2");
 		user.setAge(22);
 		
-		userDao.saveByHiber(user);
+		userServer.saveByHiber(user);
 	}
 
 	//@Test
@@ -41,13 +40,13 @@ public class UserDaoJunit extends SpringTxTestCase {
 		user.setName("小张");
 		user.setAge(20);
 		user.setId(id);
-		userDao.updateByHiber(user);
+		userServer.updateByHiber(user);
 	}
 
 
 	//@Test
 	public void testGetEntity() {
-		User user = userDao.getByIdHiber(User.class, id);
+		User user = userServer.getByIdHiber(User.class, id);
 		System.out.println("---------------------------");
 		System.out.println(user.getName());
 		System.out.println(user.getAge());
@@ -56,7 +55,7 @@ public class UserDaoJunit extends SpringTxTestCase {
 
 	//@Test
 	public void testDelete() {
-	userDao.deleteByIdHiber(User.class, id);
+	userServer.deleteByIdHiber(User.class, id);
 	}
 	
 	
@@ -68,7 +67,7 @@ public class UserDaoJunit extends SpringTxTestCase {
 	public void testListAll() {
 		User user = new User();
 		user.setName("小张");
-		List<User> list = userDao.listByHiber(user);
+		List<User> list = userServer.listByHiber(user);
 		for(User u:list){
 			System.out.println(u.getName());
 			System.out.println(u.getAge());
@@ -78,7 +77,7 @@ public class UserDaoJunit extends SpringTxTestCase {
 	//@Test
 	public void testSql() {
 		Integer age = new Integer(30);
-		List<Map> list =  userDao.listUserByAge(30);
+		List<Map<String, Object>> list =  userServer.listUserByAge(30);
 		System.out.println("------------------------------------------------------");
 		System.out.println("小于30岁人的名字");
 		for(Map m:list){
@@ -90,14 +89,20 @@ public class UserDaoJunit extends SpringTxTestCase {
 	//@Test
 	public void testUpSql() {
 		Integer age = new Integer(20);
-		userDao.updateUserBirthday("小张", age, new Date());
+		userServer.updateUserBirthday(null, null, new Date());
 	
 	}
-	
+	@Test
+	public void testDynamicUpdateSql() {
+		Integer age = new Integer(20);
+		userServer.updateDynamicUserBirthday("小张", null, new Date());
+
+	}
+
 	
 	@Test
 	public void testsle() {
-		String s = userDao.sle();
+		//String s = userServer.sle();
 	
 	}
 

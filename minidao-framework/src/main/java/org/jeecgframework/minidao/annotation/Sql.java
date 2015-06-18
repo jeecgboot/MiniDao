@@ -6,7 +6,6 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
-
 /**
  * @description:MiniDao-SQL标签(记录用户自定义SQL模板)
  * @author 张代浩
@@ -19,8 +18,7 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.METHOD)
 public @interface Sql {
-    String value();
 
-    String dbms() default "";
+	String value();
 
 }
