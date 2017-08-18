@@ -1,93 +1,112 @@
-MiniDao
+MiniDao (超轻量级JAVA持久层框架)
 =======
+当前最新版本： 1.6.2 （发布日期：20170818）
 
 
-MiniDao简介及特征
+###MiniDao 简介及特征
 
-MiniDao是Jeecg自己的持久化解决方案，集成了Hibernate实体维护和Mybaits SQL分离的两大优势。 具有以下特征:
+MiniDao 是一款超级轻量的JAVA持久层框架，基于SpringJdbc 实现，具备Mybatis一样的标签和SQL灵活性。最大优点：可无缝集成Hibernate项目，支持事务统一管理，有效解决Hibernate项目，实现灵活的SQL分离问题。 
 
-* 1.O/R mapping不用设置xml，零配置便于维护
-* 2.不需要了解JDBC的知识
-* 3.SQL语句和java代码的分离
-* 4.可以自动生成SQL语句
-* 5.接口和实现分离，不用写持久层代码，用户只需写接口，以及某些接口方法对应的sql 它会通过AOP自动生成实现类
-* 6.支持自动事务处理和手动事务处理
-* 7.支持与hibernate轻量级无缝集成
-* 8.MiniDao整合了Hibernate+mybatis的两大优势，支持实体维护和SQL分离
-* 9.SQL支持脚本语言
+具有以下特征:
 
-※向下兼容Hibernate实体维护方式,实体的增删改查SQL自动生成
+* 1. O/R mapping不用设置xml，零配置便于维护
+* 2. 不需要了解JDBC的知识
+* 3. SQL语句和java代码的分离
+* 4. 只需接口定义，无需接口实现
+* 5. SQL支持脚本语言（强大脚本语言）
+* 6. 支持与hibernate轻量级无缝集成
+* 7. 支持自动事务处理和手动事务处理
 
 
-
-
-###接口和SQL文件对应目录
-![github](http://www.jeecg.org/data/attachment/forum/201308/18/224051ey14ehqe000iegja.jpg "minidao")
 
 
 
 ### 接口定义[EmployeeDao.java]  
-    
+    @MiniDao
     public interface EmployeeDao {
-    @Arguments("employee")
-    public List<Map> getAllEmployees(Employee employee);
+	
+     @Arguments({ "employee"})
+	 @Sql("select * from employee")
+	 List<Map<String,Object>> getAll(Employee employee);
     
-    @Arguments("empno")
-    Employee getEmployee(String empno);
+     @Sql("select * from employee where id = :id")
+	 Employee get(@Param("id") String id);
     
-    @Arguments({"empno","name"})
-    Map getMap(String empno,String name);
+	 @Sql("select * from employee where empno = :empno and  name = :name")
+     Map getMap(@Param("empno")String empno,@Param("name")String name);
 
-    @Sql("SELECT count(*) FROM employee")
-    Integer getCount();
+     @Sql("SELECT count(*) FROM employee")
+     Integer getCount();
 
-    @Arguments("employee")
-    int update(Employee employee);
+     int update(@Param("employee") Employee employee);
 
-    @Arguments("employee")
-    void insert(Employee employee);
-    }
+     void insert(@Param("employee") Employee employee);
+	 
+	 @ResultType(Employee.class)
+	 public MiniDaoPage<Employee> getAll(@Param("employee") Employee employee,@Param("page")  int page,@Param("rows") int rows);
+   }
     
     
     
 ### SQL文件[EmployeeDao_getAllEmployees.sql]
     SELECT * FROM employee where 1=1 
     <#if employee.age ?exists>
-	and age = '${employee.age}'
+	and age = :employee.age
     </#if>
     <#if employee.name ?exists>
-	and name = '${employee.name}'
+	and name = :employee.name
     </#if>
     <#if employee.empno ?exists>
-	and empno = '${employee.empno}'
+	and empno = :employee.empno
     </#if>
 
+###接口和SQL文件对应目录
 
+![github](http://www.jeecg.org/data/attachment/forum/201308/18/224051ey14ehqe000iegja.jpg "minidao")
+
+	
+### MiniDao在spring中配置
+    <!-- MiniDao动态代理类 -->
+	<bean id="miniDaoHandler" class="org.jeecgframework.minidao.factory.MiniDaoBeanScannerConfigurer">
+		<!-- 是使用什么字母做关键字Map的关键字 默认值origin 即和sql保持一致,lower小写(推荐),upper 大写 -->
+		<property name="keyType" value="lower"></property>
+		<!-- 格式化sql -->
+		<property name="formatSql" value="false"></property>
+		<!-- 输出sql -->
+		<property name="showSql" value="false"></property>
+		<!-- 数据库类型 -->
+		<property name="dbType" value="mysql"></property>
+		<!-- dao地址,配置符合spring方式 -->
+		<property name="basePackage" value="examples.dao.*"></property>
+		<!-- 使用的注解,默认是Minidao,推荐 Repository-->
+		<property name="annotation" value="org.springframework.stereotype.Repository"></property>
+		<!-- Minidao拦截器配置 	-->
+		<property name="emptyInterceptor" ref="minidaoInterceptor"></property>
+	</bean>
 
 ### 测试代码
     public class Client {
     public static void main(String args[]) {
-		BeanFactory factory = new ClassPathXmlApplicationContext(
-				"applicationContext.xml");
+		BeanFactory factory = new ClassPathXmlApplicationContext("applicationContext.xml");
      		
 		EmployeeDao employeeDao = (EmployeeDao) factory.getBean("employeeDao");
 		Employee employee = new Employee();
-		List<Map> list =  employeeDao.getAllEmployees(employee);
-		for(Map mp:list){
-			System.out.println(mp.get("id"));
-			System.out.println(mp.get("name"));
-			System.out.println(mp.get("empno"));
-			System.out.println(mp.get("age"));
-			System.out.println(mp.get("birthday"));
-			System.out.println(mp.get("salary"));
-		}
+		String id = UUID.randomUUID().toString().replaceAll("-", "").toUpperCase();
+		employee.setId(id);
+		employee.setEmpno("A001");
+		employee.setSalary(new BigDecimal(5000));
+		employee.setBirthday(new Date());
+		employee.setName("scott");
+		employee.setAge(25);
+		//调用minidao方法插入
+		employeeDao.insert(employee);
 	}
     }
 
 
 技术交流
 -----------------------------------
-* 作者：     张代浩
-* 技术论坛：[www.jeecg.org](http://www.jeecg.org)
-* 邮箱：  zhangdaiscott@163.com
-* 交流群：325978980，143858350
+* 作 者：  张代浩
+* 论 坛： [www.jeecg.org](http://www.jeecg.org)
+* 邮 箱：  jeecg@sina.com
+* QQ交流群：325978980、143858350

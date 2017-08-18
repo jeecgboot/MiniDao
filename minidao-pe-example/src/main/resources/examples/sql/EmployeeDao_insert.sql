@@ -1,0 +1,27 @@
+INSERT  INTO
+	employee
+      ( 
+      id                            
+      ,empno                          
+      ,NAME                           
+      ,AGE                            
+      ,BIRTHDAY                       
+      ,SALARY                         
+      ,create_by                      
+      ,create_date                    
+      ,update_by                      
+      ,update_date                    
+      ) 
+values
+      (
+      :employee.id                            
+      ,:employee.empno                         
+      ,:employee.name                          
+      ,:employee.age                           
+      ,:employee.birthday                      
+      ,:employee.salary                        
+      ,:employee.createBy                      
+      ,:employee.createDate                    
+      ,:employee.updateBy                      
+      ,:employee.updateDate                    
+      )
