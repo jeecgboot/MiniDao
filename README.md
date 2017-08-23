@@ -5,19 +5,20 @@ MiniDao (超轻量级JAVA持久层框架)
 
 ###MiniDao 简介及特征
 
-MiniDao 是一款超级轻量的JAVA持久层框架，基于SpringJdbc 实现，具备Mybatis一样的标签和SQL灵活性。最大优点：可无缝集成Hibernate项目，支持事务统一管理，有效解决Hibernate项目，实现灵活的SQL分离问题。 
+MiniDao 是一款超级轻量的JAVA持久层框架，基于 SpringJdbc + freemarker 实现，具备Mybatis一样的SQL分离灵活性和标签逻辑。最大优点：可无缝集成Hibernate项目，支持事务统一管理，有效解决Hibernate项目，实现灵活的SQL分离问题。 
+
 
 具有以下特征:
 
-* 1. O/R mapping不用设置xml，零配置便于维护
-* 2. 不需要了解JDBC的知识
-* 3. SQL语句和java代码的分离
-* 4. 只需接口定义，无需接口实现
-* 5. SQL支持脚本语言（强大脚本语言）
-* 6. 支持与hibernate轻量级无缝集成
-* 7. 支持自动事务处理和手动事务处理
-
-
+*  O/R mapping不用设置xml，零配置便于维护
+* 不需要了解JDBC的知识
+* SQL语句和java代码的分离
+* 只需接口定义，无需接口实现
+* SQL支持脚本语言（强大脚本语言，freemarker语法）
+* 支持与hibernate轻量级无缝集成
+* 支持自动事务处理和手动事务处理
+* 性能优于Mybatis
+* SQL标签采用[Freemarker的基本语法](http://blog.csdn.net/zhangdaiscott/article/details/77505453)
 
 
 
