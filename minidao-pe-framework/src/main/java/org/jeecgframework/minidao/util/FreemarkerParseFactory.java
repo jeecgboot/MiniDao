@@ -70,6 +70,7 @@ public class FreemarkerParseFactory {
      */
     public static String parseTemplate(String tplName, Map<String, Object> paras) {
         try {
+        	logger.debug(" minidao sql templdate : "+tplName);
             StringWriter swriter = new StringWriter();
             Template mytpl = _tplConfig.getTemplate(tplName, ENCODE);
             mytpl.process(paras, swriter);
@@ -77,8 +78,8 @@ public class FreemarkerParseFactory {
         } catch (Exception e) {
             logger.error(e.getMessage(), e.fillInStackTrace());
             logger.error("发送一次的模板key:{ " + tplName + " }");
-            System.err.println(e.getMessage());
-            System.err.println("模板名:{ "+ tplName +" }");
+            //System.err.println(e.getMessage());
+            //System.err.println("模板名:{ "+ tplName +" }");
             throw new RuntimeException("解析SQL模板异常");
         }
     }
@@ -103,8 +104,8 @@ public class FreemarkerParseFactory {
         } catch (Exception e) {
             logger.error(e.getMessage(), e.fillInStackTrace());
             logger.error("发送一次的模板key:{ "+ tplContent +" }");
-            System.err.println(e.getMessage());
-            System.err.println("模板内容:{ "+ tplContent +" }");
+            //System.err.println(e.getMessage());
+            //System.err.println("模板内容:{ "+ tplContent +" }");
             throw new RuntimeException("解析SQL模板异常");
         }
     }

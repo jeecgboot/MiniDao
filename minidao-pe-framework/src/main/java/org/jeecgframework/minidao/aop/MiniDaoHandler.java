@@ -18,6 +18,7 @@ import ognl.OgnlException;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.jeecgframework.minidao.annotation.Arguments;
+import org.jeecgframework.minidao.annotation.IdAutoGenerator;
 import org.jeecgframework.minidao.annotation.ResultType;
 import org.jeecgframework.minidao.annotation.Sql;
 import org.jeecgframework.minidao.aspect.EmptyInterceptor;
@@ -34,7 +35,10 @@ import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.ColumnMapRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
+import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
+import org.springframework.jdbc.support.GeneratedKeyHolder;
+import org.springframework.jdbc.support.KeyHolder;
 
 /**
  * 
@@ -110,7 +114,7 @@ public class MiniDaoHandler implements InvocationHandler {
 			}
 		}
 		if (showSql) {
-			System.out.println("MiniDao-SQL:\n\n" + executeSql);
+			//System.out.println("MiniDao-SQL:\n\n" + executeSql);
 			logger.info("MiniDao-SQL:\n\n" + executeSql);
 		}
 		return returnObj;
@@ -274,11 +278,27 @@ public class MiniDaoHandler implements InvocationHandler {
 		// 判斷是否非查詢方法
 		if (checkActiveKey(methodName) || checkActiveSql(executeSql)) {
 		//update-end---author:scott----date:20160906------for:增加通过sql判断是否非查询操作--------
-			if (paramMap != null) {
-				return namedParameterJdbcTemplate.update(executeSql, paramMap);
-			} else {
-				return jdbcTemplate.update(executeSql);
+			
+		//update-begin---author:scott----date:20180104------for:支持ID自增策略生成并返回主键ID--------
+			boolean idGenerators_flag = method.isAnnotationPresent(IdAutoGenerator.class);
+			if (idGenerators_flag) {
+				KeyHolder keyHolder = new GeneratedKeyHolder();
+				if (paramMap != null) {
+					MapSqlParameterSource paramSource = new MapSqlParameterSource(paramMap); 
+					namedParameterJdbcTemplate.update(executeSql, paramSource,keyHolder,new String[]{"id"});
+					return keyHolder.getKey().intValue();
+				} else {
+					jdbcTemplate.update(executeSql,keyHolder);
+					return keyHolder.getKey().intValue();
+				}
+			}else{
+				if (paramMap != null) {
+					return namedParameterJdbcTemplate.update(executeSql, paramMap);
+				} else {
+					return jdbcTemplate.update(executeSql);
+				}
 			}
+		//update-end---author:scott----date:20180104------for:支持ID自增策略生成并返回主键ID--------
 		} else if (checkBatchKey(methodName)) {
 			return batchUpdate(executeSql);
 		} else {

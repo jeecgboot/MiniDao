@@ -55,8 +55,7 @@ public class MiniDaoUtil {
 		sqlParam[2] = rows + "";
 		String jdbcType = dbType;
 		if (jdbcType == null || "".equals(jdbcType)) {
-			throw new RuntimeException(
-					"org.jeecgframework.minidao.aop.MiniDaoHandler:(数据库类型:dbType)没有设置,请检查配置文件");
+			throw new RuntimeException("org.jeecgframework.minidao.aop.MiniDaoHandler:(数据库类型:dbType)没有设置,请检查配置文件");
 		}
 		if (jdbcType.indexOf(DATABSE_TYPE_MYSQL) != -1) {
 			sql = MessageFormat.format(MYSQL_SQL, sqlParam);
@@ -77,6 +76,11 @@ public class MiniDaoUtil {
 		return sql;
 	}
 
+	/**
+	 * 
+	 * @param sql
+	 * @return
+	 */
 	private static int getAfterSelectInsertPoint(String sql) {
 		int selectIndex = sql.toLowerCase().indexOf("select");
 		int selectDistinctIndex = sql.toLowerCase().indexOf("select distinct");

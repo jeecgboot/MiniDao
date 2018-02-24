@@ -57,9 +57,9 @@ public class MinidaoInterceptor implements EmptyInterceptor {
 			}
 			if(!map.containsKey(fldSetName)){continue;}
 			Object value = map.get(fldSetName);
-			System.out.println(value.toString());
+			//System.out.println(value.toString());
 			Method method = cls.getMethod(setMethod, field.getType());
-			System.out.println(method.getName());
+			//System.out.println(method.getName());
 			if (null != value) {
 				if ("String".equals(fldtype)) {
 					method.invoke(bean, (String) value);

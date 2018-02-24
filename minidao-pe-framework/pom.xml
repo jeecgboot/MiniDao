@@ -4,9 +4,31 @@
 	
 	<groupId>org.jeecgframework</groupId>
 	<artifactId>minidao-pe</artifactId>
-	<version>1.6-SNAPSHOT</version>
+	<version>1.6.1</version>
 	<packaging>jar</packaging>
 	
+	<name>minidao-pe</name>
+	<description>Minidao 轻量级持久层解决方案(完美兼容Hibernate，解决hibernate复杂SQL之忧).</description>
+	<url>http://www.jeecg.org</url>
+	
+	<licenses>
+        <license>
+            <name>The Apache Software License, Version 2.0</name>
+            <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+        </license>
+    </licenses>
+    <developers>
+        <developer>
+            <name>jeecg</name>
+            <email>jeecg@sina.com</email>
+        </developer>
+    </developers>
+    <scm>
+      <connection>scm:git:https://github.com/zhangdaiscott/minidao-pe.git</connection>
+      <developerConnection>scm:git:https://github.com/zhangdaiscott/minidao-pe.git</developerConnection>
+      <url>https://github.com/zhangdaiscott/minidao-pe</url>
+	</scm>
+    
 	<properties>
 		<aspectj.version>1.6.9</aspectj.version>
 		<org.junit.version>4.9.0</org.junit.version>
@@ -55,7 +77,7 @@
 			</snapshots>
         </repository>
 	</repositories>
-
+	
 	<dependencies>
 		<!-- spring start -->
 		<dependency>
@@ -206,8 +228,80 @@
 		</dependency>
 	</dependencies>
 
-	<description>Minidao-PE版本</description>
-	<url>http://www.jeecg.org</url>
+	<!-- 
+	<profiles>
+        <profile>
+            <id>release</id>
+            <build>
+                <plugins>
+                	 Source 
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-source-plugin</artifactId>
+                        <version>2.2.1</version>
+                        <executions>
+                            <execution>
+                                <phase>package</phase>
+                                <goals>
+                                    <goal>jar-no-fork</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+                	 Javadoc 
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-javadoc-plugin</artifactId>
+                        <version>2.9.1</version>
+                        <executions>
+                            <execution>
+                                <phase>package</phase>
+                                <goals>
+                                    <goal>jar</goal>
+                                </goals>
+                                <configuration>  
+					                <encoding>UTF-8</encoding>  
+					              </configuration>  
+                            </execution>
+                        </executions>
+                    </plugin>
+                     GPG 
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-gpg-plugin</artifactId>
+                        <version>1.5</version>
+                        <executions>
+                            <execution>
+                                <phase>verify</phase>
+                                <goals>
+                                    <goal>sign</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+                     <plugin>
+				        <artifactId>maven-compiler-plugin</artifactId>
+				        <configuration>
+				          <source>1.7</source>
+				          <target>1.7</target>
+				          <encoding>UTF-8</encoding>
+				        </configuration>
+				      </plugin>
+                </plugins>
+            </build>
+            <distributionManagement>
+                <snapshotRepository>
+                    <id>oss</id>
+                    <url>https://oss.sonatype.org/content/repositories/snapshots/</url>
+                </snapshotRepository>
+                <repository>
+                    <id>oss</id>
+                    <url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
+                </repository>
+            </distributionManagement>
+        </profile>
+    </profiles>-->
+    
 	<build>
 		<plugins>
 			<!-- 
