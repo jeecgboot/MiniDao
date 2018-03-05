@@ -3,12 +3,12 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.jeecgframework</groupId>
 	<artifactId>minidao-pe-example</artifactId>
-	<version>1.6.1</version>
+	<version>1.6.2</version>
 	<packaging>jar</packaging>
 	
 	
 	<properties>
-		<minidao.version>1.6.1</minidao.version>
+		<minidao.version>1.6.2</minidao.version>
 		<aspectj.version>1.6.9</aspectj.version>
 		<org.junit.version>4.9.0</org.junit.version>
 		<commons-collections.version>3.2.1</commons-collections.version>

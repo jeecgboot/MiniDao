@@ -4,11 +4,11 @@
 	
 	<groupId>org.jeecgframework</groupId>
 	<artifactId>minidao-pe</artifactId>
-	<version>1.6.1</version>
+	<version>1.6.2</version>
 	<packaging>jar</packaging>
 	
 	<name>minidao-pe</name>
-	<description>Minidao 轻量级持久层解决方案(完美兼容Hibernate，解决hibernate复杂SQL之忧).</description>
+	<description>Minidao 轻量级J2EE持久层(Hibernate完美助手，解决SQL分离之忧).</description>
 	<url>http://www.jeecg.org</url>
 	
 	<licenses>
@@ -228,13 +228,12 @@
 		</dependency>
 	</dependencies>
 
-	<!-- 
 	<profiles>
         <profile>
             <id>release</id>
             <build>
                 <plugins>
-                	 Source 
+                	 <!-- Source --> 
                     <plugin>
                         <groupId>org.apache.maven.plugins</groupId>
                         <artifactId>maven-source-plugin</artifactId>
@@ -248,7 +247,7 @@
                             </execution>
                         </executions>
                     </plugin>
-                	 Javadoc 
+                	<!-- Javadoc --> 
                     <plugin>
                         <groupId>org.apache.maven.plugins</groupId>
                         <artifactId>maven-javadoc-plugin</artifactId>
@@ -265,7 +264,7 @@
                             </execution>
                         </executions>
                     </plugin>
-                     GPG 
+                     <!-- GPG --> 
                     <plugin>
                         <groupId>org.apache.maven.plugins</groupId>
                         <artifactId>maven-gpg-plugin</artifactId>
@@ -300,11 +299,10 @@
                 </repository>
             </distributionManagement>
         </profile>
-    </profiles>-->
+    </profiles>
     
 	<build>
 		<plugins>
-			<!-- 
 			<plugin>
 				<artifactId>maven-compiler-plugin</artifactId>
 				<configuration>
@@ -313,8 +311,7 @@
 					<encoding>UTF-8</encoding>
 				</configuration>
 			</plugin>
-			
-			编译源码包 
+			<!-- 编译源码包 -->
 			<plugin>
 				<artifactId>maven-source-plugin</artifactId>
 				<configuration>
@@ -329,7 +326,6 @@
 					</execution>
 				</executions>
 			</plugin>
-			-->
 		</plugins>
 	</build>
 </project>

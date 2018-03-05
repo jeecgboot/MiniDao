@@ -10,11 +10,8 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * @author fancq
- * 
- *         定义返回的List中的具体类型，便于返回类型的确认，如果没有或者是java.util.Map，则为java.util.Map，
- *         否则为对应的实体类全名
- * 
+ * @author scott
+ * 自定义主键生成策略（目前只支持自增，后续待扩展）
  */
 @Inherited
 @Retention(RetentionPolicy.RUNTIME)
@@ -23,7 +20,7 @@ public @interface IdAutoGenerator {
 	
 	/**
 	 * 主键策略
-	 * 
+	 * native：ID自增
 	 * @return
 	 */
 	String generator() default "native";
