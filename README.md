@@ -1,4 +1,4 @@
-MiniDao (轻量级JAVA持久层，hibernate完美助手)
+MiniDao (轻量级JAVA持久层，Hibernate完美助手)
 =======
 当前最新版本： 1.6.1 （发布日期：20180306）
 
