@@ -5,7 +5,7 @@ MiniDao (轻量级JAVA持久层，Hibernate完美助手)
 ###MiniDao产生的初衷？
 
  JAVA开发者目前主流的持久层是Mybatis和Hibernate。Mybatis更灵活可以更方便的优化SQL；Hibernate更智能，基于单表和复杂关系表单的SQL可以自动生成，开发效率较高，但是针对复杂SQL，hibernate能力不足，存在性能不足和不够灵活的问题。 
- 这个时候大家就想到集成mybatis，但是一个项目既用hibernate又用mybatis，显得很重，事务也不好控制。大家常规的做法是采用springjdbc来实现原生SQL编写，但是也存在一个问题，SQL没有逻辑标签能力。
+ 这个时候大家就想到集成mybatis，但是一个项目既用hibernate又用mybatis，显得很重，事务也不好控制。大家常规的做法是采用springjdbc来实现原生SQL编写，但是也存在一个问题，SQL无法分离也没有逻辑标签能力。
  所以针对这种情况，我们针对springjdbc做了封装，出了这么一个轻量级持久层，可以让Hiberate拥有mybatis一样SQL灵活能力，同时支持事务统一管理和SQL标签能力。
 
 
