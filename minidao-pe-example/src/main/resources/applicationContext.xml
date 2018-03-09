@@ -86,7 +86,7 @@
 		<property name="formatSql" value="true"></property>
 		<!-- 输出sql -->
 		<property name="showSql" value="true"></property>
-		<!-- 数据库类型 -->
+		<!-- 数据库类型 mysql/postgresql/oracle/sqlserver -->
 		<property name="dbType" value="mysql"></property>
 		<!-- dao地址,配置符合spring方式 -->
 		<property name="basePackage" value="examples.dao"></property>
