@@ -4,7 +4,7 @@ MiniDao (轻量级JAVA持久层，Hibernate完美助手)
 
 ### MiniDao产生的初衷？
 
-  采用Hibernate的J2EE项目都有一个痛病，针对复杂业务SQL，hibernate能力不足，SQL不好优化也无法分离。 这个时候大家就想到集成mybatis，但是一个项目既用hibernate又用mybatis，显得很重事务也不好控制。大家常规的做法是采用springjdbc来实现原生SQL编写，但是同样存在问题，SQL无法分离也没有逻辑标签能力。
+  采用Hibernate的J2EE项目都有一个痛病，针对复杂业务SQL，hibernate能力不足，SQL不好优化和也无法分离。 这个时候大家就想到集成mybatis，但是一个项目既用hibernate又用mybatis，显得很重事务也不好控制。大家常规的做法是采用springjdbc来实现原生SQL编写，但是也同样存在问题，SQL无法分离也没有逻辑标签能力。
   所以为了解决这个痛病，Jeecg针对springjdbc+freemarker做了封装，出了这么一个轻量级持久层，可以让Hiberate拥有mybatis一样SQL灵活能力，同时支持事务统一、SQL标签能力。
 
 
@@ -25,6 +25,13 @@ MiniDao 是一款轻量级JAVA持久层框架，基于 SpringJdbc + freemarker �
 * 性能优于Mybatis
 * SQL标签采用[Freemarker的基本语法](http://blog.csdn.net/zhangdaiscott/article/details/77505453)
 
+
+技术交流
+-----------------------------------
+* 作 者：  张代浩
+* 论 坛： [www.jeecg.org](http://www.jeecg.org)
+* 邮 箱：  jeecg@sina.com
+* QQ交流群：① 325978980
 
 
 ### 接口定义[EmployeeDao.java]  
@@ -109,10 +116,3 @@ MiniDao 是一款轻量级JAVA持久层框架，基于 SpringJdbc + freemarker �
 	}
     }
 
-
-技术交流
------------------------------------
-* 作 者：  张代浩
-* 论 坛： [www.jeecg.org](http://www.jeecg.org)
-* 邮 箱：  jeecg@sina.com
-* QQ交流群：325978980、143858350
