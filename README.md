@@ -30,6 +30,7 @@ MiniDao 是一款轻量级JAVA持久层框架，基于 SpringJdbc + freemarker �
 技术交流
 -----------------------------------
 * 作 者：  张代浩
+* 文 档： [http://minidao.mydoc.io](http://minidao.mydoc.io)
 * 论 坛： [www.jeecg.org](http://www.jeecg.org)
 * 邮 箱：  jeecg@sina.com
 * QQ交流群：① 325978980
