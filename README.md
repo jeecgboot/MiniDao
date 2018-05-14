@@ -23,6 +23,7 @@ MiniDao 是一款轻量级JAVA持久层框架，基于 SpringJdbc + freemarker �
 * 支持与hibernate轻量级无缝集成
 * 支持自动事务处理和手动事务处理
 * 性能优于Mybatis
+* 比Mybatis更简单易用
 * SQL标签采用[Freemarker的基本语法](http://blog.csdn.net/zhangdaiscott/article/details/77505453)
 
 
