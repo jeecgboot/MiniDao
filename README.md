@@ -29,6 +29,50 @@ MiniDao 是一款轻量级JAVA持久层框架，基于 SpringJdbc + freemarker �
 * SQL标签采用[Freemarker的基本语法](http://blog.csdn.net/zhangdaiscott/article/details/77505453)
 
 
+如何集成minidao?
+-----------------------------------
+### 第一步：引入minidao依赖
+    <dependency>
+		<groupId>org.jeecgframework</groupId>
+		<artifactId>minidao-pe</artifactId>
+		<version>1.6.4</version>
+	</dependency>
+### 第二步： spring配置文件， 注册MiniDao动态代理类
+    <!-- MiniDao动态代理类 -->
+	<bean id="miniDaoHandler" class="org.jeecgframework.minidao.factory.MiniDaoBeanScannerConfigurer">
+		<!-- 是使用什么字母做关键字Map的关键字 默认值origin 即和sql保持一致,lower小写(推荐),upper 大写 -->
+		<property name="keyType" value="lower"></property>
+		<!-- 格式化sql -->
+		<property name="formatSql" value="false"></property>
+		<!-- 输出sql -->
+		<property name="showSql" value="false"></property>
+		<!-- 数据库类型 -->
+		<property name="dbType" value="mysql"></property>
+		<!-- dao扫描路径,配置符合spring方式 -->
+		<property name="basePackage" value="examples.dao.*"></property>
+		<!-- 使用的注解,默认是Minidao,推荐 Repository-->
+		<property name="annotation" value="org.springframework.stereotype.Repository"></property>
+		<!-- Minidao拦截器配置 	-->
+		<property name="emptyInterceptor" ref="minidaoInterceptor"></property>
+	</bean>
+### 第三步：  spring配置文件，注册minidao需要使用的工具类
+		<!-- JDBC配置 -->
+		<bean id="jdbcTemplate" class="org.springframework.jdbc.core.JdbcTemplate">
+			<property name="dataSource">
+				<ref bean="dataSource" />
+			</property>
+		</bean>
+
+		<!-- JDBC 占位符配置 -->
+		<bean id="namedParameterJdbcTemplate"
+			class="org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate">
+			<constructor-arg ref="dataSource" />
+		</bean>
+		
+		
+		
+		
+
 技术交流
 -----------------------------------
 * 作 者：  张代浩
@@ -37,7 +81,11 @@ MiniDao 是一款轻量级JAVA持久层框架，基于 SpringJdbc + freemarker �
 * QQ交流群：① 325978980
 
 
-### 接口定义[EmployeeDao.java]  
+	
+	
+代码体验
+-----------------------------------
+### 1.接口定义[EmployeeDao.java]  
     @MiniDao
     public interface EmployeeDao {
 	
@@ -64,7 +112,7 @@ MiniDao 是一款轻量级JAVA持久层框架，基于 SpringJdbc + freemarker �
     
     
     
-### SQL文件[EmployeeDao_getAllEmployees.sql]
+### 2.SQL文件[EmployeeDao_getAllEmployees.sql]
     SELECT * FROM employee where 1=1 
     <#if employee.age ?exists>
 	and age = :employee.age
@@ -81,26 +129,8 @@ MiniDao 是一款轻量级JAVA持久层框架，基于 SpringJdbc + freemarker �
 ![github](http://www.jeecg.org/data/attachment/forum/201308/18/224051ey14ehqe000iegja.jpg "minidao")
 
 	
-### MiniDao在spring中配置
-    <!-- MiniDao动态代理类 -->
-	<bean id="miniDaoHandler" class="org.jeecgframework.minidao.factory.MiniDaoBeanScannerConfigurer">
-		<!-- 是使用什么字母做关键字Map的关键字 默认值origin 即和sql保持一致,lower小写(推荐),upper 大写 -->
-		<property name="keyType" value="lower"></property>
-		<!-- 格式化sql -->
-		<property name="formatSql" value="false"></property>
-		<!-- 输出sql -->
-		<property name="showSql" value="false"></property>
-		<!-- 数据库类型 -->
-		<property name="dbType" value="mysql"></property>
-		<!-- dao地址,配置符合spring方式 -->
-		<property name="basePackage" value="examples.dao.*"></property>
-		<!-- 使用的注解,默认是Minidao,推荐 Repository-->
-		<property name="annotation" value="org.springframework.stereotype.Repository"></property>
-		<!-- Minidao拦截器配置 	-->
-		<property name="emptyInterceptor" ref="minidaoInterceptor"></property>
-	</bean>
 
-### 测试代码
+### 3. 测试代码
     public class Client {
     public static void main(String args[]) {
 		BeanFactory factory = new ClassPathXmlApplicationContext("applicationContext.xml");
