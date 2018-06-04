@@ -86,7 +86,7 @@ MiniDao 是一款轻量级JAVA持久层框架，基于 SpringJdbc + freemarker �
 	
 代码体验
 -----------------------------------
-#### 1.接口定义[EmployeeDao.java]  
+#### 1. 接口定义[EmployeeDao.java]  
     @MiniDao
     public interface EmployeeDao {
 	
@@ -112,7 +112,7 @@ MiniDao 是一款轻量级JAVA持久层框架，基于 SpringJdbc + freemarker �
    }
     
     
-#### 2.SQL文件[EmployeeDao_getAllEmployees.sql]
+#### 2. SQL文件[EmployeeDao_getAllEmployees.sql]
     SELECT * FROM employee where 1=1 
     <#if employee.age ?exists>
 	and age = :employee.age
@@ -124,7 +124,7 @@ MiniDao 是一款轻量级JAVA持久层框架，基于 SpringJdbc + freemarker �
 	and empno = :employee.empno
     </#if>
 
-#### 3.接口和SQL文件对应目录
+#### 3. 接口和SQL文件对应目录
 
 ![github](http://www.jeecg.org/data/attachment/forum/201308/18/224051ey14ehqe000iegja.jpg "minidao")
 
