@@ -31,13 +31,13 @@ MiniDao 是一款轻量级JAVA持久层框架，基于 SpringJdbc + freemarker �
 
 如何集成minidao?
 -----------------------------------
-### 第一步：引入minidao依赖
+#### 第一步：引入minidao依赖
     <dependency>
 		<groupId>org.jeecgframework</groupId>
 		<artifactId>minidao-pe</artifactId>
 		<version>1.6.4</version>
 	</dependency>
-### 第二步： spring配置文件， 注册MiniDao动态代理类
+#### 第二步： spring配置文件， 注册MiniDao动态代理类
     <!-- MiniDao动态代理类 -->
 	<bean id="miniDaoHandler" class="org.jeecgframework.minidao.factory.MiniDaoBeanScannerConfigurer">
 		<!-- 是使用什么字母做关键字Map的关键字 默认值origin 即和sql保持一致,lower小写(推荐),upper 大写 -->
@@ -55,7 +55,7 @@ MiniDao 是一款轻量级JAVA持久层框架，基于 SpringJdbc + freemarker �
 		<!-- Minidao拦截器配置 	-->
 		<property name="emptyInterceptor" ref="minidaoInterceptor"></property>
 	</bean>
-### 第三步：  spring配置文件，注册minidao需要使用的工具类
+#### 第三步：  spring配置文件，注册minidao需要使用的工具类
 		<!-- JDBC配置 -->
 		<bean id="jdbcTemplate" class="org.springframework.jdbc.core.JdbcTemplate">
 			<property name="dataSource">
@@ -69,6 +69,7 @@ MiniDao 是一款轻量级JAVA持久层框架，基于 SpringJdbc + freemarker �
 			<constructor-arg ref="dataSource" />
 		</bean>
 		
+		通过以上配置minidao集成OK，可以写第一个mini SQL了。		
 		
 		
 		
