@@ -31,7 +31,7 @@
 		<property name="minIdle" value="0" />
 		<!-- 获取连接最大等待时间 -->
 		<property name="maxWait" value="60000" />
-		<property name="validationQuery" value="${validationQuery.sqlserver}" />
+		<property name="validationQuery" value="SELECT 1" />
 		<property name="testOnBorrow" value="false" />
 		<property name="testOnReturn" value="false" />
 		<property name="testWhileIdle" value="true" />
@@ -97,4 +97,10 @@
 	</bean>
 	
 
+	<!--事务管理器类-->
+    <bean id="txManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+        <property name="dataSource" ref="dataSource"/>
+    </bean>
+     <!--注解方式实现事务-->
+    <tx:annotation-driven transaction-manager="txManager"/>
 </beans>

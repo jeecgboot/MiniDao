@@ -129,4 +129,10 @@ public class Employee implements Serializable {
 	public void setUpdateDate(Date updateDate) {
 	    this.updateDate=updateDate;
 	}
+	
+	@Override
+	public String toString() {
+		return "Employee [id=" + id + ", empno=" + empno + ", name=" + name + ", age=" + age + ", birthday=" + birthday + ", salary=" + salary + ", createBy=" + createBy + ", createDate=" + createDate + ", updateBy=" + updateBy + ", updateDate=" + updateDate + "]";
+	}
+	
 }

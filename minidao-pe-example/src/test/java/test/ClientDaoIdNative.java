@@ -10,7 +10,8 @@ import examples.dao.EmployeeDao;
 import examples.entity.Employee;
 
 /**
- * 测试自增ID（注意：测试该方法需要把数据库ID类型改成int，自增）
+ * 测试ID主键规则： Int 自增
+ * （注意：测试该方法需要把数据库ID类型改成int，自增）
  */
 public class ClientDaoIdNative {
 	public static void main(String args[]) {

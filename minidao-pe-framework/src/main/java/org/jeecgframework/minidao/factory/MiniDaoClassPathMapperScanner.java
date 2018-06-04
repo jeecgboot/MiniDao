@@ -4,9 +4,9 @@ import java.lang.annotation.Annotation;
 import java.util.Arrays;
 import java.util.Set;
 
-import org.apache.log4j.Logger;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.jeecgframework.minidao.annotation.MiniDao;
-import org.jeecgframework.minidao.aop.MiniDaoHandler;
 import org.springframework.beans.factory.annotation.AnnotatedBeanDefinition;
 import org.springframework.beans.factory.config.BeanDefinitionHolder;
 import org.springframework.beans.factory.support.BeanDefinitionRegistry;
@@ -22,7 +22,7 @@ import org.springframework.core.type.filter.AnnotationTypeFilter;
  */
 public class MiniDaoClassPathMapperScanner extends ClassPathBeanDefinitionScanner {
 
-    private static final Logger logger = Logger.getLogger(MiniDaoHandler.class);
+	private static final Log logger = LogFactory.getLog(MiniDaoClassPathMapperScanner.class); 
 
     public MiniDaoClassPathMapperScanner(BeanDefinitionRegistry registry, Class<? extends Annotation> annotation) {
         super(registry, false);

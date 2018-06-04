@@ -91,12 +91,7 @@ public class EmployeeDaoJunit extends SpringTxTestCase {
 		MiniDaoPage<Employee> list = employeeDao.getAll(employee, 0, 10);
 
 		for (Employee mp : list.getResults()) {
-			logger.info(mp.getId());
-			logger.info(mp.getName());
-			logger.info(mp.getEmpno());
-			logger.info(mp.getAge());
-			logger.info(mp.getBirthday());
-			logger.info(mp.getSalary());
+			logger.info(mp.toString());
 		}
 
 	}

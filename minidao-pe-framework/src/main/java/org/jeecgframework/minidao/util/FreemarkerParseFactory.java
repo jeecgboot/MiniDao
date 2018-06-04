@@ -5,9 +5,11 @@ import java.util.Map;
 import java.util.regex.Pattern;
 
 import org.apache.commons.lang.StringUtils;
-import org.apache.log4j.Logger;
-import org.jeecgframework.minidao.aop.MiniDaoHandler;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
 import freemarker.cache.StringTemplateLoader;
+import freemarker.core.ParseException;
 import freemarker.template.Configuration;
 import freemarker.template.Template;
 
@@ -20,7 +22,7 @@ import freemarker.template.Template;
  */
 public class FreemarkerParseFactory {
 
-	private static final Logger logger = Logger.getLogger(MiniDaoHandler.class);
+	private static final Log logger = LogFactory.getLog(FreemarkerParseFactory.class); 
 
     private static final String ENCODE = "utf-8";
     /**
@@ -44,18 +46,28 @@ public class FreemarkerParseFactory {
         _tplConfig.setNumberFormat("0.#####################");
         _sqlConfig.setTemplateLoader(stringTemplateLoader);
         _sqlConfig.setNumberFormat("0.#####################");
+        //classic_compatible设置，解决报空指针错误
+        _sqlConfig.setClassicCompatible(true);
     }
 
     /**
      * 判断模板是否存在
+     * @throws Exception 
      */
-    public static boolean isExistTemplate(String tplName) {
+    public static boolean isExistTemplate(String tplName) throws Exception {
         try {
             Template mytpl = _tplConfig.getTemplate(tplName, "UTF-8");
             if (mytpl == null) {
                 return false;
             }
         } catch (Exception e) {
+        	//update-begin--Author:scott  Date:20180320 for：解决问题 - 错误提示sql文件不存在，实际问题是sql freemarker用法错误-----
+        	if(e instanceof ParseException){
+        		 logger.error(e.getMessage(), e.fillInStackTrace());
+        		throw new Exception(e);
+        	}
+        	logger.debug("----isExistTemplate----"+e.toString());
+        	//update-end--Author:scott  Date:20180320 for：解决问题 - 错误提示sql文件不存在，实际问题是sql freemarker用法错误------
             return false;
         }
         return true;

@@ -1,6 +1,6 @@
 MiniDao (轻量级JAVA持久层，Hibernate完美助手)
 =======
-当前最新版本： 1.6.2 （发布日期：20180309）
+当前最新版本： 1.6.4 （发布日期：20180604）
 
 ### MiniDao产生的初衷？
 
@@ -34,7 +34,6 @@ MiniDao 是一款轻量级JAVA持久层框架，基于 SpringJdbc + freemarker �
 * 作 者：  张代浩
 * 文 档： [http://minidao.mydoc.io](http://minidao.mydoc.io)
 * 论 坛： [www.jeecg.org](http://www.jeecg.org)
-* 邮 箱：  jeecg@sina.com
 * QQ交流群：① 325978980
 
 

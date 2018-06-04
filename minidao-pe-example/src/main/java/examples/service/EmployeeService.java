@@ -1,11 +1,15 @@
 package examples.service;
 
+import java.math.BigDecimal;
+import java.util.Date;
 import java.util.List;
+import java.util.UUID;
 
 import org.jeecgframework.minidao.pojo.MiniDaoPage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import examples.dao.EmployeeDao;
 import examples.entity.Employee;
@@ -47,5 +51,35 @@ public class EmployeeService {
 		List<Employee> results = employeeDao.getPageList(employee, startRow, pageSize);
 		employeePageList.setResults(results);
 		return employeePageList;
+	}
+	
+	/**
+	 * 事务一致性测试
+	 */
+	@Transactional
+	public void testTransactionalInsert(){
+		Employee employee = new Employee();
+		String id = UUID.randomUUID().toString().replaceAll("-", "").toUpperCase();
+		employee.setId(id);
+		employee.setEmpno("C0000001");
+		employee.setSalary(new BigDecimal(5000));
+		employee.setBirthday(new Date());
+		employee.setName("测试事务一致性");
+		employee.setAge(30);
+		//调用minidao方法
+		employeeDao.insert(employee);
+		
+		
+		int i = Integer.parseInt("ss");
+		Employee employee2 = new Employee();
+		String id2 = UUID.randomUUID().toString().replaceAll("-", "").toUpperCase();
+		employee2.setId(id2);
+		employee2.setEmpno("C0000001");
+		employee2.setSalary(new BigDecimal(5000));
+		employee2.setBirthday(new Date());
+		employee2.setName("测试事务一致性");
+		employee2.setAge(25);
+		//调用minidao方法
+		employeeDao.insert(employee2);
 	}
 }

@@ -8,7 +8,8 @@ import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import java.text.MessageFormat;
 
-import org.apache.log4j.Logger;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
 /**
  * 
@@ -34,7 +35,7 @@ public class MiniDaoUtil {
 	public static final String ORACLE_SQL = "select * from (select row_.*,rownum rownum_ from ({0}) row_ where rownum <= {1}) where rownum_>{2}"; // oracle
 	public static final String SQLSERVER_SQL = "select * from ( select row_number() over(order by tempColumn) tempRowNumber, * from (select top {1} tempColumn = 0, {0}) t ) tt where tempRowNumber > {2}"; // sqlserver
 
-	private static final Logger logger = Logger.getLogger(MiniDaoUtil.class);
+	private static final Log logger = LogFactory.getLog(MiniDaoUtil.class); 
 
 	/**
 	 * 按照数据库类型，封装SQL

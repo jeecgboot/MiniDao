@@ -3,26 +3,18 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.jeecgframework</groupId>
 	<artifactId>minidao-pe-example</artifactId>
-	<version>1.6.2</version>
+	<version>1.6.4</version>
 	<packaging>jar</packaging>
 	
 	
 	<properties>
-		<minidao.version>1.6.2</minidao.version>
-		<aspectj.version>1.6.9</aspectj.version>
+		<minidao.version>1.6.4</minidao.version>
 		<org.junit.version>4.9.0</org.junit.version>
-		<commons-collections.version>3.2.1</commons-collections.version>
-		<commons-lang.version>2.6</commons-lang.version>
-		<commons-logging.version>1.0.4</commons-logging.version>
-		<commons-beanutils.version>1.7.0</commons-beanutils.version>
-		<dom4j.version>1.6.1</dom4j.version>
-		<druid.version>0.2.9</druid.version>
-		<freemarker.version>2.3.19</freemarker.version>
-		<log4j.version>1.2.16</log4j.version>
+		<org.springframework.version>4.0.9.RELEASE</org.springframework.version>
 		<!-- mysql -->
 		<mysql.version>5.0.5</mysql.version>
-		<ognl.version>2.6.11</ognl.version>
-		<org.springframework.version>4.0.9.RELEASE</org.springframework.version>
+		<druid.version>1.1.9</druid.version>
+		<log4j.version>1.2.16</log4j.version>
 	</properties>
 
 	<repositories>
@@ -53,134 +45,32 @@
 	</repositories>
 
 	<dependencies>
-		<!-- spring start -->
-		<dependency>
-			<groupId>org.springframework</groupId>
-			<artifactId>spring-aop</artifactId>
-			<version>${org.springframework.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>org.springframework</groupId>
-			<artifactId>spring-context</artifactId>
-			<version>${org.springframework.version}</version>
-			<exclusions>
-				<exclusion>
-					<groupId>commons-logging</groupId>
-					<artifactId>commons-logging</artifactId>
-				</exclusion>
-			</exclusions>
-		</dependency>
-		<dependency>
-			<groupId>org.springframework</groupId>
-			<artifactId>spring-core</artifactId>
-			<version>${org.springframework.version}</version>
-			<exclusions>
-				<exclusion>
-					<groupId>commons-logging</groupId>
-					<artifactId>commons-logging</artifactId>
-				</exclusion>
-			</exclusions>
-		</dependency>
-		<dependency>
-			<groupId>org.springframework</groupId>
-			<artifactId>spring-beans</artifactId>
-			<version>${org.springframework.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>org.springframework</groupId>
-			<artifactId>spring-context-support</artifactId>
-			<version>${org.springframework.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>org.springframework</groupId>
-			<artifactId>spring-jdbc</artifactId>
-			<version>${org.springframework.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>org.springframework</groupId>
-			<artifactId>spring-tx</artifactId>
-			<version>${org.springframework.version}</version>
-		</dependency>
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-test</artifactId>
 			<version>${org.springframework.version}</version>
-		</dependency>
-		<!-- spring end -->
-		
-		<dependency>
-			<groupId>mysql</groupId>
-			<artifactId>mysql-connector-java</artifactId>
-			<version>${mysql.version}</version>
-			<scope>runtime</scope>
-		</dependency>
-		<!-- log4j -->
-		<dependency>
-			<groupId>log4j</groupId>
-			<artifactId>log4j</artifactId>
-			<version>${log4j.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>org.jeecgframework</groupId>
-			<artifactId>freemarker-null</artifactId>
-			<version>${freemarker.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>com.alibaba</groupId>
-			<artifactId>druid</artifactId>
-			<version>${druid.version}</version>
-			<scope>runtime</scope>
-		</dependency>
-		<dependency>
-			<groupId>dom4j</groupId>
-			<artifactId>dom4j</artifactId>
-			<version>${dom4j.version}</version>
-			<exclusions>
-				<exclusion>
-					<groupId>xml-apis</groupId>
-					<artifactId>xml-apis</artifactId>
-				</exclusion>
-			</exclusions>
-		</dependency>
-		<dependency>
-			<groupId>commons-logging</groupId>
-			<artifactId>commons-logging</artifactId>
-			<version>${commons-logging.version}</version>
-		</dependency>
-		<!-- commons-lang -->
-		<dependency>
-			<groupId>commons-lang</groupId>
-			<artifactId>commons-lang</artifactId>
-			<version>${commons-lang.version}</version>
-		</dependency>
-		<!-- commons-collections -->
-		<dependency>
-			<groupId>commons-collections</groupId>
-			<artifactId>commons-collections</artifactId>
-			<version>${commons-collections.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.junit</groupId>
 			<artifactId>com.springsource.org.junit</artifactId>
 			<version>${org.junit.version}</version>
 		</dependency>
+		<!-- mysql -->
 		<dependency>
-			<groupId>org.aspectj</groupId>
-			<artifactId>aspectjrt</artifactId>
-			<version>${aspectj.version}</version>
+			<groupId>mysql</groupId>
+			<artifactId>mysql-connector-java</artifactId>
+			<version>${mysql.version}</version>
 		</dependency>
 		<dependency>
-			<groupId>org.aspectj</groupId>
-			<artifactId>aspectjweaver</artifactId>
-			<version>${aspectj.version}</version>
-			<scope>runtime</scope>
+			<groupId>com.alibaba</groupId>
+			<artifactId>druid</artifactId>
+			<version>${druid.version}</version>
 		</dependency>
 		<dependency>
-			<groupId>opensymphony</groupId>
-			<artifactId>ognl</artifactId>
-			<version>${ognl.version}</version>
+			<groupId>log4j</groupId>
+			<artifactId>log4j</artifactId>
+			<version>${log4j.version}</version>
 		</dependency>
-		
 		<!-- minidao-pe -->
 		<dependency>
 			<groupId>org.jeecgframework</groupId>
@@ -224,28 +114,12 @@
 		</plugins>
 		<resources>
 			<resource>
-				<directory>src/main/java</directory>
-				<includes>
-					<include>**/*.sql</include>
-				</includes>
-				<filtering>false</filtering>
-			</resource>
-			<resource>
 				<directory>src/main/resources</directory>
+				<excludes>
+					<exclude>*.sql</exclude>
+				</excludes>
 			</resource>
 		</resources>
-		<testResources>
-			<testResource>
-				<directory>src/test/java</directory>
-				<includes>
-					<include>**/*.sql</include>
-				</includes>
-				<filtering>false</filtering>
-			</testResource>
-			<testResource>
-				<directory>src/test/resources</directory>
-			</testResource>
-		</testResources>
 	</build>
 
 </project>

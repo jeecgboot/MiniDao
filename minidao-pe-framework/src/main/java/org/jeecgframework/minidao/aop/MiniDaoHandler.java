@@ -16,7 +16,8 @@ import ognl.Ognl;
 import ognl.OgnlException;
 
 import org.apache.commons.lang.StringUtils;
-import org.apache.log4j.Logger;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.jeecgframework.minidao.annotation.Arguments;
 import org.jeecgframework.minidao.annotation.IdAutoGenerator;
 import org.jeecgframework.minidao.annotation.ResultType;
@@ -53,7 +54,7 @@ import org.springframework.jdbc.support.KeyHolder;
 @SuppressWarnings("rawtypes")
 public class MiniDaoHandler implements InvocationHandler {
 
-	private static final Logger logger = Logger.getLogger(MiniDaoHandler.class);
+	private static final Log logger = LogFactory.getLog(MiniDaoHandler.class);  
 
 	@Autowired
 	private JdbcTemplate jdbcTemplate;
@@ -550,8 +551,9 @@ public class MiniDaoHandler implements InvocationHandler {
 	 * @param templateSql
 	 * @param sqlParamsMap
 	 * @return 可执行SQL
+	 * @throws Exception 
 	 */
-	private String parseSqlTemplate(Method method, String templateSql, Map<String, Object> sqlParamsMap) {
+	private String parseSqlTemplate(Method method, String templateSql, Map<String, Object> sqlParamsMap) throws Exception {
 		// step.1.根据命名规范[接口名_方法名.sql]，获取SQL模板文件的路径
 		String executeSql = null;
 
