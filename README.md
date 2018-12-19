@@ -31,52 +31,16 @@ MiniDao 是一款轻量级JAVA持久层框架，基于 SpringJdbc + freemarker �
 
 如何集成minidao?
 -----------------------------------
-#### 第一步：引入minidao依赖
-    <dependency>
-		<groupId>org.jeecgframework</groupId>
-		<artifactId>minidao-pe</artifactId>
-		<version>1.6.4</version>
-	</dependency>
-#### 第二步： spring配置文件， 注册MiniDao动态代理类
-    <!-- MiniDao动态代理类 -->
-	<bean id="miniDaoHandler" class="org.jeecgframework.minidao.factory.MiniDaoBeanScannerConfigurer">
-		<!-- 是使用什么字母做关键字Map的关键字 默认值origin 即和sql保持一致,lower小写(推荐),upper 大写 -->
-		<property name="keyType" value="lower"></property>
-		<!-- 格式化sql -->
-		<property name="formatSql" value="false"></property>
-		<!-- 输出sql -->
-		<property name="showSql" value="false"></property>
-		<!-- 数据库类型 -->
-		<property name="dbType" value="mysql"></property>
-		<!-- dao扫描路径,配置符合spring方式 -->
-		<property name="basePackage" value="examples.dao.*"></property>
-		<!-- 使用的注解,默认是Minidao,推荐 Repository-->
-		<property name="annotation" value="org.springframework.stereotype.Repository"></property>
-		<!-- Minidao拦截器配置 	-->
-		<property name="emptyInterceptor" ref="minidaoInterceptor"></property>
-	</bean>
-#### 第三步：  spring配置文件，注册minidao需要使用的工具类
-		<!-- JDBC配置 -->
-		<bean id="jdbcTemplate" class="org.springframework.jdbc.core.JdbcTemplate">
-			<property name="dataSource">
-				<ref bean="dataSource" />
-			</property>
-		</bean>
+#### 方式一：springmvc与minidao依赖
+	[http://minidao.mydoc.io/?t=293634](http://minidao.mydoc.io/?t=293634)
 
-		<!-- JDBC 占位符配置 -->
-		<bean id="namedParameterJdbcTemplate"
-			class="org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate">
-			<constructor-arg ref="dataSource" />
-		</bean>
-		
-		通过以上配置minidao集成OK，可以写第一个mini SQL了。		
-		
-		
+#### 方式二： spring配置文件， 注册MiniDao动态代理类
+	
+	[http://minidao.mydoc.io/?t=336070](http://minidao.mydoc.io/?t=336070)
 		
 
 技术交流
 -----------------------------------
-* 作 者：  张代浩
 * 文 档： [http://minidao.mydoc.io](http://minidao.mydoc.io)
 * 论 坛： [www.jeecg.org](http://www.jeecg.org)
 * QQ交流群：① 325978980
