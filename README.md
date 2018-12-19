@@ -29,12 +29,12 @@ MiniDao 是一款轻量级JAVA持久层框架，基于 SpringJdbc + freemarker �
 * SQL标签采用[Freemarker的基本语法](http://blog.csdn.net/zhangdaiscott/article/details/77505453)
 
 
-如何集成minidao?
+如何快速集成minidao?
 -----------------------------------
-#### 方式一：springmvc与minidao依赖
+#### 方式一：springmvc与minidao集成
 [http://minidao.mydoc.io/?t=293634](http://minidao.mydoc.io/?t=293634)
 
-#### 方式二： spring配置文件， 注册MiniDao动态代理类
+#### 方式二：springboot2与minidao集成
 [http://minidao.mydoc.io/?t=336070](http://minidao.mydoc.io/?t=336070)
 		
 
@@ -42,7 +42,7 @@ MiniDao 是一款轻量级JAVA持久层框架，基于 SpringJdbc + freemarker �
 -----------------------------------
 * 文 档： [http://minidao.mydoc.io](http://minidao.mydoc.io)
 * 论 坛： [www.jeecg.org](http://www.jeecg.org)
-* QQ交流群：① 325978980
+* QQ交流群： 325978980
 
 
 	
