@@ -32,15 +32,15 @@ MiniDao 是一款轻量级JAVA持久层框架，基于 SpringJdbc + freemarker �
 如何快速集成minidao?
 -----------------------------------
 #### 方式一：springmvc与minidao集成
-[http://minidao.mydoc.io/?t=293634](http://minidao.mydoc.io/?t=293634)
+[https://minidao.mydoc.io/?t=293634](https://minidao.mydoc.io/?t=293634)
 
 #### 方式二：springboot2与minidao集成
-[http://minidao.mydoc.io/?t=336070](http://minidao.mydoc.io/?t=336070)
+[https://minidao.mydoc.io/?t=336070](https://minidao.mydoc.io/?t=336070)
 		
 
 技术交流
 -----------------------------------
-* 文 档： [http://minidao.mydoc.io](http://minidao.mydoc.io)
+* 文 档： [https://minidao.mydoc.io](https://minidao.mydoc.io)
 * 论 坛： [www.jeecg.org](http://www.jeecg.org)
 * QQ交流群： 325978980
 
