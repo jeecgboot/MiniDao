@@ -12,7 +12,7 @@
 		<org.junit.version>4.9.0</org.junit.version>
 		<org.springframework.version>4.0.9.RELEASE</org.springframework.version>
 		<!-- mysql -->
-		<mysql.version>5.0.5</mysql.version>
+		<mysql.version>8.0.16</mysql.version>
 		<druid.version>1.1.9</druid.version>
 		<log4j.version>1.2.16</log4j.version>
 	</properties>
