@@ -7,6 +7,7 @@ MiniDao
 ### MiniDao 简介及特征
 
 An powerful enhanced toolkit of SpringJdbc for simplify development
+
 MiniDao 是一款轻量级JAVA持久层框架，基于 SpringJdbc + freemarker 实现，具备Mybatis一样的SQL分离和逻辑标签能力。Minidao产生的初衷是为了解决Hibernate项目，在复杂SQL具备Mybatis一样的灵活能力，同时支持事务同步。 
 
 
