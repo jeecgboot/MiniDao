@@ -1,4 +1,4 @@
-MiniDao (An powerful enhanced toolkit of SpringJdbc for simplify development)
+MiniDao 
 =======
 当前最新版本： 1.7.1 （发布日期：20210328）
 
@@ -6,6 +6,7 @@ MiniDao (An powerful enhanced toolkit of SpringJdbc for simplify development)
 
 ### MiniDao 简介及特征
 
+An powerful enhanced toolkit of SpringJdbc for simplify development
 MiniDao 是一款轻量级JAVA持久层框架，基于 SpringJdbc + freemarker 实现，具备Mybatis一样的SQL分离和逻辑标签能力。Minidao产生的初衷是为了解决Hibernate项目，在复杂SQL具备Mybatis一样的灵活能力，同时支持事务同步。 
 
 
@@ -43,6 +44,15 @@ MiniDao 是一款轻量级JAVA持久层框架，基于 SpringJdbc + freemarker �
 * QQ交流群： 362385436
 
 
+项目介绍
+-----------------------------------
+
+| 项目名   |      中文名      |  备注 |
+|----------|:-------------:|------:|
+| minidao-pe-framework| 架构核心包|     |
+| minidao-code-generate |  代码快速生成 |  |
+| minidao-pe-spring-boot-starter | spring-boot2 starter  |  |
+| minidao-pe-example | 示例代码 |     |	 
 	
 	
 代码体验
