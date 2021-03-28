@@ -4,12 +4,12 @@
 	
 	<groupId>org.jeecgframework</groupId>
 	<artifactId>minidao-pe</artifactId>
-	<version>1.6.4</version>
+	<version>1.7.1</version>
 	<packaging>jar</packaging>
 	
 	<name>minidao-pe</name>
-	<description>Minidao 轻量级J2EE持久层(Hibernate完美助手，解决SQL分离之忧).</description>
-	<url>http://www.jeecg.org</url>
+	<description>An powerful enhanced toolkit of SpringJdbc for simplify development</description>
+	<url>http://www.jeecg.com</url>
 	
 	<licenses>
         <license>
@@ -20,7 +20,7 @@
     <developers>
         <developer>
             <name>jeecg</name>
-            <email>jeecg@sina.com</email>
+            <email>jeecgos@163.com</email>
         </developer>
     </developers>
     <scm>
@@ -30,44 +30,16 @@
 	</scm>
     
 	<properties>
-		<aspectj.version>1.6.9</aspectj.version>
+		<aspectj.version>1.9.6</aspectj.version>
 		<commons-collections.version>3.2.1</commons-collections.version>
-		<commons-lang.version>2.6</commons-lang.version>
-		<freemarker.version>2.3.19</freemarker.version>
+		<freemarker.version>2.3.30</freemarker.version>
 		<ognl.version>2.6.11</ognl.version>
-		<commons-logging.version>1.1.3</commons-logging.version>
-		<org.springframework.version>4.0.9.RELEASE</org.springframework.version>
+		<commons-logging.version>1.2</commons-logging.version>
+		<commons-lang3.version>3.12.0</commons-lang3.version>
+		<org.springframework.version>5.2.10.RELEASE</org.springframework.version>
 		<javassist.version>3.15.0-GA</javassist.version>
 	</properties>
 
-
-	<repositories>
-		<repository>
-            <id>aliyun</id>
-            <name>aliyun Repository</name>
-            <url>http://maven.aliyun.com/nexus/content/groups/public</url>
-            <snapshots>
-				<enabled>false</enabled>
-			</snapshots>
-        </repository>
-		<repository>
-            <id>jeecg</id>
-            <name>jeecg Repository</name>
-            <url>http://maven.jeecg.org/nexus/content/repositories/jeecg</url>
-            <snapshots>
-				<enabled>false</enabled>
-			</snapshots>
-        </repository>
-        <repository>
-            <id>jeecg-snapshots</id>
-            <name>jeecg-snapshots Repository</name>
-            <url>http://maven.jeecg.org/nexus/content/repositories/snapshots</url>
-            <snapshots>
-				<enabled>true</enabled>
-			</snapshots>
-        </repository>
-	</repositories>
-	
 	<dependencies>
 		<!-- spring start -->
 		<dependency>
@@ -81,36 +53,31 @@
 			<version>${org.springframework.version}</version>
 		</dependency>
 		<!-- spring end -->
-		
-		<!-- log -->
+
+		<!-- freemarker -->
+		<dependency>
+			<groupId>org.freemarker</groupId>
+			<artifactId>freemarker</artifactId>
+			<version>${freemarker.version}</version>
+		</dependency>
+
+		<!-- commons tools -->
 		<dependency>
 			<groupId>commons-logging</groupId>
 			<artifactId>commons-logging</artifactId>
 			<version>${commons-logging.version}</version>
 		</dependency>
-		<!-- freemarker-null 
 		<dependency>
-			<groupId>org.jeecgframework</groupId>
-			<artifactId>freemarker-null</artifactId>
-			<version>${freemarker.version}</version>
-		</dependency>-->
-		<dependency>
-		    <groupId>org.freemarker</groupId>
-		    <artifactId>freemarker</artifactId>
-		    <version>${freemarker.version}</version>
+			<groupId>org.apache.commons</groupId>
+			<artifactId>commons-lang3</artifactId>
+			<version>${commons-lang3.version}</version>
 		</dependency>
-		<!-- commons-lang -->
-		<dependency>
-			<groupId>commons-lang</groupId>
-			<artifactId>commons-lang</artifactId>
-			<version>${commons-lang.version}</version>
-		</dependency>
-		<!-- commons-collections -->
 		<dependency>
 			<groupId>commons-collections</groupId>
 			<artifactId>commons-collections</artifactId>
 			<version>${commons-collections.version}</version>
 		</dependency>
+
 		<dependency>
 			<groupId>org.aspectj</groupId>
 			<artifactId>aspectjrt</artifactId>
@@ -139,6 +106,14 @@
             <id>release</id>
             <build>
                 <plugins>
+					<plugin>
+						<artifactId>maven-compiler-plugin</artifactId>
+						<configuration>
+							<source>1.8</source>
+							<target>1.8</target>
+							<encoding>UTF-8</encoding>
+						</configuration>
+					</plugin>
                 	 <!-- Source --> 
                     <plugin>
                         <groupId>org.apache.maven.plugins</groupId>
@@ -165,33 +140,39 @@
                                     <goal>jar</goal>
                                 </goals>
                                 <configuration>  
-					                <encoding>UTF-8</encoding>  
+					                <encoding>UTF-8</encoding>
+									<additionalparam>-Xdoclint:none</additionalparam>
 					              </configuration>  
                             </execution>
                         </executions>
                     </plugin>
-                     <!-- GPG --> 
-                    <plugin>
-                        <groupId>org.apache.maven.plugins</groupId>
-                        <artifactId>maven-gpg-plugin</artifactId>
-                        <version>1.5</version>
-                        <executions>
-                            <execution>
-                                <phase>verify</phase>
-                                <goals>
-                                    <goal>sign</goal>
-                                </goals>
-                            </execution>
-                        </executions>
-                    </plugin>
-                     <plugin>
-				        <artifactId>maven-compiler-plugin</artifactId>
-				        <configuration>
-				          <source>1.7</source>
-				          <target>1.7</target>
-				          <encoding>UTF-8</encoding>
-				        </configuration>
-				      </plugin>
+					<!--Maven GPG插件用于使用以下配置对组件进行签名-->
+					<plugin>
+						<groupId>org.apache.maven.plugins</groupId>
+						<artifactId>maven-gpg-plugin</artifactId>
+						<version>1.6</version>
+						<executions>
+							<execution>
+								<id>sign-artifacts</id>
+								<phase>verify</phase>
+								<goals>
+									<goal>sign</goal>
+								</goals>
+							</execution>
+						</executions>
+					</plugin>
+					<!--Nexus Staging Maven插件是将组件部署到OSS并将其发布到Central Repository的推荐方法-->
+					<plugin>
+						<groupId>org.sonatype.plugins</groupId>
+						<artifactId>nexus-staging-maven-plugin</artifactId>
+						<version>1.6.7</version>
+						<extensions>true</extensions>
+						<configuration>
+							<serverId>oss</serverId>
+							<nexusUrl>https://oss.sonatype.org/</nexusUrl>
+							<autoReleaseAfterClose>true</autoReleaseAfterClose>
+						</configuration>
+					</plugin>
                 </plugins>
             </build>
             <distributionManagement>
@@ -212,8 +193,8 @@
 			<plugin>
 				<artifactId>maven-compiler-plugin</artifactId>
 				<configuration>
-					<source>1.7</source>
-					<target>1.7</target>
+					<source>1.8</source>
+					<target>1.8</target>
 					<encoding>UTF-8</encoding>
 				</configuration>
 			</plugin>

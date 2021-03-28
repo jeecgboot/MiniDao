@@ -3,14 +3,14 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.jeecgframework</groupId>
 	<artifactId>minidao-pe-example</artifactId>
-	<version>1.6.4</version>
+	<version>1.7.1</version>
 	<packaging>jar</packaging>
 	
 	
 	<properties>
-		<minidao.version>1.6.4</minidao.version>
+		<minidao.version>1.7.1</minidao.version>
 		<org.junit.version>4.9.0</org.junit.version>
-		<org.springframework.version>4.0.9.RELEASE</org.springframework.version>
+		<org.springframework.version>5.2.10.RELEASE</org.springframework.version>
 		<!-- mysql -->
 		<mysql.version>5.0.5</mysql.version>
 		<druid.version>1.1.9</druid.version>
@@ -32,14 +32,6 @@
             <url>http://maven.jeecg.org/nexus/content/repositories/jeecg</url>
             <snapshots>
 				<enabled>false</enabled>
-			</snapshots>
-        </repository>
-        <repository>
-            <id>jeecg-snapshots</id>
-            <name>jeecg-snapshots Repository</name>
-            <url>http://maven.jeecg.org/nexus/content/repositories/snapshots</url>
-            <snapshots>
-				<enabled>true</enabled>
 			</snapshots>
         </repository>
 	</repositories>
@@ -78,7 +70,7 @@
 			<version>${minidao.version}</version>
 		</dependency>
 	</dependencies>
-	<url>http://www.jeecg.org</url>
+	<url>http://www.jeecg.com</url>
 	<build>
 		<plugins>
 			<plugin>

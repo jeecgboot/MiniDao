@@ -9,8 +9,8 @@ import java.lang.annotation.Target;
 /**
  * @description:MiniDao-SQL标签(记录用户自定义SQL模板)
  * @author 张代浩
- * @mail zhangdaiscott@163.com
- * @category www.jeecg.org
+ * @mail jeecgos@163.com
+ * @category www.jeecg.com
  * @date 20130817
  * @version V1.0
  */

@@ -2,6 +2,7 @@ package test;
 
 import java.math.BigDecimal;
 import java.util.Date;
+import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
@@ -94,6 +95,16 @@ public class EmployeeDaoJunit extends SpringTxTestCase {
 			logger.info(mp.toString());
 		}
 
+	}
+	
+	@Test
+	public void getEmployeeByIds() {
+		logger.info("--------getEmployeeByIds-------表达式-------------------------------------------------------");
+		List<Map<String,Object>> ls = employeeDao.getEmployeeByIds(new String[]{"45266BB08B9B45B3B9BA8F9488495623","603D9DB409FE407183156BAA8FA779CD"});
+		for(Map<String,Object> p:ls){
+			logger.info(p.get("name"));
+			logger.info(p.get("salary"));
+		}
 	}
 
 }

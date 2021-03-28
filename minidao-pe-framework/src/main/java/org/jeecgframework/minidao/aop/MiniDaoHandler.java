@@ -4,18 +4,14 @@ import java.lang.reflect.Field;
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
 import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import ognl.Ognl;
 import ognl.OgnlException;
 
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.jeecgframework.minidao.annotation.Arguments;
@@ -27,9 +23,7 @@ import org.jeecgframework.minidao.def.MiniDaoConstants;
 import org.jeecgframework.minidao.pojo.MiniDaoPage;
 import org.jeecgframework.minidao.spring.rowMapper.MiniColumnMapRowMapper;
 import org.jeecgframework.minidao.spring.rowMapper.MiniColumnOriginalMapRowMapper;
-import org.jeecgframework.minidao.util.FreemarkerParseFactory;
-import org.jeecgframework.minidao.util.MiniDaoUtil;
-import org.jeecgframework.minidao.util.ParameterNameUtils;
+import org.jeecgframework.minidao.util.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
@@ -46,8 +40,8 @@ import org.springframework.jdbc.support.KeyHolder;
  * @Title:MiniDaoHandler
  * @description:MiniDAO 拦截器
  * @author 张代浩
- * @mail zhangdaiscott@163.com
- * @category www.jeecg.org
+ * @mail jeecgos@163.com
+ * @category www.jeecg.com
  * @date 20130817
  * @version V1.0
  */
@@ -283,6 +277,14 @@ public class MiniDaoHandler implements InvocationHandler {
 		//update-begin---author:scott----date:20180104------for:支持ID自增策略生成并返回主键ID--------
 			boolean idGenerators_flag = method.isAnnotationPresent(IdAutoGenerator.class);
 			if (idGenerators_flag) {
+                IdAutoGenerator idAutoGenerator = method.getAnnotation(IdAutoGenerator.class);
+                switch(idAutoGenerator.type()){
+                    case UUID:
+                        paramMap.put("id",SnowflakeIdWorker.generateId());
+                    case ID_WORKER:
+                        paramMap.put("id", UUID.randomUUID().toString().replaceAll("-", ""));
+                }
+
 				KeyHolder keyHolder = new GeneratedKeyHolder();
 				if (paramMap != null) {
 					MapSqlParameterSource paramSource = new MapSqlParameterSource(paramMap); 
@@ -331,14 +333,26 @@ public class MiniDaoHandler implements InvocationHandler {
 					}
 					executeSql = MiniDaoUtil.createPageSql(dbType, executeSql, page, rows);
 				}
-
+				
+				//update-begin---author:scott----date:20180705------for: 返回List<基础类型>，返回值为空问题处理--------
 				RowMapper resultType = getListRealType(method);
+				Class resultClassType = getListClassType(method);
 				List list;
 				if (paramMap != null) {
-					list = namedParameterJdbcTemplate.query(executeSql, paramMap, resultType);
+					if (resultClassType.isAssignableFrom(String.class) || resultClassType.isAssignableFrom(Date.class) || resultClassType.isAssignableFrom(Integer.class) || resultClassType.isAssignableFrom(Double.class) || resultClassType.isAssignableFrom(Long.class)) {
+						list = namedParameterJdbcTemplate.queryForList(executeSql, paramMap, resultClassType);
+					} else {
+						list = namedParameterJdbcTemplate.query(executeSql, paramMap, resultType);
+					}
 				} else {
-					list = jdbcTemplate.query(executeSql, resultType);
+					if (resultClassType.isAssignableFrom(String.class) || resultClassType.isAssignableFrom(Date.class) || resultClassType.isAssignableFrom(Integer.class) || resultClassType.isAssignableFrom(Double.class) || resultClassType.isAssignableFrom(Long.class)) {
+						list = jdbcTemplate.queryForList(executeSql, resultClassType);
+					} else {
+						list = jdbcTemplate.query(executeSql, resultType);
+					}
 				}
+				//update-end---author:scott----date:20180705------for: 返回List<基础类型>，返回值为空问题处理--------
+				
 				if (returnType.isAssignableFrom(MiniDaoPage.class)) {
 					pageSetting.setResults(list);
 					return pageSetting;
@@ -412,6 +426,36 @@ public class MiniDaoHandler implements InvocationHandler {
 			}
 		}
 		return getColumnMapRowMapper();
+	}
+	
+	/**
+	 * 获取真正的类型
+	 * 
+	 * @param genericReturnType
+	 * @param rowMapper
+	 * @return
+	 */
+	private Class getListClassType(Method method) {
+		ResultType resultType = method.getAnnotation(ResultType.class);
+		if (resultType != null) {
+			if (resultType.value().equals(Map.class)) {
+				return Map.class;
+			}
+			return resultType.value();
+		}
+		String genericReturnType = method.getGenericReturnType().toString();
+		String realType = genericReturnType.replace("java.util.List", "").replace("<", "").replace(">", "");
+		if (realType.contains("java.util.Map")) {
+			return Map.class;
+		} else if (realType.length() > 0) {
+			try {
+				return Class.forName(realType);
+			} catch (ClassNotFoundException e) {
+				logger.error(e.getMessage(), e.fillInStackTrace());
+				throw new RuntimeException("minidao get class error ,class name is:" + realType);
+			}
+		}
+		return null;
 	}
 
 	/**

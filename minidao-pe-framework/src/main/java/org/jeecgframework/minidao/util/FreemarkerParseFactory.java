@@ -4,7 +4,7 @@ import java.io.StringWriter;
 import java.util.Map;
 import java.util.regex.Pattern;
 
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
@@ -25,6 +25,11 @@ public class FreemarkerParseFactory {
 	private static final Log logger = LogFactory.getLog(FreemarkerParseFactory.class); 
 
     private static final String ENCODE = "utf-8";
+    /**
+     * 参数格式化工具类
+     */
+    private static final String MINI_DAO_FORMAT = "DaoFormat";
+    
     /**
      * 文件缓存
      */
@@ -85,8 +90,14 @@ public class FreemarkerParseFactory {
         	logger.debug(" minidao sql templdate : "+tplName);
             StringWriter swriter = new StringWriter();
             Template mytpl = _tplConfig.getTemplate(tplName, ENCODE);
+            if(paras.containsKey(MINI_DAO_FORMAT)){
+            	throw new RuntimeException("DaoFormat 是 minidao 保留关键字，不允许使用 ，请更改参数定义！");
+            }
+            paras.put(MINI_DAO_FORMAT,new SimpleFormat());
             mytpl.process(paras, swriter);
-            return getSqlText(swriter.toString());
+            String sql = getSqlText(swriter.toString());
+            paras.remove(MINI_DAO_FORMAT);
+            return sql;
         } catch (Exception e) {
             logger.error(e.getMessage(), e.fillInStackTrace());
             logger.error("发送一次的模板key:{ " + tplName + " }");
@@ -111,8 +122,14 @@ public class FreemarkerParseFactory {
                 stringTemplateLoader.putTemplate("sql_" + tplContent.hashCode(), tplContent);
             }
             Template mytpl = _sqlConfig.getTemplate("sql_" + tplContent.hashCode(), ENCODE);
+            if(paras.containsKey(MINI_DAO_FORMAT)){
+            	throw new RuntimeException("DaoFormat 是 minidao 保留关键字，不允许使用 ，请更改参数定义！");
+            }
+            paras.put(MINI_DAO_FORMAT,new SimpleFormat());
             mytpl.process(paras, swriter);
-            return getSqlText(swriter.toString());
+            String sql = getSqlText(swriter.toString());
+            paras.remove(MINI_DAO_FORMAT);
+            return sql;
         } catch (Exception e) {
             logger.error(e.getMessage(), e.fillInStackTrace());
             logger.error("发送一次的模板key:{ "+ tplContent +" }");

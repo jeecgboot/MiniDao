@@ -3,6 +3,8 @@
  */
 package org.jeecgframework.minidao.annotation;
 
+import org.jeecgframework.minidao.annotation.type.IdType;
+
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Inherited;
 import java.lang.annotation.Retention;
@@ -23,5 +25,6 @@ public @interface IdAutoGenerator {
 	 * native：ID自增
 	 * @return
 	 */
-	String generator() default "native";
+	IdType type() default IdType.AUTO;
+
 }

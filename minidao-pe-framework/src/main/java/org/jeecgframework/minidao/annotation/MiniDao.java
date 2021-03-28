@@ -11,8 +11,8 @@ import org.springframework.stereotype.Component;
 /**
  * @description:MiniDao
  * @author 张代浩
- * @mail zhangdaiscott@163.com
- * @category www.jeecg.org
+ * @mail jeecgos@163.com
+ * @category www.jeecg.com
  * @date 20130817
  * @version V1.0
  */

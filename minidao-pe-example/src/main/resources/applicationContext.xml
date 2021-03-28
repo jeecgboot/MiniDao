@@ -80,15 +80,15 @@
 	<bean name="minidaoInterceptor" class="examples.interceptor.MinidaoInterceptor"></bean>
 	<!-- MiniDao扫描类 -->
 	<bean class="org.jeecgframework.minidao.factory.MiniDaoBeanScannerConfigurer">
-		<!-- 是使用什么字母做关键字Map的关键字 默认值origin 即和sql保持一致,lower小写(推荐),upper 大写 -->
+		<!-- 返回结果Map的关键字key大小写设置， 默认值origin 即和sql保持一致,lower小写(推荐),upper 大写 -->
 		<property name="keyType" value="lower"></property>
 		<!-- 格式化sql -->
-		<property name="formatSql" value="true"></property>
+		<property name="formatSql" value="false"></property>
 		<!-- 输出sql -->
 		<property name="showSql" value="true"></property>
 		<!-- 数据库类型 mysql/postgresql/oracle/sqlserver -->
 		<property name="dbType" value="mysql"></property>
-		<!-- dao地址,配置符合spring方式 -->
+		<!-- dao 扫描路径,配置符合spring方式 -->
 		<property name="basePackage" value="examples.dao"></property>
 		<!-- 使用的注解,默认是Minidao,推荐 Repository -->
 		<property name="annotation" value="org.springframework.stereotype.Repository"></property>
