@@ -31,7 +31,7 @@
     
 	<properties>
 		<aspectj.version>1.9.6</aspectj.version>
-		<commons-collections.version>3.2.1</commons-collections.version>
+		<commons-collections.version>3.2.2</commons-collections.version>
 		<freemarker.version>2.3.30</freemarker.version>
 		<ognl.version>2.6.11</ognl.version>
 		<commons-logging.version>1.2</commons-logging.version>
