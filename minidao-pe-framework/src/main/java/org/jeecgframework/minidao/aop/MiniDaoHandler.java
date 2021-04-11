@@ -8,6 +8,8 @@ import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import net.sf.jsqlparser.JSQLParserException;
+import netscape.javascript.JSException;
 import ognl.Ognl;
 import ognl.OgnlException;
 
@@ -226,7 +228,8 @@ public class MiniDaoHandler implements InvocationHandler {
 	}
 
 	/**
-	 * 去除子查询中的order by (特别是SQLServer)
+	 * 为了兼容SQLServer
+	 * 去除子查询中的order by (也为了提升分页性能)
 	 * @param sql
 	 * @return
 	 */
@@ -234,8 +237,15 @@ public class MiniDaoHandler implements InvocationHandler {
 		if(sql==null){
 			return null;
 		}
-		sql = sql.replaceAll("(?i)order by [\\s|\\S]+$", "");  
-	   return sql;  
+		//sql = sql.replaceAll("(?i)order by [\\s|\\S]+$", "");
+		try {
+			logger.debug(" --- 去除子查询中的order by (为了兼容SQLServer) --- orig sql="+sql);
+			sql = SqlServerParse.class.newInstance().removeOrderBy(sql);
+			logger.debug(" --- 去除子查询中的order by (为了兼容SQLServer) --- upda sql="+sql);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return sql;
 	}  
 	 
 	public String getDbType() {
@@ -277,13 +287,14 @@ public class MiniDaoHandler implements InvocationHandler {
 		//update-begin---author:scott----date:20180104------for:支持ID自增策略生成并返回主键ID--------
 			boolean idGenerators_flag = method.isAnnotationPresent(IdAutoGenerator.class);
 			if (idGenerators_flag) {
-                IdAutoGenerator idAutoGenerator = method.getAnnotation(IdAutoGenerator.class);
-                switch(idAutoGenerator.type()){
-                    case UUID:
-                        paramMap.put("id",SnowflakeIdWorker.generateId());
-                    case ID_WORKER:
-                        paramMap.put("id", UUID.randomUUID().toString().replaceAll("-", ""));
-                }
+			    //TODO 代码未写完，待实现
+//				IdAutoGenerator idAutoGenerator = method.getAnnotation(IdAutoGenerator.class);
+//				switch (idAutoGenerator.type()) {
+//					case UUID:
+//						paramMap.put("id", SnowflakeIdWorker.generateId());
+//					case ID_WORKER:
+//						paramMap.put("id", UUID.randomUUID().toString().replaceAll("-", ""));
+//				}
 
 				KeyHolder keyHolder = new GeneratedKeyHolder();
 				if (paramMap != null) {

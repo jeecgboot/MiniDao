@@ -4,7 +4,7 @@
 	
 	<groupId>org.jeecgframework</groupId>
 	<artifactId>minidao-pe</artifactId>
-	<version>1.7.1</version>
+	<version>1.7.3</version>
 	<packaging>jar</packaging>
 	
 	<name>minidao-pe</name>
@@ -99,9 +99,56 @@
 			<artifactId>javassist</artifactId>
 			<version>${javassist.version}</version>
 		</dependency>
+		<!-- jsqlparser -->
+		<dependency>
+			<groupId>com.github.jsqlparser</groupId>
+			<artifactId>jsqlparser</artifactId>
+			<version>3.2</version>
+		</dependency>
 	</dependencies>
 
 	<profiles>
+		<profile>
+			<id>temp</id>
+			<build>
+				<plugins>
+					<plugin>
+						<artifactId>maven-compiler-plugin</artifactId>
+						<configuration>
+							<source>1.8</source>
+							<target>1.8</target>
+							<encoding>UTF-8</encoding>
+						</configuration>
+					</plugin>
+					<!-- Source -->
+					<plugin>
+						<groupId>org.apache.maven.plugins</groupId>
+						<artifactId>maven-source-plugin</artifactId>
+						<version>2.2.1</version>
+						<executions>
+							<execution>
+								<phase>package</phase>
+								<goals>
+									<goal>jar-no-fork</goal>
+								</goals>
+							</execution>
+						</executions>
+					</plugin>
+				</plugins>
+			</build>
+			<distributionManagement>
+				<repository>
+					<id>jeecg</id>
+					<name>jeecg Repository</name>
+					<url>http://maven.jeecg.com:8090/nexus/content/repositories/jeecg</url>
+				</repository>
+				<snapshotRepository>
+					<id>jeecg-snapshots</id>
+					<name>jeecg Snapshot Repository</name>
+					<url>http://maven.jeecg.com:8090/nexus/content/repositories/snapshots/</url>
+				</snapshotRepository>
+			</distributionManagement>
+		</profile>
         <profile>
             <id>release</id>
             <build>
