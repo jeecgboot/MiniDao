@@ -20,7 +20,7 @@ public class MinidaoAutoConfiguration{
 	
 	@Bean
     @ConditionalOnMissingBean(MiniDaoBeanScannerConfigurer.class)
-    public MiniDaoBeanScannerConfigurer miniDaoBeanScannerConfigurer(Environment env, ApplicationContext applicationContext) {
+    public static MiniDaoBeanScannerConfigurer miniDaoBeanScannerConfigurer(Environment env, ApplicationContext applicationContext) {
 		logger.info(" ******************* init miniDao config [ begin ] *********************** ");
     	
 		logger.info(" ------ minidao.base-package ------- "+env.getProperty("minidao.base-package","*"));

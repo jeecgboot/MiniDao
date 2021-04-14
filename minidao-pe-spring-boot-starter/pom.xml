@@ -3,7 +3,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.jeecgframework</groupId>
 	<artifactId>minidao-spring-boot-starter</artifactId>
-	<version>1.7.3</version>
+	<version>1.7.4</version>
 	<parent>
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
@@ -30,7 +30,7 @@
 
 	<properties>
 		<!-- minidao -->
-		<minidao.version>1.7.3</minidao.version>
+		<minidao.version>1.7.4</minidao.version>
 		<druid.version>1.1.9</druid.version>
 	</properties>
 	
@@ -81,6 +81,47 @@
 
 
 	<profiles>
+		<profile>
+			<id>temp</id>
+			<build>
+				<plugins>
+					<plugin>
+						<artifactId>maven-compiler-plugin</artifactId>
+						<configuration>
+							<source>1.8</source>
+							<target>1.8</target>
+							<encoding>UTF-8</encoding>
+						</configuration>
+					</plugin>
+					<!-- Source -->
+					<plugin>
+						<groupId>org.apache.maven.plugins</groupId>
+						<artifactId>maven-source-plugin</artifactId>
+						<version>2.2.1</version>
+						<executions>
+							<execution>
+								<phase>package</phase>
+								<goals>
+									<goal>jar-no-fork</goal>
+								</goals>
+							</execution>
+						</executions>
+					</plugin>
+				</plugins>
+			</build>
+			<distributionManagement>
+				<repository>
+					<id>jeecg</id>
+					<name>jeecg Repository</name>
+					<url>http://maven.jeecg.com:8090/nexus/content/repositories/jeecg</url>
+				</repository>
+				<snapshotRepository>
+					<id>jeecg-snapshots</id>
+					<name>jeecg Snapshot Repository</name>
+					<url>http://maven.jeecg.com:8090/nexus/content/repositories/snapshots/</url>
+				</snapshotRepository>
+			</distributionManagement>
+		</profile>
 		<profile>
 			<id>release</id>
 			<build>
