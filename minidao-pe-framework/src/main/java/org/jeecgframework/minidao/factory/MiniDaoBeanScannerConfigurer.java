@@ -1,7 +1,5 @@
 package org.jeecgframework.minidao.factory;
 
-import java.lang.annotation.Annotation;
-
 import org.jeecgframework.minidao.annotation.MiniDao;
 import org.jeecgframework.minidao.aop.MiniDaoHandler;
 import org.jeecgframework.minidao.aspect.EmptyInterceptor;
@@ -10,8 +8,11 @@ import org.springframework.beans.factory.config.ConfigurableListableBeanFactory;
 import org.springframework.beans.factory.support.BeanDefinitionRegistry;
 import org.springframework.beans.factory.support.BeanDefinitionRegistryPostProcessor;
 import org.springframework.beans.factory.support.GenericBeanDefinition;
+import org.springframework.context.ApplicationContext;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.util.StringUtils;
+
+import java.lang.annotation.Annotation;
 
 /**
  * 扫描配置文件
@@ -44,6 +45,7 @@ public class MiniDaoBeanScannerConfigurer implements BeanDefinitionRegistryPostP
 	 * 数据库类型
 	 */
 	private String dbType;
+	private ApplicationContext applicationContext;
 	/**
 	 * Minidao拦截器
 	 */
@@ -54,7 +56,7 @@ public class MiniDaoBeanScannerConfigurer implements BeanDefinitionRegistryPostP
 		/**
 		 * 注册代理类
 		 */
-		registerRequestProxyHandler(registry);
+		initRegisterRequestProxyHandler(registry);
 
 		MiniDaoClassPathMapperScanner scanner = new MiniDaoClassPathMapperScanner(registry, annotation);
 		/**
@@ -72,14 +74,23 @@ public class MiniDaoBeanScannerConfigurer implements BeanDefinitionRegistryPostP
 	 * 
 	 * @param registry
 	 */
-	private void registerRequestProxyHandler(BeanDefinitionRegistry registry) {
+	private void initRegisterRequestProxyHandler(BeanDefinitionRegistry registry) {
 		GenericBeanDefinition jdbcDaoProxyDefinition = new GenericBeanDefinition();
 		jdbcDaoProxyDefinition.setBeanClass(MiniDaoHandler.class);
 		jdbcDaoProxyDefinition.getPropertyValues().add("formatSql", formatSql);
 		jdbcDaoProxyDefinition.getPropertyValues().add("keyType", keyType);
 		jdbcDaoProxyDefinition.getPropertyValues().add("showSql", showSql);
-		jdbcDaoProxyDefinition.getPropertyValues().add("dbType", dbType);
-		jdbcDaoProxyDefinition.getPropertyValues().add("emptyInterceptor", emptyInterceptor);
+		//jdbcDaoProxyDefinition.getPropertyValues().add("dbType", dbType);
+		if(emptyInterceptor!=null){
+			jdbcDaoProxyDefinition.getPropertyValues().add("emptyInterceptor", emptyInterceptor);
+		}
+
+		//update-begin---author:scott----date:20210608------for:-其中jdbcTemplate、namedParameterJdbcTemplate注入是个null.注入失败.-------
+		if(applicationContext!=null){
+			jdbcDaoProxyDefinition.getPropertyValues().add("applicationContext", applicationContext);
+		}
+		//update-end---author:scott----date:20210608------for:其中jdbcTemplate、namedParameterJdbcTemplate注入是个null.注入失败.--------
+
 		registry.registerBeanDefinition("miniDaoHandler", jdbcDaoProxyDefinition);
 	}
 
@@ -107,12 +118,11 @@ public class MiniDaoBeanScannerConfigurer implements BeanDefinitionRegistryPostP
 		this.showSql = showSql;
 	}
 
-	public EmptyInterceptor getEmptyInterceptor() {
-		return emptyInterceptor;
+	public void setApplicationContext(ApplicationContext applicationContext) {
+		this.applicationContext = applicationContext;
 	}
 
 	public void setEmptyInterceptor(EmptyInterceptor emptyInterceptor) {
 		this.emptyInterceptor = emptyInterceptor;
 	}
-
 }

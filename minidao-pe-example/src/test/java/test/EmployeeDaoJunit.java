@@ -1,19 +1,18 @@
 package test;
 
+import examples.dao.EmployeeDao;
+import examples.entity.Employee;
+import org.jeecgframework.minidao.pojo.MiniDaoPage;
+import org.junit.Before;
+import org.junit.Test;
+import test.spring.SpringTxTestCase;
+
+import javax.annotation.Resource;
 import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
-
-import javax.annotation.Resource;
-import org.jeecgframework.minidao.pojo.MiniDaoPage;
-import org.junit.Before;
-import org.junit.Test;
-
-import test.spring.SpringTxTestCase;
-import examples.dao.EmployeeDao;
-import examples.entity.Employee;
 
 /**
  * 单元测试
@@ -39,8 +38,6 @@ public class EmployeeDaoJunit extends SpringTxTestCase {
 		logger.info("--------testInsert--------------------------------------------------------------");
 
 		Employee employee = new Employee();
-		String id = UUID.randomUUID().toString().replaceAll("-", "").toUpperCase();
-		employee.setId(id);
 		employee.setEmpno("200");
 		employee.setName("scott");
 		employee.setBirthday(new Date());

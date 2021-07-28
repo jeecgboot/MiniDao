@@ -24,7 +24,7 @@ public class ClientDaoIdNative {
 		employee.setBirthday(new Date());
 		employee.setAge(20);
 		employee.setSalary(new BigDecimal(88888));
-		int i = employeeDao.insertNative(employee);
-		System.out.println("主键："+i);
+		employeeDao.insertNative(employee);
+		System.out.println("对象值："+employee.toString());
 	}
 }

@@ -1,28 +1,28 @@
 package test;
 
-import java.math.BigDecimal;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
-
+import examples.dao.EmployeeDao;
+import examples.entity.Employee;
 import org.jeecgframework.minidao.pojo.MiniDaoPage;
 import org.springframework.beans.factory.BeanFactory;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
-import examples.dao.EmployeeDao;
-import examples.entity.Employee;
-import examples.service.EmployeeService;
 
 public class ClientDao {
 	public static void main(String args[]) {
 		BeanFactory factory = new ClassPathXmlApplicationContext("applicationContext.xml");
 		EmployeeDao employeeDao = (EmployeeDao) factory.getBean("employeeDao");
-		List<String> ls = employeeDao.getAllStr();
-		List<Date> lsdates = employeeDao.getAllDateStr();
-		List<Map<String, Object>> lsmap = employeeDao.getAll(null);
-		System.out.println(ls.toString());
-		System.out.println(lsdates.toString());
-		System.out.println(lsmap.toString());
+//		List<String> ls = employeeDao.getAllStr();
+//		List<Date> lsdates = employeeDao.getAllDateStr();
+//		List<Map<String, Object>> lsmap = employeeDao.getAll(null);
+//		System.out.println(ls.toString());
+//		System.out.println(lsdates.toString());
+//		System.out.println(lsmap.toString());
+
+
+		MiniDaoPage<Employee> pageList = employeeDao.getAll(new Employee(),1,10);
+		System.out.println(pageList.toString());
+		System.out.println(pageList.getTotal());
+		System.out.println(pageList.getPages());
+
 //		Employee employee = new Employee();
 //		String id = UUID.randomUUID().toString().replaceAll("-", "").toUpperCase();
 //		employee.setId(id);

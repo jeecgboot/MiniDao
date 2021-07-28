@@ -4,7 +4,7 @@
 	
 	<groupId>org.jeecgframework</groupId>
 	<artifactId>minidao-pe</artifactId>
-	<version>1.7.4</version>
+	<version>1.8.23</version>
 	<packaging>jar</packaging>
 	
 	<name>minidao-pe</name>
@@ -38,6 +38,7 @@
 		<commons-lang3.version>3.12.0</commons-lang3.version>
 		<org.springframework.version>5.2.10.RELEASE</org.springframework.version>
 		<javassist.version>3.15.0-GA</javassist.version>
+		<jsqlparser.version>3.2</jsqlparser.version>
 	</properties>
 
 	<dependencies>
@@ -103,7 +104,7 @@
 		<dependency>
 			<groupId>com.github.jsqlparser</groupId>
 			<artifactId>jsqlparser</artifactId>
-			<version>3.2</version>
+			<version>${jsqlparser.version}</version>
 		</dependency>
 	</dependencies>
 

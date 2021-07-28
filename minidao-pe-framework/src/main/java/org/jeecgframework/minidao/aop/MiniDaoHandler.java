@@ -7,6 +7,7 @@ import java.math.BigDecimal;
 import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
 import net.sf.jsqlparser.JSQLParserException;
 import netscape.javascript.JSException;
@@ -17,16 +18,22 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.jeecgframework.minidao.annotation.Arguments;
-import org.jeecgframework.minidao.annotation.IdAutoGenerator;
 import org.jeecgframework.minidao.annotation.ResultType;
 import org.jeecgframework.minidao.annotation.Sql;
+import org.jeecgframework.minidao.annotation.id.IdType;
+import org.jeecgframework.minidao.annotation.id.TableId;
 import org.jeecgframework.minidao.aspect.EmptyInterceptor;
 import org.jeecgframework.minidao.def.MiniDaoConstants;
+import org.jeecgframework.minidao.pagehelper.dialect.PageAutoDialect;
+import org.jeecgframework.minidao.pagehelper.parser.CountSqlParser;
 import org.jeecgframework.minidao.pojo.MiniDaoPage;
 import org.jeecgframework.minidao.spring.rowMapper.MiniColumnMapRowMapper;
 import org.jeecgframework.minidao.spring.rowMapper.MiniColumnOriginalMapRowMapper;
 import org.jeecgframework.minidao.util.*;
+import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.ColumnMapRowMapper;
@@ -36,11 +43,11 @@ import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
+import javax.sql.DataSource;
 
 /**
  * 
- * @Title:MiniDaoHandler
- * @description:MiniDAO 拦截器
+ * @Title: MiniDao动态代理类
  * @author 张代浩
  * @mail jeecgos@163.com
  * @category www.jeecg.com
@@ -49,15 +56,24 @@ import org.springframework.jdbc.support.KeyHolder;
  */
 @SuppressWarnings("rawtypes")
 public class MiniDaoHandler implements InvocationHandler {
-
-	private static final Log logger = LogFactory.getLog(MiniDaoHandler.class);  
+	private static final Log logger = LogFactory.getLog(MiniDaoHandler.class);
 
 	@Autowired
+	@Lazy
 	private JdbcTemplate jdbcTemplate;
-
 	@Autowired
+	@Lazy
 	private NamedParameterJdbcTemplate namedParameterJdbcTemplate;
+	/** minidao拦截器 */
+	@Autowired
+	@Lazy
+	private EmptyInterceptor emptyInterceptor;
 
+	private ApplicationContext applicationContext;
+	/**
+	 * 多数据源配置情况下，minidao默认的数据源名
+	 */
+	private String MUTL_DATASOURCES_MINIDAO_DF_DSNAME = "minidaoDataSource";
 	private String UPPER_KEY = "upper";
 
 	private String LOWER_KEY = "lower";
@@ -66,14 +82,14 @@ public class MiniDaoHandler implements InvocationHandler {
 	 */
 	private String keyType = "origin";
 	private boolean formatSql = false;
-
 	private boolean showSql = false;
 
-	private String dbType;
-	/**
-	 * minidao拦截器
-	 */
-	private EmptyInterceptor emptyInterceptor;
+	//自定获取方言
+	protected PageAutoDialect pageAutoDialect = new PageAutoDialect();
+	//处理SQL
+	protected CountSqlParser countSqlParser = new CountSqlParser();
+     //序列查询sql
+	public static final String SEQ_NEXTVAL_SQL = "SELECT %s.nextval FROM DUAL";
 
 	@Override
 	public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
@@ -98,9 +114,12 @@ public class MiniDaoHandler implements InvocationHandler {
 		// Step.4 组装SQL占位符参数
 		Map<String, Object> sqlMap = installPlaceholderSqlParam(executeSql, sqlParamsMap);
 
-		// Step.5 获取SQL执行返回值
+		//step.5  检查Dialect初始化
+		initCheckDialectExists();
+
+		// Step.6 获取SQL执行返回值
 		try {
-			returnObj = getReturnMinidaoResult(dbType, pageSetting, method, executeSql, sqlMap);
+			returnObj = getReturnMinidaoResult(pageSetting, method, executeSql, sqlMap, args);
 		} catch (Exception e) {
 			returnObj = null;
 			if(e instanceof EmptyResultDataAccessException){
@@ -111,7 +130,6 @@ public class MiniDaoHandler implements InvocationHandler {
 			}
 		}
 		if (showSql) {
-			//System.out.println("MiniDao-SQL:\n\n" + executeSql);
 			logger.info("MiniDao-SQL:\n\n" + executeSql);
 		}
 		return returnObj;
@@ -214,45 +232,55 @@ public class MiniDaoHandler implements InvocationHandler {
 		}
 	}
 
-	/**
-	 * 获取总数sql - 如果要支持其他数据库，修改这里就可以
-	 * 
-	 * @param sql
-	 * @return
-	 */
-	private String getCountSql(String sql) {
-		//update-begin---author:scott----date:20170803------for:分页count去掉排序，兼容SqlServer，同时提高效率--------
-		sql = removeOrderBy(sql);
-		//update-end---author:scott----date:20170803------for:分页count去掉排序，兼容SqlServer，同时提高效率--------
-		return "select count(0) from (" + sql + ") tmp_count";
-	}
-
-	/**
-	 * 为了兼容SQLServer
-	 * 去除子查询中的order by (也为了提升分页性能)
-	 * @param sql
-	 * @return
-	 */
-	public String removeOrderBy(String sql) {
-		if(sql==null){
-			return null;
-		}
-		//sql = sql.replaceAll("(?i)order by [\\s|\\S]+$", "");
-		try {
-			logger.debug(" --- 去除子查询中的order by (为了兼容SQLServer) --- orig sql="+sql);
-			sql = SqlServerParse.class.newInstance().removeOrderBy(sql);
-			logger.debug(" --- 去除子查询中的order by (为了兼容SQLServer) --- upda sql="+sql);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		return sql;
-	}  
-	 
-	public String getDbType() {
-		return dbType;
-	}
+//	/**
+//	 * 获取总数sql - 如果要支持其他数据库，修改这里就可以
+//	 *
+//	 * @param sql
+//	 * @return
+//	 */
+//	private String getCountSql(String sql) {
+//		//update-begin---author:scott----date:20170803------for:分页count去掉排序，兼容SqlServer，同时提高效率--------
+//		sql = removeOrderBy(sql);
+//		//update-end---author:scott----date:20170803------for:分页count去掉排序，兼容SqlServer，同时提高效率--------
+//		return "select count(0) from (" + sql + ") tmp_count";
+//	}
+//
+//	/**
+//	 * 为了兼容SQLServer
+//	 * 去除子查询中的order by (也为了提升分页性能)
+//	 * @param sql
+//	 * @return
+//	 */
+//	public String removeOrderBy(String sql) {
+//		if(sql==null){
+//			return null;
+//		}
+//		//sql = sql.replaceAll("(?i)order by [\\s|\\S]+$", "");
+//		try {
+//			logger.debug(" --- 去除子查询中的order by (为了兼容SQLServer) --- orig sql="+sql);
+//			sql = SqlServerParse.class.newInstance().removeOrderBy(sql);
+//			logger.debug(" --- 去除子查询中的order by (为了兼容SQLServer) --- upda sql="+sql);
+//		} catch (Exception e) {
+//			e.printStackTrace();
+//		}
+//		return sql;
+//	}
 
 	public JdbcTemplate getJdbcTemplate() {
+		if (jdbcTemplate == null) {
+			try {
+				namedParameterJdbcTemplate = applicationContext.getBean(NamedParameterJdbcTemplate.class);
+				jdbcTemplate = applicationContext.getBean(JdbcTemplate.class);
+			} catch (BeansException e) {
+				logger.warn(e.getMessage());
+				Map<String, DataSource> multDataSourceMap = applicationContext.getBeansOfType(DataSource.class);
+				if (multDataSourceMap != null) {
+					String keyOfTheFirst = multDataSourceMap.entrySet().stream().filter(d -> d.getKey().equals(MUTL_DATASOURCES_MINIDAO_DF_DSNAME)).findFirst().get().getKey();
+					namedParameterJdbcTemplate = new NamedParameterJdbcTemplate(multDataSourceMap.get(keyOfTheFirst));
+					jdbcTemplate = new JdbcTemplate(multDataSourceMap.get(keyOfTheFirst));
+				}
+			}
+		}
 		return jdbcTemplate;
 	}
 
@@ -275,35 +303,64 @@ public class MiniDaoHandler implements InvocationHandler {
 	 * @return 结果集
 	 */
 	@SuppressWarnings("unchecked")
-	private Object getReturnMinidaoResult(String dbType, MiniDaoPage pageSetting, Method method, String executeSql, Map<String, Object> paramMap) {
+	private Object getReturnMinidaoResult(MiniDaoPage pageSetting, Method method, String executeSql, Map<String, Object> paramMap, Object[] args) {
+		//update-begin---author:scott----date:20210608------for:springboot2.5/多数据配置问题, 导致jdbcTemplate、namedParameterJdbcTemplate注入是个null.注入失败.-------
+		if (namedParameterJdbcTemplate == null) {
+			try {
+				namedParameterJdbcTemplate = applicationContext.getBean(NamedParameterJdbcTemplate.class);
+				jdbcTemplate = applicationContext.getBean(JdbcTemplate.class);
+			} catch (BeansException e) {
+				logger.warn(e.getMessage());
+				Map<String, DataSource> multDataSourceMap = applicationContext.getBeansOfType(DataSource.class);
+				if (multDataSourceMap != null) {
+					String keyOfTheFirst = multDataSourceMap.entrySet().stream().filter(d -> d.getKey().equals(MUTL_DATASOURCES_MINIDAO_DF_DSNAME)).findFirst().get().getKey();
+					namedParameterJdbcTemplate = new NamedParameterJdbcTemplate(multDataSourceMap.get(keyOfTheFirst));
+					jdbcTemplate = new JdbcTemplate(multDataSourceMap.get(keyOfTheFirst));
+				}
+			}
+		}
+		if(emptyInterceptor==null){
+			try {
+				emptyInterceptor = applicationContext.getBean(EmptyInterceptor.class);
+			} catch (BeansException e) {
+				logger.warn(e.getMessage());
+			}
+		}
+		//update-end---author:scott----date:20210608------for:springboot2.5/多数据配置问题, 导致jdbcTemplate、namedParameterJdbcTemplate注入是个null.注入失败.-------
+
 		// step.4.调用SpringJdbc引擎，执行SQL返回值
 		// 5.1获取返回值类型[Map/Object/List<Object>/List<Map>/基本类型]
 		String methodName = method.getName();
-		//update-begin---author:scott----date:20160906------for:增加通过sql判断是否非查询操作--------
 		// 判斷是否非查詢方法
 		if (checkActiveKey(methodName) || checkActiveSql(executeSql)) {
-		//update-end---author:scott----date:20160906------for:增加通过sql判断是否非查询操作--------
-			
-		//update-begin---author:scott----date:20180104------for:支持ID自增策略生成并返回主键ID--------
-			boolean idGenerators_flag = method.isAnnotationPresent(IdAutoGenerator.class);
-			if (idGenerators_flag) {
-			    //TODO 代码未写完，待实现
-//				IdAutoGenerator idAutoGenerator = method.getAnnotation(IdAutoGenerator.class);
-//				switch (idAutoGenerator.type()) {
-//					case UUID:
-//						paramMap.put("id", SnowflakeIdWorker.generateId());
-//					case ID_WORKER:
-//						paramMap.put("id", UUID.randomUUID().toString().replaceAll("-", ""));
-//				}
+			//update-begin---author:scott----date:20210726------for:主键策略填值ID逻辑-------
+			//主键ID策略填值逻辑
+			List<Field> idFdList = null;
+			Object obj = null;
+			if(methodName.startsWith("insert") && args!=null){
+				obj = args[0];
+				Field[] fields = obj.getClass().getDeclaredFields();
+				idFdList = Arrays.asList(fields).stream().filter(a -> (a.getAnnotation(TableId.class) != null && a.getAnnotation(TableId.class).type() == IdType.AUTO)).collect(Collectors.toList());
+			}
+			//update-end---author:scott----date:20210726------for:主键策略填值ID逻辑--------
 
+			//update-begin---author:scott----date:20180104------for:支持ID自增策略生成并返回主键ID--------
+			if (idFdList!=null && idFdList.size()>0) {
 				KeyHolder keyHolder = new GeneratedKeyHolder();
 				if (paramMap != null) {
-					MapSqlParameterSource paramSource = new MapSqlParameterSource(paramMap); 
-					namedParameterJdbcTemplate.update(executeSql, paramSource,keyHolder,new String[]{"id"});
-					return keyHolder.getKey().intValue();
+					MapSqlParameterSource paramSource = new MapSqlParameterSource(paramMap);
+					namedParameterJdbcTemplate.update(executeSql, paramSource,keyHolder,new String[]{idFdList.get(0).getName()});
 				} else {
 					jdbcTemplate.update(executeSql,keyHolder);
-					return keyHolder.getKey().intValue();
+				}
+
+				//设置ID自增返回值
+				Map idVal = new HashMap();
+				idVal.put(idFdList.get(0).getName(),keyHolder.getKey().intValue());
+				try {
+					ReflectUtil.setFieldValue(idVal, obj);
+				} catch (Exception e) {
+					logger.error(e.getMessage());
 				}
 			}else{
 				if (paramMap != null) {
@@ -312,7 +369,6 @@ public class MiniDaoHandler implements InvocationHandler {
 					return jdbcTemplate.update(executeSql);
 				}
 			}
-		//update-end---author:scott----date:20180104------for:支持ID自增策略生成并返回主键ID--------
 		} else if (checkBatchKey(methodName)) {
 			return batchUpdate(executeSql);
 		} else {
@@ -337,12 +393,21 @@ public class MiniDaoHandler implements InvocationHandler {
 				if (page != 0 && rows != 0) {
 					if (returnType.isAssignableFrom(MiniDaoPage.class)) {
 						if (paramMap != null) {
-							pageSetting.setTotal(namedParameterJdbcTemplate.queryForObject(getCountSql(executeSql), paramMap, Integer.class));
+							String countsql = countSqlParser.getSmartCountSql(executeSql);
+							logger.info("page countsql===>"+countsql);
+							pageSetting.setTotal(namedParameterJdbcTemplate.queryForObject(countsql, paramMap, Integer.class));
 						} else {
-							pageSetting.setTotal(jdbcTemplate.queryForObject(getCountSql(executeSql), Integer.class));
+							String countsql = countSqlParser.getSmartCountSql(executeSql);
+							logger.info("page countsql===>"+countsql);
+							pageSetting.setTotal(jdbcTemplate.queryForObject(countsql, Integer.class));
 						}
 					}
-					executeSql = MiniDaoUtil.createPageSql(dbType, executeSql, page, rows);
+					//判断方言，获取分页sql
+					if (pageAutoDialect.getDelegate()!=null) {
+						 executeSql = pageAutoDialect.getDelegate().getPageSql(executeSql,pageSetting);
+						 logger.info("page executeSql===>"+executeSql);
+					}
+					//executeSql = MiniDaoUtil.createPageSql(dbType, executeSql, page, rows);
 				}
 				
 				//update-begin---author:scott----date:20180705------for: 返回List<基础类型>，返回值为空问题处理--------
@@ -409,7 +474,7 @@ public class MiniDaoHandler implements InvocationHandler {
 	 * 获取真正的类型
 	 * 
 	 * @param genericReturnType
-	 * @param rowMapper
+	 * @param RowMapper
 	 * @return
 	 */
 	private RowMapper<?> getListRealType(Method method) {
@@ -501,7 +566,18 @@ public class MiniDaoHandler implements InvocationHandler {
 			//reflect(obj);
 		}
 		//update-begin---author:scott----date:20160511------for:minidao拦截器逻辑--------
-		
+
+
+		//update-begin---author:scott----date:20210726------for:主键策略填值ID逻辑-------
+		//主键策略填值ID逻辑
+		String methodName = method.getName();
+		if(methodName.startsWith("insert") && args!=null){
+			Object obj = args[0];
+			Field[] fields = obj.getClass().getDeclaredFields();
+			this.initIdAnnotation(fields, obj);
+		}
+		//update-end---author:scott----date:20210726------for:主键策略填值ID逻辑--------
+
 		String templateSql = null;
 		// 如果方法参数大于1个的话，方法必须使用注释标签Arguments
 		boolean arguments_flag = method.isAnnotationPresent(Arguments.class);
@@ -570,6 +646,60 @@ public class MiniDaoHandler implements InvocationHandler {
 			logger.debug("@Sql------------------------------------------" + sql.value());
 		}
 		return templateSql;
+	}
+
+	/**
+	 * 字段注解初始化数值
+	 * @param fields
+	 * @param obj
+	 * @throws Exception
+	 */
+	private void initIdAnnotation(Field[] fields, Object obj) throws Exception {
+		Map<Object, Object> map = new HashMap<Object, Object>();
+		for (int j = 0; j < fields.length; j++) {
+			fields[j].setAccessible(true);
+			String fieldName = fields[j].getName();
+			//1.获取所有的注解
+			TableId annotation = fields[j].getAnnotation(TableId.class);
+			//2.根据枚举类判断类型
+			if (annotation != null) {
+				IdType type = annotation.type();
+				Object value = null;
+				for (IdType idType : IdType.values()) {
+					//3.设置字段数值
+					if (type == IdType.AUTO) {
+						//数据库自增,忽略该字段
+						break;
+					} else if (type == IdType.ID_WORKER) {
+						//分布式ID
+						value = SnowflakeIdWorker.generateId();
+						map.put(fieldName, value);
+						break;
+					} else if (type == IdType.UUID) {
+						//UUID
+						value = UUID.randomUUID().toString().replace("-", "");
+						map.put(fieldName, value);
+						break;
+					} else if (type == IdType.ID_SEQ) {
+						//1.获取查询序列名称
+						String seqName = annotation.seqName();
+						if (StringUtils.isBlank(seqName)) {
+							throw new Exception("ID_SEQ注解定义，参数必须配置序列名");
+						}
+						//2.执行查询序列sql，获取返回值
+						value = jdbcTemplate.queryForObject(String.format(SEQ_NEXTVAL_SQL, seqName), Object.class);
+						map.put(fieldName, value);
+						break;
+					}
+				}
+				//3.设置数值
+				try {
+					ReflectUtil.setFieldValue(map, obj);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+		}
 	}
 
 	/**
@@ -659,8 +789,13 @@ public class MiniDaoHandler implements InvocationHandler {
 	}
 	//update-begin--Author:luobaoli  Date:20150710 for：增加存储过程入参解析方法
 
-	public void setDbType(String dbType) {
-		this.dbType = dbType;
+
+	/**
+	 *  检查初始化Dialect
+	 */
+	private void initCheckDialectExists() {
+		DataSource dataSource = getJdbcTemplate().getDataSource();
+		pageAutoDialect.initDelegateDialect(dataSource);
 	}
 
 	public void setFormatSql(boolean formatSql) {
@@ -669,6 +804,10 @@ public class MiniDaoHandler implements InvocationHandler {
 
 	public void setJdbcTemplate(JdbcTemplate jdbcTemplate) {
 		this.jdbcTemplate = jdbcTemplate;
+	}
+
+	public void setNamedParameterJdbcTemplate(NamedParameterJdbcTemplate namedParameterJdbcTemplate) {
+		this.namedParameterJdbcTemplate = namedParameterJdbcTemplate;
 	}
 
 	public void setKeyType(String keyType) {
@@ -686,5 +825,7 @@ public class MiniDaoHandler implements InvocationHandler {
 	public void setEmptyInterceptor(EmptyInterceptor emptyInterceptor) {
 		this.emptyInterceptor = emptyInterceptor;
 	}
-
+	public void setApplicationContext(ApplicationContext applicationContext) {
+		this.applicationContext = applicationContext;
+	}
 }

@@ -15,6 +15,9 @@
  */
 package examples.entity;
 
+import org.jeecgframework.minidao.annotation.id.TableId;
+import org.jeecgframework.minidao.annotation.id.IdType;
+
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
@@ -30,7 +33,9 @@ public class Employee implements Serializable {
 
 	/**
 	 *主键
+	 *@TableId 支持uuid(默认)\AUTO(自增)\ID_WORKER(雪花ID)\ID_SEQ(序列seq,必须配置seqName)
 	 */
+	@TableId(type = IdType.UUID)
 	private String id;
 	/**
 	 *雇员编号

@@ -6,13 +6,14 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import org.jeecgframework.minidao.aspect.EmptyInterceptor;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
 /**
  * minidao拦截器实现【自动填充：创建人，创建时间，修改人，修改时间】
  */
 
-@Service
+@Component("minidaoInterceptor")
 public class MinidaoInterceptor implements EmptyInterceptor {
 
 	@Override

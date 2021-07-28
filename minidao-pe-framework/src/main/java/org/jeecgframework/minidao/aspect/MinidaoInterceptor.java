@@ -6,7 +6,8 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 /**
- * minidao拦截器实现
+ * @TODO
+ * minidao拦截器实现【这是个例子，每个项目需要自定义】
  */
 public class MinidaoInterceptor implements EmptyInterceptor {
 

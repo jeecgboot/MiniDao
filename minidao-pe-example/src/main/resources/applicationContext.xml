@@ -18,6 +18,7 @@
 	<!-- 配置数据源 -->
 	<bean name="dataSource_jeecg" class="com.alibaba.druid.pool.DruidDataSource"
 		init-method="init" destroy-method="close">
+	<!--	<property name="driverClassName" value="${jdbc.url.driver}" />-->
 		<property name="url" value="${jdbc.url.jeecg}" />
 		<property name="username" value="${jdbc.username.jeecg}" />
 		<property name="password" value="${jdbc.password.jeecg}" />

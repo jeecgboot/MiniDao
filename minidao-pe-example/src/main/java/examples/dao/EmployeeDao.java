@@ -5,11 +5,9 @@ import java.util.List;
 import java.util.Map;
 
 import org.jeecgframework.minidao.annotation.Arguments;
-import org.jeecgframework.minidao.annotation.IdAutoGenerator;
 import org.jeecgframework.minidao.annotation.Param;
 import org.jeecgframework.minidao.annotation.ResultType;
 import org.jeecgframework.minidao.annotation.Sql;
-import org.jeecgframework.minidao.annotation.type.IdType;
 import org.jeecgframework.minidao.pojo.MiniDaoPage;
 import org.springframework.stereotype.Repository;
 
@@ -68,8 +66,7 @@ public interface EmployeeDao {
 	 * 插入数据（ID采用自增策略，并返回自增ID）
 	 * @param employee
 	 */
-	@IdAutoGenerator(type=IdType.AUTO)
-	int insertNative(@Param("employee") Employee employee);
+	void insertNative(@Param("employee") Employee employee);
 
 	/**
 	 * 通用分页方法，支持（oracle、mysql、SqlServer、postgresql）
@@ -110,7 +107,6 @@ public interface EmployeeDao {
 	
 	/**
 	 * 返回List<Map>类型，全部数据
-	 * @param employee
 	 * @return
 	 */
 	@Sql("select name from employee")
@@ -118,7 +114,6 @@ public interface EmployeeDao {
 	
 	/**
 	 * 返回List<Map>类型，全部数据
-	 * @param employee
 	 * @return
 	 */
 	@Sql("select birthday from employee")
