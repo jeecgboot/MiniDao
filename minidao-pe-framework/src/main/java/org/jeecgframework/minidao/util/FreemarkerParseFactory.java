@@ -88,6 +88,10 @@ public class FreemarkerParseFactory {
     public static String parseTemplate(String tplName, Map<String, Object> paras) {
         try {
         	logger.debug(" minidao sql templdate : "+tplName);
+        	//jeecg : Minidao报错“Template java/lang/Object_toString.sql not found”的解决方案
+        	if("java/lang/Object_toString.sql".endsWith(tplName)){
+                return "";
+            }
             StringWriter swriter = new StringWriter();
             Template mytpl = _tplConfig.getTemplate(tplName, ENCODE);
             if(paras.containsKey(MINI_DAO_FORMAT)){

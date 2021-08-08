@@ -1,6 +1,6 @@
 MiniDao 
 =======
-当前最新版本： 1.8.23 （发布日期：20210728）
+当前最新版本： 1.8.3 （发布日期：20210809）
 
 
 
@@ -27,13 +27,29 @@ MiniDao 是一款轻量级JAVA持久层框架，基于 SpringJdbc + freemarker �
 * SQL标签采用[Freemarker的基本语法](http://blog.csdn.net/zhangdaiscott/article/details/77505453)
 
 
+
 如何快速集成minidao?
 -----------------------------------
 #### 方式一：springboot2与minidao集成
-[https://minidao.mydoc.io/?t=336070](https://minidao.mydoc.io/?t=336070)
+```
+<dependency>
+  <groupId>org.jeecgframework</groupId>
+  <artifactId>minidao-pe</artifactId>
+  <version>1.8.3</version>
+</dependency>
+```
+[文档](https://minidao.mydoc.io/?t=336070)
 
 #### 方式二：springmvc与minidao集成
-[https://minidao.mydoc.io/?t=293634](https://minidao.mydoc.io/?t=293634)
+```
+<dependency>
+  <groupId>org.jeecgframework</groupId>
+  <artifactId>minidao-spring-boot-starter</artifactId>
+  <version>1.8.3</version>
+</dependency>
+```
+
+[文档](https://minidao.mydoc.io/?t=293634)
 
 
 		

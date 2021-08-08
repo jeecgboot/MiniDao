@@ -110,6 +110,10 @@ public class MiniDaoHandler implements InvocationHandler {
 
 		// Step.3解析SQL模板，返回可执行SQL
 		String executeSql = parseSqlTemplate(method, templateSql, sqlParamsMap);
+		//jeecg : Minidao报错“Template java/lang/Object_toString.sql not found”的解决方案
+		if(executeSql==null || "".equals(executeSql)){
+			return null;
+		}
 
 		// Step.4 组装SQL占位符参数
 		Map<String, Object> sqlMap = installPlaceholderSqlParam(executeSql, sqlParamsMap);
@@ -130,7 +134,7 @@ public class MiniDaoHandler implements InvocationHandler {
 			}
 		}
 		if (showSql) {
-			logger.info("MiniDao-SQL:\n\n" + executeSql);
+			logger.info("Print MiniDao-Original-SQL :\n\n" + executeSql);
 		}
 		return returnObj;
 	}
@@ -394,18 +398,18 @@ public class MiniDaoHandler implements InvocationHandler {
 					if (returnType.isAssignableFrom(MiniDaoPage.class)) {
 						if (paramMap != null) {
 							String countsql = countSqlParser.getSmartCountSql(executeSql);
-							logger.info("page countsql===>"+countsql);
+							logger.info("page countsql===> "+countsql);
 							pageSetting.setTotal(namedParameterJdbcTemplate.queryForObject(countsql, paramMap, Integer.class));
 						} else {
 							String countsql = countSqlParser.getSmartCountSql(executeSql);
-							logger.info("page countsql===>"+countsql);
+							logger.info("page countsql===> "+countsql);
 							pageSetting.setTotal(jdbcTemplate.queryForObject(countsql, Integer.class));
 						}
 					}
 					//判断方言，获取分页sql
 					if (pageAutoDialect.getDelegate()!=null) {
 						 executeSql = pageAutoDialect.getDelegate().getPageSql(executeSql,pageSetting);
-						 logger.info("page executeSql===>"+executeSql);
+						 logger.info("page executeSql===> "+executeSql);
 					}
 					//executeSql = MiniDaoUtil.createPageSql(dbType, executeSql, page, rows);
 				}

@@ -8,7 +8,7 @@
 	
 	
 	<properties>
-		<minidao.version>1.8.23</minidao.version>
+		<minidao.version>1.8.3</minidao.version>
 		<junit.version>4.13.1</junit.version>
 		<springframework.version>5.2.10.RELEASE</springframework.version>
 		<!-- 数据库驱动 -->

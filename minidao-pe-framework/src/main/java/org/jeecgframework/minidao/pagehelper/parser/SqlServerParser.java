@@ -1,5 +1,6 @@
 package org.jeecgframework.minidao.pagehelper.parser;
 
+import net.sf.jsqlparser.JSQLParserException;
 import net.sf.jsqlparser.expression.Alias;
 import net.sf.jsqlparser.expression.Expression;
 import net.sf.jsqlparser.expression.LongValue;
@@ -9,9 +10,13 @@ import net.sf.jsqlparser.schema.Column;
 import net.sf.jsqlparser.schema.Table;
 import net.sf.jsqlparser.statement.Statement;
 import net.sf.jsqlparser.statement.select.*;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.jeecgframework.minidao.pagehelper.PageException;
 
 import java.util.*;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * 将sqlserver查询语句转换为分页语句<br>
@@ -27,6 +32,7 @@ import java.util.*;
  * 该类设计为一个独立的工具类，依赖jsqlparser,可以独立使用
  */
 public class SqlServerParser {
+    private static final Log logger = LogFactory.getLog(SqlServerParser.class);
     //开始行号
     public static final String START_ROW = String.valueOf(Long.MIN_VALUE);
     //结束行号
@@ -45,6 +51,14 @@ public class SqlServerParser {
     protected static final Top TOP100_PERCENT;
     //别名前缀
     protected static final String PAGE_COLUMN_ALIAS_PREFIX = "ROW_ALIAS_";
+
+    /**
+     * 匹配:user.name这样的参数表达式
+     */
+    public static Pattern dynamic = Pattern.compile(":[ tnx0Bfr]*[0-9a-z.A-Z_]+");
+    public static String DIAN = ".";
+    public static String DIAN_TMP = "@@@";
+
 
     //静态方法处理
     static {
@@ -75,10 +89,29 @@ public class SqlServerParser {
     public String convertToPageSql(String sql, Integer offset, Integer limit) {
         //解析SQL
         Statement stmt;
+        List<String> sqList = null;
+        String sqlOriginal = sql;
+
         try {
             stmt = CCJSqlParserUtil.parse(sql);
-        } catch (Throwable e) {
-            throw new PageException("不支持该SQL转换为分页查询!", e);
+        } catch (JSQLParserException e) {
+            //--------带点处理---------------------------------------------------------------------------------------
+            try {
+                //如果是 :user.name 类似含点的表达式，特殊处理下sql再解析
+                if (e.toString().indexOf(DIAN) != -1) {
+                    sqList = getKeyListByContent(sql);
+                    for (String s : sqList) {
+                        sql = sql.replace(s, s.replace(DIAN, DIAN_TMP));
+                    }
+                    logger.debug(" --- JSQLParser with DIAN --- convert begin sql = " + sql);
+                    stmt = CCJSqlParserUtil.parse(sql);
+                } else {
+                    throw new PageException("不支持该SQL转换为分页查询!", e);
+                }
+            } catch (JSQLParserException e1) {
+                throw new PageException("不支持该SQL转换为分页查询!", e);
+            }
+            //----------带点处理-------------------------------------------------------------------------------------
         }
         if (!(stmt instanceof Select)) {
             throw new PageException("分页语句必须是Select查询!");
@@ -93,7 +126,34 @@ public class SqlServerParser {
         if (limit != null) {
             pageSql = pageSql.replace(PAGE_SIZE, String.valueOf(limit));
         }
+
+        //------带点处理-----------------------------------------------------------------------------------------
+        //如果是 :user.name 类似含点的表达式，特殊处理下sql再解析
+        if (sqList != null) {
+            for (String s : sqList) {
+                pageSql = pageSql.replace(s.replace(DIAN, DIAN_TMP), s.replace(DIAN_TMP, DIAN));
+            }
+            logger.debug(" --- JSQLParser with DIAN --- convert end sql = " + pageSql);
+        }
+        //-----带点处理-------------------------------------------------------------------------------------------
         return pageSql;
+    }
+
+    /**
+     * 按照动态内容的参数出现顺序,将参数放到List中
+     *
+     * @param content
+     * @return
+     */
+    public static List<String> getKeyListByContent(String content) {
+        Set<String> paramSet = new LinkedHashSet<>();
+        Matcher m = dynamic.matcher(content);
+        while (m.find()) {
+            if (m.group() != null && m.group().indexOf(DIAN) != -1) {
+                paramSet.add(m.group());
+            }
+        }
+        return new ArrayList<>(paramSet);
     }
 
     /**
