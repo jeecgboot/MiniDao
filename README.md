@@ -30,7 +30,7 @@ MiniDao 是一款轻量级JAVA持久层框架，基于 SpringJdbc + freemarker �
 
 如何快速集成minidao?
 -----------------------------------
-#### 方式一：springboot2与minidao集成
+
 ```
 <dependency>
   <groupId>org.jeecgframework</groupId>
@@ -38,26 +38,17 @@ MiniDao 是一款轻量级JAVA持久层框架，基于 SpringJdbc + freemarker �
   <version>1.8.3</version>
 </dependency>
 ```
-[文档](https://minidao.mydoc.io/?t=336070)
 
-#### 方式二：springmvc与minidao集成
-```
-<dependency>
-  <groupId>org.jeecgframework</groupId>
-  <artifactId>minidao-spring-boot-starter</artifactId>
-  <version>1.8.3</version>
-</dependency>
-```
-
-[文档](https://minidao.mydoc.io/?t=293634)
+- [springboot2与minidao集成](http://minidao.jeecg.com/2392296)
+- [springmvc与Minidao集成](http://minidao.jeecg.com/2392293)
 
 
 		
 
 技术交流
 -----------------------------------
-* 文 档： [https://minidao.mydoc.io](https://minidao.mydoc.io)
-* 论 坛： [www.jeecg.org](http://www.jeecg.org)
+* 文 档： [http://minidao.jeecg.com](http://minidao.jeecg.com)
+* 官 网： [www.jeecg.com](http://www.jeecg.com)
 * QQ交流群： 362385436
 
 
@@ -71,6 +62,26 @@ MiniDao 是一款轻量级JAVA持久层框架，基于 SpringJdbc + freemarker �
 | minidao-pe-spring-boot-starter | spring-boot2 starter  |  |
 | minidao-pe-example | 示例代码 |     |	 
 	
+	
+支持28种数据库
+-----------------------------------
+
+|  数据库   |  支持   |
+| --- | --- |
+|   MySQL   |  √   |
+|  Oracle、Oracle9i   |  √   |
+|  SqlServer、SqlServer2012   |  √   |
+|   PostgreSQL   |  √   |
+|   DB2、Informix   |  √   |
+|   MariaDB   |  √   |
+|  SQLite、Hsqldb、Derby、H2   |  √   |
+|   达梦、人大金仓、神通   |  √   |
+|   华为高斯、虚谷、瀚高数据库   |  √   |
+|   阿里云PolarDB、PPAS、HerdDB   |  √   |
+|  Hive、HBase、CouchBase   |  √   |
+
+
+
 	
 代码体验
 -----------------------------------
