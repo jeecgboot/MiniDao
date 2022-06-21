@@ -12,7 +12,7 @@
 		<junit.version>4.13.1</junit.version>
 		<springframework.version>5.2.10.RELEASE</springframework.version>
 		<!-- 数据库驱动 -->
-		<mysql.version>8.0.21</mysql.version>
+		<mysql.version>8.0.28</mysql.version>
 		<postgresql.version>42.2.6</postgresql.version>
 		<ojdbc6.version>11.2.0.3</ojdbc6.version>
 		<sqljdbc4.version>4.0</sqljdbc4.version>
