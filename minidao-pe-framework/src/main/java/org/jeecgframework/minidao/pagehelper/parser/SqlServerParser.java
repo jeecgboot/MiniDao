@@ -93,7 +93,9 @@ public class SqlServerParser {
         String sqlOriginal = sql;
 
         try {
-            stmt = CCJSqlParserUtil.parse(sql);
+            //update-begin---author:wangshuai ---date:20220215  for：[issues/I4STNJ]SQL Server表名关键字查询失败
+            stmt = CCJSqlParserUtil.parse(sql,parser -> parser.withSquareBracketQuotation(true));
+            //update-end---author:wangshuai ---date:20220215  for：[issues/I4STNJ]SQL Server表名关键字查询失败
         } catch (JSQLParserException e) {
             //--------带点处理---------------------------------------------------------------------------------------
             try {
@@ -104,7 +106,7 @@ public class SqlServerParser {
                         sql = sql.replace(s, s.replace(DIAN, DIAN_TMP));
                     }
                     logger.debug(" --- JSQLParser with DIAN --- convert begin sql = " + sql);
-                    stmt = CCJSqlParserUtil.parse(sql);
+                    stmt = CCJSqlParserUtil.parse(sql,parser -> parser.withSquareBracketQuotation(true));
                 } else {
                     throw new PageException("不支持该SQL转换为分页查询!", e);
                 }
@@ -339,8 +341,8 @@ public class SqlServerParser {
             processPlainSelect((PlainSelect) selectBody, level + 1);
         } else if (selectBody instanceof WithItem) {
             WithItem withItem = (WithItem) selectBody;
-            if (withItem.getSelectBody() != null) {
-                processSelectBody(withItem.getSelectBody(), level + 1);
+            if (withItem.getSubSelect().getSelectBody() != null) {
+                processSelectBody(withItem.getSubSelect().getSelectBody(), level + 1);
             }
         } else {
             SetOperationList operationList = (SetOperationList) selectBody;

@@ -20,13 +20,13 @@ public class MinidaoInterceptor implements EmptyInterceptor {
 	public boolean onInsert(Field[] fields, Object obj) {
 		Map<Object, Object> map = new HashMap<Object, Object>();
 		for (int j = 0; j < fields.length; j++) {
-			fields[j].setAccessible(true);
+			//fields[j].setAccessible(true);
 			String fieldName = fields[j].getName();
 			if ("createDate".equals(fieldName)) {
 				map.put("createDate", new Date());
 			}
 			if ("createBy".equals(fieldName)) {
-				map.put("createBy", "scott");
+				map.put("createBy", "admin");
 			}
 		}
 		try {
@@ -42,7 +42,7 @@ public class MinidaoInterceptor implements EmptyInterceptor {
 	public boolean onUpdate(Field[] fields, Object obj) {
 		Map<Object, Object> map = new HashMap<Object, Object>();
 		for (int j = 0; j < fields.length; j++) {
-			fields[j].setAccessible(true);
+			//fields[j].setAccessible(true);
 			String fieldName = fields[j].getName();
 			if ("updateBy".equals(fieldName)) {
 				map.put("updateBy", "scott");

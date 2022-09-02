@@ -35,7 +35,7 @@ public class Employee implements Serializable {
 	 *主键
 	 *@TableId 支持uuid(默认)\AUTO(自增)\ID_WORKER(雪花ID)\ID_SEQ(序列seq,必须配置seqName)
 	 */
-	@TableId(type = IdType.UUID)
+	@TableId(type = IdType.AUTO)
 	private String id;
 	/**
 	 *雇员编号

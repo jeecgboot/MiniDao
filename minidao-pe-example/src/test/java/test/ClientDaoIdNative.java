@@ -19,11 +19,11 @@ public class ClientDaoIdNative {
 		EmployeeDao employeeDao = (EmployeeDao) factory.getBean("employeeDao");
 		
 		Employee employee = new Employee();
-		employee.setEmpno("200");
-		employee.setName("scott");
+		employee.setEmpno("2001");
+		employee.setName("scott1");
 		employee.setBirthday(new Date());
-		employee.setAge(20);
-		employee.setSalary(new BigDecimal(88888));
+		employee.setAge(21);
+		employee.setSalary(new BigDecimal(88888111));
 		employeeDao.insertNative(employee);
 		System.out.println("对象值："+employee.toString());
 	}

@@ -15,7 +15,7 @@ public class MinidaoInterceptor implements EmptyInterceptor {
 	public boolean onInsert(Field[] fields, Object obj) {
 		Map<Object, Object> map = new HashMap<Object, Object>();
 		for (int j = 0; j < fields.length; j++) {
-			fields[j].setAccessible(true);
+			//fields[j].setAccessible(true);
 			String fieldName = fields[j].getName();
 			if ("createBy".equals(fieldName)) {
 				map.put("createBy", "scott");

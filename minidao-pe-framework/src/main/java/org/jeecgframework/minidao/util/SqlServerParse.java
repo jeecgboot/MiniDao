@@ -37,7 +37,9 @@ public class SqlServerParse {
         Statement stmt = null;
         List<String> sqList = null;
         try {
-            stmt = CCJSqlParserUtil.parse(sql);
+            //update-begin---author:wangshuai ---date:20220215  for：[issues/I4STNJ]SQL Server表名关键字查询失败
+            stmt = CCJSqlParserUtil.parse(sql,parser -> parser.withSquareBracketQuotation(true));
+            //update-end---author:wangshuai ---date:20220215  for：[issues/I4STNJ]SQL Server表名关键字查询失败
         } catch (JSQLParserException e) {
             //---------------------------------------------------------------------------------------------
             //如果是 :user.name 类似含点的表达式，特殊处理下sql再解析
@@ -46,7 +48,7 @@ public class SqlServerParse {
                 for (String s : sqList) {
                     sql = sql.replace(s, s.replace(DIAN, DIAN_TMP));
                 }
-                stmt = CCJSqlParserUtil.parse(sql);
+                stmt = CCJSqlParserUtil.parse(sql,parser -> parser.withSquareBracketQuotation(true));
             } else {
                 e.printStackTrace();
             }
@@ -92,8 +94,8 @@ public class SqlServerParse {
             processPlainSelect((PlainSelect) selectBody);
         } else if (selectBody instanceof WithItem) {
             WithItem withItem = (WithItem) selectBody;
-            if (withItem.getSelectBody() != null) {
-                processSelectBody(withItem.getSelectBody());
+            if (withItem.getSubSelect().getSelectBody() != null) {
+                processSelectBody(withItem.getSubSelect().getSelectBody());
             }
         } else {
             SetOperationList operationList = (SetOperationList) selectBody;
@@ -104,8 +106,8 @@ public class SqlServerParse {
                         processPlainSelect((PlainSelect) optSelect);
                     } else if (optSelect instanceof WithItem) {
                         WithItem withItem = (WithItem) optSelect;
-                        if (withItem.getSelectBody() != null) {
-                            processSelectBody(withItem.getSelectBody());
+                        if (withItem.getSubSelect().getSelectBody() != null) {
+                            processSelectBody(withItem.getSubSelect().getSelectBody());
                         }
                     }
                 }

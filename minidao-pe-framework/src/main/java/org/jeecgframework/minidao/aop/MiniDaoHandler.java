@@ -32,6 +32,7 @@ import org.jeecgframework.minidao.spring.rowMapper.MiniColumnOriginalMapRowMappe
 import org.jeecgframework.minidao.util.*;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.dao.EmptyResultDataAccessException;
@@ -43,6 +44,7 @@ import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
+import javax.annotation.Resource;
 import javax.sql.DataSource;
 
 /**
@@ -57,7 +59,12 @@ import javax.sql.DataSource;
 @SuppressWarnings("rawtypes")
 public class MiniDaoHandler implements InvocationHandler {
 	private static final Log logger = LogFactory.getLog(MiniDaoHandler.class);
-
+	
+	/**自定义的数据源*/
+    @Autowired(required = false)
+    @Qualifier("minidaoDataSource")
+    public DataSource dataSource;
+    
 	@Autowired
 	@Lazy
 	private JdbcTemplate jdbcTemplate;
@@ -284,7 +291,15 @@ public class MiniDaoHandler implements InvocationHandler {
 					jdbcTemplate = new JdbcTemplate(multDataSourceMap.get(keyOfTheFirst));
 				}
 			}
-		}
+		}else{
+		    //update-begin--Author:wangshuai--Date:20211018--for: 用户自定义的数据源是否为空，不为空则走用户自定义的数据源
+            if(null != dataSource){
+                namedParameterJdbcTemplate = new NamedParameterJdbcTemplate(dataSource);
+                jdbcTemplate = new JdbcTemplate(dataSource);  
+            }
+            //update-end--Author:wangshuai--Date:20211018--for: 用户自定义的数据源是否为空，不为空则走用户自定义的数据源
+        }
+		
 		return jdbcTemplate;
 	}
 
@@ -322,7 +337,15 @@ public class MiniDaoHandler implements InvocationHandler {
 					jdbcTemplate = new JdbcTemplate(multDataSourceMap.get(keyOfTheFirst));
 				}
 			}
-		}
+		}else{
+            //update-begin--Author:wangshuai--Date:20211018--for: 用户自定义的数据源是否为空，不为空则走用户自定义的数据源
+            if(null!=dataSource){
+                namedParameterJdbcTemplate = new NamedParameterJdbcTemplate(dataSource);
+                jdbcTemplate = new JdbcTemplate(dataSource);
+            }
+            //update-end--Author:wangshuai--Date:20211018--for: 用户自定义的数据源是否为空，不为空则走用户自定义的数据源
+        }
+		
 		if(emptyInterceptor==null){
 			try {
 				emptyInterceptor = applicationContext.getBean(EmptyInterceptor.class);
@@ -556,18 +579,20 @@ public class MiniDaoHandler implements InvocationHandler {
 		if(emptyInterceptor!=null && args!= null && args.length==1){
 			String methodName = method.getName();
 			Object obj = args[0];
-			Field[] fields = obj.getClass().getDeclaredFields();
-			if(methodName.startsWith("insert")){
-				if(emptyInterceptor!=null){
-					emptyInterceptor.onInsert(fields, obj);
+			if(obj!=null){
+				Field[] fields = obj.getClass().getDeclaredFields();
+				if(methodName.startsWith("insert")){
+					if(emptyInterceptor!=null){
+						emptyInterceptor.onInsert(fields, obj);
+					}
 				}
-			}
-			if(methodName.startsWith("update")){
-				if(emptyInterceptor!=null){
-					emptyInterceptor.onUpdate(fields, obj);
+				if(methodName.startsWith("update")){
+					if(emptyInterceptor!=null){
+						emptyInterceptor.onUpdate(fields, obj);
+					}
 				}
+				//reflect(obj);
 			}
-			//reflect(obj);
 		}
 		//update-begin---author:scott----date:20160511------for:minidao拦截器逻辑--------
 
@@ -661,7 +686,7 @@ public class MiniDaoHandler implements InvocationHandler {
 	private void initIdAnnotation(Field[] fields, Object obj) throws Exception {
 		Map<Object, Object> map = new HashMap<Object, Object>();
 		for (int j = 0; j < fields.length; j++) {
-			fields[j].setAccessible(true);
+			//fields[j].setAccessible(true);
 			String fieldName = fields[j].getName();
 			//1.获取所有的注解
 			TableId annotation = fields[j].getAnnotation(TableId.class);
