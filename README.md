@@ -2,7 +2,7 @@ MiniDao
 =======
 当前最新版本： 1.9.0 （发布日期：20220902）
 
-
+ > 反馈问题：发现bug请在github [发issue](https://github.com/jeecgboot/MiniDao/issues/new)
 
 ### MiniDao 简介及特征
 
