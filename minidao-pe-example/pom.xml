@@ -17,7 +17,7 @@
 		<ojdbc6.version>11.2.0.3</ojdbc6.version>
 		<sqljdbc4.version>4.0</sqljdbc4.version>
 		<mariadb.version>2.6.2</mariadb.version>
-		<sqlit.version>3.7.2</sqlit.version>
+		<sqlit.version>3.41.2.2</sqlit.version>
 
 		<druid.version>1.2.6</druid.version>
 		<log4j.version>1.2.16</log4j.version>
