@@ -40,6 +40,7 @@ public class PageAutoDialect {
         registerDialectAlias("kingbase8", PostgreSqlDialect.class);
         //华为高斯
         registerDialectAlias("zenith", PostgreSqlDialect.class);
+        registerDialectAlias("opengauss", PostgreSqlDialect.class);
 
 
         registerDialectAlias("mysql", MySqlDialect.class);
