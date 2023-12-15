@@ -3,12 +3,17 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.jeecgframework</groupId>
 	<artifactId>minidao-pe-example</artifactId>
-	<version>>1.8.0</version>
+	<version>1.9.5</version>
 	<packaging>jar</packaging>
-	
+	<url>http://www.jeecg.com</url>
+	<parent>
+		<groupId>org.jeecgframework</groupId>
+		<artifactId>minidao-parent</artifactId>
+		<version>1.9.5</version>
+	</parent>
 	
 	<properties>
-		<minidao.version>1.9.0</minidao.version>
+		<minidao.version>1.9.5</minidao.version>
 		<junit.version>4.13.1</junit.version>
 		<springframework.version>5.3.18</springframework.version>
 		<!-- 数据库驱动 -->
@@ -53,6 +58,75 @@
 			<artifactId>junit</artifactId>
 			<version>${junit.version}</version>
 		</dependency>
+		<!-- minidao-pe -->
+		<dependency>
+			<groupId>org.jeecgframework</groupId>
+			<artifactId>minidao-pe</artifactId>
+			<version>${minidao.version}</version>
+		</dependency>
+		<!-- 代码生成器 -->
+		<dependency>
+			<groupId>org.jeecgframework.p3</groupId>
+			<artifactId>jeecg-p3-generate</artifactId>
+			<version>1.0.2</version>
+			<exclusions>
+				<exclusion>
+					<artifactId>minidao-pe</artifactId>
+					<groupId>org.jeecgframework</groupId>
+				</exclusion>
+				<exclusion>
+					<artifactId>freemarker</artifactId>
+					<groupId>org.freemarker</groupId>
+				</exclusion>
+				<exclusion>
+					<artifactId>spring-aop</artifactId>
+					<groupId>org.springframework</groupId>
+				</exclusion>
+				<exclusion>
+					<artifactId>spring-beans</artifactId>
+					<groupId>org.springframework</groupId>
+				</exclusion>
+				<exclusion>
+					<artifactId>spring-context</artifactId>
+					<groupId>org.springframework</groupId>
+				</exclusion>
+				<exclusion>
+					<artifactId>spring-core</artifactId>
+					<groupId>org.springframework</groupId>
+				</exclusion>
+				<exclusion>
+					<artifactId>spring-expression</artifactId>
+					<groupId>org.springframework</groupId>
+				</exclusion>
+				<exclusion>
+					<artifactId>httpcore</artifactId>
+					<groupId>org.apache.httpcomponents</groupId>
+				</exclusion>
+				<exclusion>
+					<artifactId>commons-codec</artifactId>
+					<groupId>commons-codec</groupId>
+				</exclusion>
+				<exclusion>
+					<artifactId>commons-digester</artifactId>
+					<groupId>commons-digester</groupId>
+				</exclusion>
+				<exclusion>
+					<artifactId>commons-logging</artifactId>
+					<groupId>commons-logging</groupId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+		<dependency>
+			<groupId>com.alibaba</groupId>
+			<artifactId>druid</artifactId>
+			<version>${druid.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>log4j</groupId>
+			<artifactId>log4j</artifactId>
+			<version>${log4j.version}</version>
+		</dependency>
+
 		<!-- mysql -->
 		<dependency>
 			<groupId>mysql</groupId>
@@ -144,26 +218,9 @@
 			<artifactId>jcc</artifactId>
 			<version>11.5.0.0</version>
 		</dependency>
-
-
-		<dependency>
-			<groupId>com.alibaba</groupId>
-			<artifactId>druid</artifactId>
-			<version>${druid.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>log4j</groupId>
-			<artifactId>log4j</artifactId>
-			<version>${log4j.version}</version>
-		</dependency>
-		<!-- minidao-pe -->
-		<dependency>
-			<groupId>org.jeecgframework</groupId>
-			<artifactId>minidao-pe</artifactId>
-			<version>${minidao.version}</version>
-		</dependency>
 	</dependencies>
-	<url>http://www.jeecg.com</url>
+
+	
 	<build>
 		<plugins>
 			<plugin>
@@ -199,10 +256,16 @@
 		</plugins>
 		<resources>
 			<resource>
+				<directory>src/main/java</directory>
+				<includes>
+					<include>**/*.xml</include>
+					<include>**/*.sql</include>
+					<include>**/*.ftl</include>
+				</includes>
+				<filtering>false</filtering>
+			</resource>
+			<resource>
 				<directory>src/main/resources</directory>
-				<excludes>
-					<exclude>*.sql</exclude>
-				</excludes>
 			</resource>
 		</resources>
 	</build>

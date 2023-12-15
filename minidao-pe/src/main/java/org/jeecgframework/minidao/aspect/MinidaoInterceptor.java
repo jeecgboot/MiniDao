@@ -1,19 +1,14 @@
-package examples.interceptor;
+package org.jeecgframework.minidao.aspect;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
-import org.jeecgframework.minidao.aspect.EmptyInterceptor;
-import org.springframework.stereotype.Component;
-import org.springframework.stereotype.Service;
-
 /**
- * minidao拦截器实现【自动填充：创建人，创建时间，修改人，修改时间】
+ * @TODO
+ * minidao拦截器实现【这是个例子，每个项目需要自定义】
  */
-
-@Component("minidaoInterceptor")
 public class MinidaoInterceptor implements EmptyInterceptor {
 
 	@Override
@@ -22,15 +17,14 @@ public class MinidaoInterceptor implements EmptyInterceptor {
 		for (int j = 0; j < fields.length; j++) {
 			//fields[j].setAccessible(true);
 			String fieldName = fields[j].getName();
+			if ("createBy".equals(fieldName)) {
+				map.put("createBy", "scott");
+			}
 			if ("createDate".equals(fieldName)) {
 				map.put("createDate", new Date());
 			}
-			if ("createBy".equals(fieldName)) {
-				map.put("createBy", "admin");
-			}
 		}
 		try {
-			//回写Value值
 			setFieldValue(map, obj);
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -40,23 +34,6 @@ public class MinidaoInterceptor implements EmptyInterceptor {
 
 	@Override
 	public boolean onUpdate(Field[] fields, Object obj) {
-		Map<Object, Object> map = new HashMap<Object, Object>();
-		for (int j = 0; j < fields.length; j++) {
-			//fields[j].setAccessible(true);
-			String fieldName = fields[j].getName();
-			if ("updateBy".equals(fieldName)) {
-				map.put("updateBy", "scott");
-			}
-			if ("updateDate".equals(fieldName)) {
-				map.put("updateDate", new Date());
-			}
-		}
-		try {
-			//回写Value值
-			setFieldValue(map, obj);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
 		return false;
 	}
 
@@ -72,7 +49,7 @@ public class MinidaoInterceptor implements EmptyInterceptor {
 	 * @param bean
 	 * @throws Exception
 	 */
-	private static void setFieldValue(Map<Object, Object> map, Object bean) throws Exception {
+	public static void setFieldValue(Map<Object, Object> map, Object bean) throws Exception {
 		Class<?> cls = bean.getClass();
 		Method methods[] = cls.getDeclaredMethods();
 		Field fields[] = cls.getDeclaredFields();
@@ -86,7 +63,9 @@ public class MinidaoInterceptor implements EmptyInterceptor {
 			}
 			if(!map.containsKey(fldSetName)){continue;}
 			Object value = map.get(fldSetName);
+			//System.out.println(value.toString());
 			Method method = cls.getMethod(setMethod, field.getType());
+			//System.out.println(method.getName());
 			if (null != value) {
 				if ("String".equals(fldtype)) {
 					method.invoke(bean, (String) value);
@@ -109,7 +88,7 @@ public class MinidaoInterceptor implements EmptyInterceptor {
 	 * @param fldname
 	 * @return
 	 */
-	private static String pareSetName(String fldname) {
+	public static String pareSetName(String fldname) {
 		if (null == fldname || "".equals(fldname)) {
 			return null;
 		}
@@ -124,7 +103,7 @@ public class MinidaoInterceptor implements EmptyInterceptor {
 	 * @param met
 	 * @return
 	 */
-	private static boolean checkMethod(Method methods[], String met) {
+	public static boolean checkMethod(Method methods[], String met) {
 		if (null != methods) {
 			for (Method method : methods) {
 				if (met.equals(method.getName())) {

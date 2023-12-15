@@ -2,15 +2,11 @@ package test;
 
 import com.alibaba.druid.support.logging.Log;
 import com.alibaba.druid.support.logging.LogFactory;
-import com.alibaba.druid.util.JdbcUtils;
 import examples.dao.EmployeeDao;
 import examples.entity.Employee;
 import org.jeecgframework.minidao.pojo.MiniDaoPage;
 import org.springframework.beans.factory.BeanFactory;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
-
-import java.math.BigDecimal;
-import java.util.Date;
 
 /**
  * 测试ID主键规则： Int 自增

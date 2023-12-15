@@ -1,32 +1,57 @@
-package examples.interceptor;
+package jeecg.aop;
+
+import org.jeecgframework.minidao.aspect.EmptyInterceptor;
+import org.jeecgframework.p3.core.author.LoginUser;
+import org.jeecgframework.p3.core.util.plugin.ContextHolderUtils;
+import org.springframework.stereotype.Service;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
-import org.jeecgframework.minidao.aspect.EmptyInterceptor;
-import org.springframework.stereotype.Component;
-import org.springframework.stereotype.Service;
 
 /**
  * minidao拦截器实现【自动填充：创建人，创建时间，修改人，修改时间】
  */
 
-@Component("minidaoInterceptor")
+@Service
 public class MinidaoInterceptor implements EmptyInterceptor {
 
+	/**
+	 * 支付窗账号ID，保存用户Session会话中
+	 */
+	public static final String ALIPAY_ACCOUNT_ID = "ALIPAY_ACCOUNT_ID";
+	
 	@Override
 	public boolean onInsert(Field[] fields, Object obj) {
 		Map<Object, Object> map = new HashMap<Object, Object>();
 		for (int j = 0; j < fields.length; j++) {
-			//fields[j].setAccessible(true);
+			fields[j].setAccessible(true);
 			String fieldName = fields[j].getName();
+			//获取登录用户
+			LoginUser loginUser = ContextHolderUtils.getLoginSessionUser();
+			if(loginUser!=null){
+				if ("createBy".equals(fieldName)) {
+					map.put("createBy", loginUser.getUserName());
+				}
+			}
 			if ("createDate".equals(fieldName)) {
 				map.put("createDate", new Date());
 			}
-			if ("createBy".equals(fieldName)) {
-				map.put("createBy", "admin");
+			
+			//营销平台，支付窗拦截器，注入当前在线公众ID
+			if ("accountid".equals(fieldName)) {
+				try {
+					//Object accountid = ContextHolderUtils.getSession().get.getAttribute(ALIPAY_ACCOUNT_ID);
+					Object accountid = null;
+					if(accountid!=null){
+						map.put("accountid", accountid);
+					}
+				} catch (Exception e) {
+					
+				}
+				
 			}
 		}
 		try {
@@ -42,10 +67,14 @@ public class MinidaoInterceptor implements EmptyInterceptor {
 	public boolean onUpdate(Field[] fields, Object obj) {
 		Map<Object, Object> map = new HashMap<Object, Object>();
 		for (int j = 0; j < fields.length; j++) {
-			//fields[j].setAccessible(true);
+			fields[j].setAccessible(true);
 			String fieldName = fields[j].getName();
-			if ("updateBy".equals(fieldName)) {
-				map.put("updateBy", "scott");
+			//获取登录用户
+			LoginUser loginUser = ContextHolderUtils.getLoginSessionUser();
+			if(loginUser!=null){
+				if ("updateBy".equals(fieldName)) {
+					map.put("updateBy", loginUser.getUserName());
+				}
 			}
 			if ("updateDate".equals(fieldName)) {
 				map.put("updateDate", new Date());
