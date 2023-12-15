@@ -1,6 +1,15 @@
 MiniDao 
 =======
-当前最新版本： 1.9.0 （发布日期：20220902）
+当前最新版本： 1.9.5 （发布日期：20231215）
+
+[![AUR](https://img.shields.io/badge/license-Apache%20License%202.0-blue.svg)](https://github.com/zhangdaiscott/jeecg-boot/blob/master/LICENSE)
+[![](https://img.shields.io/badge/Author-北京国炬软件-orange.svg)](http://jeecg.com/aboutusIndex)
+[![](https://img.shields.io/badge/Blog-官方博客-blue.svg)](https://jeecg.blog.csdn.net)
+[![](https://img.shields.io/badge/version-1.9.5-brightgreen.svg)](https://github.com/zhangdaiscott/jeecg-boot)
+[![GitHub stars](https://img.shields.io/github/stars/zhangdaiscott/jeecg-boot.svg?style=social&label=Stars)](https://github.com/zhangdaiscott/jeecg-boot)
+[![GitHub forks](https://img.shields.io/github/forks/zhangdaiscott/jeecg-boot.svg?style=social&label=Fork)](https://github.com/zhangdaiscott/jeecg-boot)
+
+
 
  > 反馈问题：发现bug请在github [发issue](https://github.com/jeecgboot/MiniDao/issues/new)
 
@@ -35,7 +44,7 @@ MiniDao 是一款轻量级JAVA持久层框架，基于 SpringJdbc + freemarker �
 <dependency>
   <groupId>org.jeecgframework</groupId>
   <artifactId>minidao-pe</artifactId>
-  <version>1.9.0</version>
+  <version>1.9.5</version>
 </dependency>
 ```
 
@@ -48,8 +57,8 @@ MiniDao 是一款轻量级JAVA持久层框架，基于 SpringJdbc + freemarker �
 技术交流
 -----------------------------------
 * 文 档： [http://minidao.jeecg.com](http://minidao.jeecg.com)
-* 官 网： [www.jeecg.com](http://www.jeecg.com)
-
+* JEECG低代码： [www.jeecg.com](http://www.jeecg.com)
+* 敲敲云零代码： [www.qiaoqiaoyun.com](https://www.qiaoqiaoyun.com)
 
 项目介绍
 -----------------------------------
