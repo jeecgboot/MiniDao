@@ -15,7 +15,7 @@
 	<properties>
 		<minidao.version>1.9.5</minidao.version>
 		<junit.version>4.13.1</junit.version>
-		<springframework.version>5.3.18</springframework.version>
+		<springframework.version>6.0.13</springframework.version>
 		<!-- 数据库驱动 -->
 		<mysql.version>8.0.21</mysql.version>
 		<postgresql.version>42.2.6</postgresql.version>
@@ -24,7 +24,7 @@
 		<mariadb.version>2.6.2</mariadb.version>
 		<sqlit.version>3.7.2</sqlit.version>
 
-		<druid.version>1.2.6</druid.version>
+		<druid.version>1.2.20</druid.version>
 		<log4j.version>1.2.16</log4j.version>
 	</properties>
 
@@ -34,7 +34,7 @@
             <name>aliyun Repository</name>
             <url>http://maven.aliyun.com/nexus/content/groups/public</url>
             <snapshots>
-				<enabled>false</enabled>
+				<enabled>true</enabled>
 			</snapshots>
         </repository>
 		<repository>
@@ -42,7 +42,7 @@
             <name>jeecg Repository</name>
             <url>http://maven.jeecg.org/nexus/content/repositories/jeecg</url>
             <snapshots>
-				<enabled>false</enabled>
+				<enabled>true</enabled>
 			</snapshots>
         </repository>
 	</repositories>
@@ -218,9 +218,10 @@
 			<artifactId>jcc</artifactId>
 			<version>11.5.0.0</version>
 		</dependency>
+
 	</dependencies>
 
-	
+
 	<build>
 		<plugins>
 			<plugin>
@@ -269,5 +270,7 @@
 			</resource>
 		</resources>
 	</build>
+
+
 
 </project>
