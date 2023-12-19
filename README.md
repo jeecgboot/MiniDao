@@ -1,6 +1,6 @@
 MiniDao 
 =======
-当前最新版本： 1.9.5 （发布日期：20231215）
+当前最新版本： 1.9.5 （发布日期：20231219）
 
 [![AUR](https://img.shields.io/badge/license-Apache%20License%202.0-blue.svg)](https://github.com/zhangdaiscott/jeecg-boot/blob/master/LICENSE)
 [![](https://img.shields.io/badge/Author-北京国炬软件-orange.svg)](http://jeecg.com/aboutusIndex)
@@ -61,12 +61,11 @@ MiniDao 是一款轻量级JAVA持久层框架，基于 SpringJdbc + freemarker �
 项目介绍
 -----------------------------------
 
-| 项目名   |      中文名      |  备注 |
-|----------|:-------------:|------:|
-| minidao-pe-framework| 架构核心包|     |
-| minidao-code-generate |  代码快速生成 |  |
-| minidao-pe-spring-boot-starter | spring-boot2 starter  |  |
-| minidao-pe-example | 示例代码 |     |	 
+| 项目名   |         中文名         |  备注 |
+|----------|:-------------------:|------:|
+| minidao-pe|        架构核心包        |     |
+| minidao-spring-boot-starter | SpringBoot3 starter |  |
+| minidao-pe-example |        示例代码         |     |	 
 	
 	
 支持28种数据库
