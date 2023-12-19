@@ -1,8 +1,8 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
-	<groupId>org.jeecgframework</groupId>
-	<artifactId>minidao-spring-boot3-starter</artifactId>
+	<groupId>org.jeecgframework.boot3</groupId>
+	<artifactId>minidao-spring-boot-starter</artifactId>
 	<version>1.9.5</version>
 	<packaging>jar</packaging>
 
@@ -55,7 +55,7 @@
 
 		<!-- minidao -->
 		<dependency>
-			<groupId>org.jeecgframework</groupId>
+			<groupId>org.jeecgframework.boot3</groupId>
 			<artifactId>minidao-pe</artifactId>
 			<version>${minidao.version}</version>
 		</dependency>
