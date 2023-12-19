@@ -1,0 +1,48 @@
+--author:scott-----date:20220902----for:升级依赖版本号，重点升级jsqlparser重构了不兼容方法
+升级springframework依赖到5.3.18 ，与jeecgboot同步
+升级spring-boot-starter依赖到2.6.6 ，与jeecgboot同步
+升级javassist依赖到 3.25.0-GA
+升级jsqlparser依赖到 4.3
+
+
+org\jeecgframework\minidao\pagehelper\parser\SqlServerParser.java
+org\jeecgframework\minidao\pagehelper\parser\OrderByParser.java
+org\jeecgframework\minidao\pagehelper\parser\CountSqlParser.java
+org\jeecgframework\minidao\util\SqlServerParse.java
+minidao-pe-framework\pom.xml
+minidao-pe-spring-boot-starter\pom.xml
+--author:scott-----date:20220902----for:升级依赖版本号，重点升级jsqlparser重构了不兼容方法
+
+--author:scott-----date:20210718----for:升级版本号1.9.1，自动生成ID如果用户设置了id值，则不再生成
+org\jeecgframework\minidao\util\ReflectUtil.java
+org\jeecgframework\minidao\aop\MiniDaoHandler.java
+minidao-pe-example\pom.xml
+minidao-pe-framework\pom.xml
+minidao-pe-spring-boot-starter\pom.xml
+--author:scott-----date:20210718----for:升级版本号1.9.1，自动生成ID如果用户设置了id值，则不再生成
+
+--author:scott-----date:202108011----for:升级版本号1.9.2，为了升级底层依赖jsqlparser.version>4.4版本
+pom.xml
+--author:scott-----date:202108011----for:升级版本号1.9.2，为了升级底层依赖jsqlparser.version>4.4版本
+
+--author:scott-----date:20210804----for:freemarker模板注入问题 禁止解析ObjectConstructor，Execute
+org\jeecgframework\minidao\util\FreemarkerParseFactory.java
+--author:scott-----date:20210804----for:freemarker模板注入问题 禁止解析ObjectConstructor，Execute
+
+--author:scott-----date:20230907----for:拦截器支持定义select规则，支持自动注入saas隔离条件--
+org\jeecgframework\minidao\annotation\IgnoreSaas.java(+)
+org\jeecgframework\minidao\aop\MiniDaoHandler.java
+org\jeecgframework\minidao\aspect\EmptyInterceptor.java
+org\jeecgframework\minidao\aspect\MinidaoInterceptor.java
+--author:scott-----date:20230907----for:拦截器支持定义select规则，支持自动注入saas隔离条件--
+
+--author:scott-----date:20230907----for:升级版本号，支持saas拦截器--
+minidao-pe-example\src\main\java\examples\interceptor\MinidaoInterceptor.java
+minidao-pe-example\pom.xml
+minidao-pe-framework\pom.xml
+minidao-pe-spring-boot-starter\pom.xml
+--author:scott-----date:20230907----for:升级版本号，支持saas拦截器--
+
+--author:wangshuai-----date:20231008----for:【QQYUN-6633】升级 1.6.2-GA2 后，下拉树组件多选后参数传递到 sql 中 in 语句失效 增加拼接函数/in函数--
+src/main/java/org/jeecgframework/minidao/util/SimpleFormat.java
+--author:wangshuai-----date:20231008----for:【QQYUN-6633】升级 1.6.2-GA2 后，下拉树组件多选后参数传递到 sql 中 in 语句失效 增加拼接函数/in函数--

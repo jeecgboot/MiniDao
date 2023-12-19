@@ -7,7 +7,7 @@ import org.junit.Before;
 import org.junit.Test;
 import test.spring.SpringTxTestCase;
 
-import javax.annotation.Resource;
+import jakarta.annotation.Resource;
 import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
