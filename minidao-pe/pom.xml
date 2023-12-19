@@ -8,7 +8,7 @@
 	<packaging>jar</packaging>
 	
 	<name>minidao-pe</name>
-	<description>An powerful enhanced toolkit of SpringJdbc for simplify development</description>
+	<description>一款极其轻量的JAVA持久层框架，基于 SpringJdbc + freemarker 实现，具备Mybatis一样的SQL分离和逻辑标签能力，可无缝集成springboot3项目</description>
 	<url>http://www.jeecg.com</url>
 	
 	<licenses>
@@ -122,14 +122,14 @@
 
 	<profiles>
 		<profile>
-			<id>temp</id>
+			<id>jeecg</id>
 			<build>
 				<plugins>
 					<plugin>
 						<artifactId>maven-compiler-plugin</artifactId>
 						<configuration>
-							<source>1.8</source>
-							<target>1.8</target>
+							<source>17</source>
+							<target>17</target>
 							<encoding>UTF-8</encoding>
 						</configuration>
 					</plugin>
@@ -137,7 +137,6 @@
 					<plugin>
 						<groupId>org.apache.maven.plugins</groupId>
 						<artifactId>maven-source-plugin</artifactId>
-						<version>2.2.1</version>
 						<executions>
 							<execution>
 								<phase>package</phase>
@@ -162,50 +161,48 @@
 				</snapshotRepository>
 			</distributionManagement>
 		</profile>
-        <profile>
-            <id>release</id>
-            <build>
-                <plugins>
+		<profile>
+			<id>release</id>
+			<build>
+				<plugins>
 					<plugin>
 						<artifactId>maven-compiler-plugin</artifactId>
 						<configuration>
-							<source>1.8</source>
-							<target>1.8</target>
+							<source>17</source>
+							<target>17</target>
 							<encoding>UTF-8</encoding>
 						</configuration>
 					</plugin>
-                	 <!-- Source --> 
-                    <plugin>
-                        <groupId>org.apache.maven.plugins</groupId>
-                        <artifactId>maven-source-plugin</artifactId>
-                        <version>2.2.1</version>
-                        <executions>
-                            <execution>
-                                <phase>package</phase>
-                                <goals>
-                                    <goal>jar-no-fork</goal>
-                                </goals>
-                            </execution>
-                        </executions>
-                    </plugin>
-                	<!-- Javadoc --> 
-                    <plugin>
-                        <groupId>org.apache.maven.plugins</groupId>
-                        <artifactId>maven-javadoc-plugin</artifactId>
-                        <version>2.9.1</version>
-                        <executions>
-                            <execution>
-                                <phase>package</phase>
-                                <goals>
-                                    <goal>jar</goal>
-                                </goals>
-                                <configuration>  
-					                <encoding>UTF-8</encoding>
-									<additionalparam>-Xdoclint:none</additionalparam>
-					              </configuration>  
-                            </execution>
-                        </executions>
-                    </plugin>
+					<!-- Source -->
+					<plugin>
+						<groupId>org.apache.maven.plugins</groupId>
+						<artifactId>maven-source-plugin</artifactId>
+						<executions>
+							<execution>
+								<phase>package</phase>
+								<goals>
+									<goal>jar-no-fork</goal>
+								</goals>
+							</execution>
+						</executions>
+					</plugin>
+					<!-- Javadoc -->
+					<plugin>
+						<groupId>org.apache.maven.plugins</groupId>
+						<artifactId>maven-javadoc-plugin</artifactId>
+						<executions>
+							<execution>
+								<phase>package</phase>
+								<goals>
+									<goal>jar</goal>
+								</goals>
+								<configuration>
+									<encoding>UTF-8</encoding>
+									<additionalJOption>-Xdoclint:none</additionalJOption>
+								</configuration>
+							</execution>
+						</executions>
+					</plugin>
 					<!--Maven GPG插件用于使用以下配置对组件进行签名-->
 					<plugin>
 						<groupId>org.apache.maven.plugins</groupId>
@@ -225,7 +222,6 @@
 					<plugin>
 						<groupId>org.sonatype.plugins</groupId>
 						<artifactId>nexus-staging-maven-plugin</artifactId>
-						<version>1.6.7</version>
 						<extensions>true</extensions>
 						<configuration>
 							<serverId>oss</serverId>
@@ -233,28 +229,28 @@
 							<autoReleaseAfterClose>true</autoReleaseAfterClose>
 						</configuration>
 					</plugin>
-                </plugins>
-            </build>
-            <distributionManagement>
-                <snapshotRepository>
-                    <id>oss</id>
-                    <url>https://oss.sonatype.org/content/repositories/snapshots/</url>
-                </snapshotRepository>
-                <repository>
-                    <id>oss</id>
-                    <url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
-                </repository>
-            </distributionManagement>
-        </profile>
-    </profiles>
-    
+				</plugins>
+			</build>
+			<distributionManagement>
+				<snapshotRepository>
+					<id>oss</id>
+					<url>https://oss.sonatype.org/content/repositories/snapshots/</url>
+				</snapshotRepository>
+				<repository>
+					<id>oss</id>
+					<url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
+				</repository>
+			</distributionManagement>
+		</profile>
+	</profiles>
+	
 	<build>
 		<plugins>
 			<plugin>
 				<artifactId>maven-compiler-plugin</artifactId>
 				<configuration>
-					<source>1.8</source>
-					<target>1.8</target>
+					<source>17</source>
+					<target>17</target>
 					<encoding>UTF-8</encoding>
 				</configuration>
 			</plugin>

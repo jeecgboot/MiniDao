@@ -39,17 +39,15 @@ MiniDao 是一款轻量级JAVA持久层框架，基于 SpringJdbc + freemarker �
 
 如何快速集成minidao?
 -----------------------------------
+> Springboot2与Springboot3区别在于groupId不同，springboot3版本加上了后缀.boot3
 
 ```
 <dependency>
-  <groupId>org.jeecgframework</groupId>
-  <artifactId>minidao-pe</artifactId>
+  <groupId>org.jeecgframework.boot3</groupId>
+  <artifactId>minidao-spring-boot-starter</artifactId>
   <version>1.9.5</version>
 </dependency>
 ```
-
-- [springboot2与minidao集成](http://minidao.jeecg.com/2392296)
-- [springmvc与Minidao集成](http://minidao.jeecg.com/2392293)
 
 
 		
