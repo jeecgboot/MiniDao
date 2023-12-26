@@ -46,3 +46,7 @@ minidao-pe-spring-boot-starter\pom.xml
 --author:wangshuai-----date:20231008----for:【QQYUN-6633】升级 1.6.2-GA2 后，下拉树组件多选后参数传递到 sql 中 in 语句失效 增加拼接函数/in函数--
 src/main/java/org/jeecgframework/minidao/util/SimpleFormat.java
 --author:wangshuai-----date:20231008----for:【QQYUN-6633】升级 1.6.2-GA2 后，下拉树组件多选后参数传递到 sql 中 in 语句失效 增加拼接函数/in函数--
+
+---author:chenrui---date:2023/12/26-----for:[jimu/issue/#2269]参数表达式新增中文支持---
+minidao-pe/src/main/java/org/jeecgframework/minidao/aop/MiniDaoHandler.java
+---author:chenrui---date:2023/12/26-----for:[jimu/issue/#2269]参数表达式新增中文支持---

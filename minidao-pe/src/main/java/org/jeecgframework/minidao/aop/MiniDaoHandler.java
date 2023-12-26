@@ -776,7 +776,9 @@ public class MiniDaoHandler implements InvocationHandler {
 	private Map<String, Object> installPlaceholderSqlParam(String executeSql, Map sqlParamsMap) throws OgnlException {
 		Map<String, Object> map = new HashMap<String, Object>();
 		//update-begin---author:scott----date:20160906------for:参数不支持下划线解决--------
-		String regEx = ":[ tnx0Bfr]*[0-9a-z.A-Z_]+"; // 表示以：开头，[0-9或者.或者A-Z大小都写]的任意字符，超过一个
+		//update-begin---author:chenrui ---date:20231226  for：[jimu/issue/#2269]参数表达式新增中文支持------------
+		String regEx = ":[ tnx0Bfr]*[0-9a-z.A-Z_\\u4e00-\\u9fa5]+"; // 表示以：开头，[0-9或者.或者A-Z大小写或者中文汉字]的任意字符，超过一个
+		//update-end---author:chenrui ---date:20231226  for：[jimu/issue/#2269]参数表达式新增中文支持------------
 		//update-begin---author:scott----date:20160906------for:参数不支持下划线解决--------
 		Pattern pat = Pattern.compile(regEx);
 		Matcher m = pat.matcher(executeSql);
