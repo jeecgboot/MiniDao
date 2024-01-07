@@ -4,7 +4,7 @@
 	
 	<groupId>org.jeecgframework</groupId>
 	<artifactId>minidao-pe</artifactId>
-	<version>1.9.5</version>
+	<version>1.9.6</version>
 	<packaging>jar</packaging>
 	
 	<name>minidao-pe</name>
