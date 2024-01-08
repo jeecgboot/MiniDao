@@ -8,7 +8,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
 
 /*
- * @TransactionConfiguration(transactionManager="transactionManager",defaultRollback=true) 
+ * @TransactionConfiguration(transactionManager="transactionManager",defaultRollback=true)
  * transactionManager的默认取值是"transactionManager"，
  * defaultRollback的默认取值是true，当然，你也可以改成false。
  * true表示测试不会对数据库造成污染,false的话当然就会改动到数据库中了。
@@ -17,7 +17,9 @@ import org.springframework.transaction.annotation.Transactional;
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = { "classpath:applicationContext.xml" })
 @Transactional	//声明开启事务
-public class SpringTxTestCase extends AbstractJUnit4SpringContextTests {
+//update-begin---author:chenrui ---date:20240108  for：[QQYUN-7775]minidao springboot3版本打包，报junit错误------------
+public abstract class SpringTxTestCase extends AbstractJUnit4SpringContextTests {
+//update-end---author:chenrui ---date:20240108  for：[QQYUN-7775]minidao springboot3版本打包，报junit错误------------
 
 	
 	public <T> T getBean(Class<T> type) {
