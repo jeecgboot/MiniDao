@@ -55,7 +55,11 @@ minidao-pe-example/pom.xml
 minidao-pe/pom.xml
 --author:scott-----date:20231219----for:修改jdk17版本升级，自动上传maven私服的配置--
 
-
 ---author:chenrui---date:2023/12/26-----for:[jimu/issue/#2269]参数表达式新增中文支持---
 minidao-pe/src/main/java/org/jeecgframework/minidao/aop/MiniDaoHandler.java
 ---author:chenrui---date:2023/12/26-----for:[jimu/issue/#2269]参数表达式新增中文支持---
+
+---author:chenrui---date:2024/1/8-----for:[QQYUN-7775]minidao springboot3版本打包，报junit错误---
+minidao-pe-example/src/test/java/test/spring/SpringTxTestCase.java
+---author:chenrui---date:2024/1/8-----for:[QQYUN-7775]minidao springboot3版本打包，报junit错误---
+
