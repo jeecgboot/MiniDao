@@ -18,7 +18,7 @@
 		<springframework.version>5.3.18</springframework.version>
 		<!-- 数据库驱动 -->
 		<mysql.version>8.0.21</mysql.version>
-		<postgresql.version>42.4.3</postgresql.version>
+		<postgresql.version>42.7.2</postgresql.version>
 		<ojdbc6.version>11.2.0.3</ojdbc6.version>
 		<sqljdbc4.version>4.0</sqljdbc4.version>
 		<mariadb.version>2.6.2</mariadb.version>
