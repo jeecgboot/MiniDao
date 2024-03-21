@@ -8,9 +8,6 @@ import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
-
-import net.sf.jsqlparser.JSQLParserException;
-import netscape.javascript.JSException;
 import ognl.Ognl;
 import ognl.OgnlException;
 
@@ -422,7 +419,7 @@ public class MiniDaoHandler implements InvocationHandler {
 					if (returnType.isAssignableFrom(MiniDaoPage.class)) {
 						if (paramMap != null) {
 							String countsql = countSqlParser.getSmartCountSql(executeSql);
-							logger.info("page countsql===> "+countsql);
+							logger.info("page smart countsql===> "+countsql);
 							pageSetting.setTotal(namedParameterJdbcTemplate.queryForObject(countsql, paramMap, Integer.class));
 						} else {
 							String countsql = countSqlParser.getSmartCountSql(executeSql);

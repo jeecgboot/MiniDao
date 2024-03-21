@@ -11,6 +11,7 @@ import net.sf.jsqlparser.statement.select.*;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.jeecgframework.minidao.util.ReflectUtil;
 
 import java.util.*;
 import java.util.regex.Matcher;
@@ -341,8 +342,8 @@ public class CountSqlParser {
             processPlainSelect((PlainSelect) selectBody);
         } else if (selectBody instanceof WithItem) {
             WithItem withItem = (WithItem) selectBody;
-            if (withItem.getSubSelect().getSelectBody() != null) {
-                processSelectBody(withItem.getSubSelect().getSelectBody());
+            if (ReflectUtil.getItemSelectBody(withItem)!=null) {
+                processSelectBody(ReflectUtil.getItemSelectBody(withItem));
             }
         } else {
             SetOperationList operationList = (SetOperationList) selectBody;
@@ -388,7 +389,7 @@ public class CountSqlParser {
     public void processWithItemsList(List<WithItem> withItemsList) {
         if (withItemsList != null && withItemsList.size() > 0) {
             for (WithItem item : withItemsList) {
-                processSelectBody(item.getSubSelect().getSelectBody());
+                processSelectBody(ReflectUtil.getItemSelectBody(item));
             }
         }
     }

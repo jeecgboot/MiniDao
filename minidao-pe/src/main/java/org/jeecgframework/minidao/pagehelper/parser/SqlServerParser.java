@@ -13,6 +13,7 @@ import net.sf.jsqlparser.statement.select.*;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.jeecgframework.minidao.pagehelper.PageException;
+import org.jeecgframework.minidao.util.ReflectUtil;
 
 import java.util.*;
 import java.util.regex.Matcher;
@@ -341,8 +342,8 @@ public class SqlServerParser {
             processPlainSelect((PlainSelect) selectBody, level + 1);
         } else if (selectBody instanceof WithItem) {
             WithItem withItem = (WithItem) selectBody;
-            if (withItem.getSubSelect().getSelectBody() != null) {
-                processSelectBody(withItem.getSubSelect().getSelectBody(), level + 1);
+            if (ReflectUtil.getItemSelectBody(withItem) != null) {
+                processSelectBody(ReflectUtil.getItemSelectBody(withItem), level + 1);
             }
         } else {
             SetOperationList operationList = (SetOperationList) selectBody;
