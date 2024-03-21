@@ -50,3 +50,11 @@ src/main/java/org/jeecgframework/minidao/util/SimpleFormat.java
 ---author:chenrui---date:2023/12/26-----for:[jimu/issue/#2269]参数表达式新增中文支持---
 minidao-pe/src/main/java/org/jeecgframework/minidao/aop/MiniDaoHandler.java
 ---author:chenrui---date:2023/12/26-----for:[jimu/issue/#2269]参数表达式新增中文支持---
+
+---author:chenrui---date:20240321-----for:minidao-pe-example去掉老的p3代码生成器的相关代码，导致单元测试不输出日志---
+minidao-pe-example/jeecg\codegenerate\OneToMainUtil.java（-）
+minidao-pe-example/jeecg\codegenerate\CodeGenerateUtil.java（-）
+minidao-pe-example/jeecg\aop\MinidaoInterceptor.java（-）
+minidao-pe-example/examples\util\JdbcUtils.java（-）
+minidao-pe-example/pom.xml
+---author:chenrui---date:20240321-----for:minidao-pe-example去掉老的p3代码生成器的相关代码，导致单元测试不输出日志---
