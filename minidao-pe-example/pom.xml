@@ -15,7 +15,7 @@
 	<properties>
 		<minidao.version>1.9.7</minidao.version>
 		<junit.version>4.13.1</junit.version>
-		<springframework.version>5.3.18</springframework.version>
+		<springframework.version>5.3.31</springframework.version>
 		<!-- 数据库驱动 -->
 		<mysql.version>8.0.21</mysql.version>
 		<postgresql.version>42.4.3</postgresql.version>
@@ -24,7 +24,7 @@
 		<mariadb.version>2.6.2</mariadb.version>
 		<sqlit.version>3.41.2.2</sqlit.version>
 
-		<druid.version>1.2.6</druid.version>
+		<druid.version>1.2.19</druid.version>
 		<log4j.version>1.2.16</log4j.version>
 	</properties>
 
@@ -64,7 +64,7 @@
 			<artifactId>minidao-pe</artifactId>
 			<version>${minidao.version}</version>
 		</dependency>
-		<!-- 代码生成器 -->
+		<!-- 代码生成器 
 		<dependency>
 			<groupId>org.jeecgframework.p3</groupId>
 			<artifactId>jeecg-p3-generate</artifactId>
@@ -116,6 +116,8 @@
 				</exclusion>
 			</exclusions>
 		</dependency>
+		-->
+		
 		<dependency>
 			<groupId>com.alibaba</groupId>
 			<artifactId>druid</artifactId>
@@ -226,8 +228,8 @@
 			<plugin>
 				<artifactId>maven-compiler-plugin</artifactId>
 				<configuration>
-					<source>1.7</source>
-					<target>1.7</target>
+					<source>1.8</source>
+					<target>1.8</target>
 					<encoding>UTF-8</encoding>
 				</configuration>
 			</plugin>
