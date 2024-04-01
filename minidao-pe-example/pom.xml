@@ -3,17 +3,17 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.jeecgframework</groupId>
 	<artifactId>minidao-pe-example</artifactId>
-	<version>1.9.9</version>
+	<version>1.9.10</version>
 	<packaging>jar</packaging>
 	<url>http://www.jeecg.com</url>
 	<parent>
 		<groupId>org.jeecgframework</groupId>
 		<artifactId>minidao-parent</artifactId>
-		<version>1.9.9</version>
+		<version>1.9.10</version>
 	</parent>
 	
 	<properties>
-		<minidao.version>1.9.9</minidao.version>
+		<minidao.version>1.9.10</minidao.version>
 		<junit.version>4.13.1</junit.version>
 		<springframework.version>5.3.31</springframework.version>
 		<!-- 数据库驱动 -->
@@ -24,7 +24,7 @@
 		<mariadb.version>2.6.2</mariadb.version>
 		<sqlit.version>3.41.2.2</sqlit.version>
 
-		<druid.version>1.2.19</druid.version>
+		<druid.version>1.2.22</druid.version>
 		<log4j.version>1.2.16</log4j.version>
 	</properties>
 
