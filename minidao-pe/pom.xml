@@ -4,7 +4,7 @@
 	
 	<groupId>org.jeecgframework</groupId>
 	<artifactId>minidao-pe</artifactId>
-	<version>1.9.10</version>
+	<version>1.10.1</version>
 	<packaging>jar</packaging>
 	
 	<name>minidao-pe</name>
@@ -38,7 +38,8 @@
 		<commons-lang3.version>3.12.0</commons-lang3.version>
 		<org.springframework.version>5.3.31</org.springframework.version>
 		<javassist.version>3.25.0-GA</javassist.version>
-		<jsqlparser.version>4.0</jsqlparser.version>
+		<jsqlparser.version>4.6</jsqlparser.version>
+		<junit.version>4.13.1</junit.version>
 	</properties>
 
 	<dependencies>
@@ -54,6 +55,12 @@
 			<version>${org.springframework.version}</version>
 		</dependency>
 		<!-- spring end -->
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<version>${junit.version}</version>
+			<scope>test</scope>
+		</dependency>
 
 		<!-- freemarker -->
 		<dependency>
