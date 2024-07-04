@@ -1,4 +1,4 @@
-package org.jeecgframework.minidao.util;
+package org.jeecgframework.minidao.sqlparser.impl.util;
 
 import net.sf.jsqlparser.JSQLParserException;
 import net.sf.jsqlparser.parser.CCJSqlParserUtil;
@@ -15,10 +15,10 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
- * SQL解析工具
+ * sqlserver工具类，去掉order by
  */
-public class SqlServerParse {
-    private static final Log logger = LogFactory.getLog(SqlServerParse.class);
+public class JSqlRemoveSqlOrderBy {
+    private static final Log logger = LogFactory.getLog(JSqlRemoveSqlOrderBy.class);
     /**
      * 匹配:user.name这样的参数表达式
      */
@@ -94,8 +94,8 @@ public class SqlServerParse {
             processPlainSelect((PlainSelect) selectBody);
         } else if (selectBody instanceof WithItem) {
             WithItem withItem = (WithItem) selectBody;
-            if (withItem.getSubSelect().getSelectBody() != null) {
-                processSelectBody(withItem.getSubSelect().getSelectBody());
+            if (JSqlSubSelectBody.getItemSelectBody(withItem)!=null) {
+                processSelectBody(JSqlSubSelectBody.getItemSelectBody(withItem));
             }
         } else {
             SetOperationList operationList = (SetOperationList) selectBody;
@@ -106,9 +106,7 @@ public class SqlServerParse {
                         processPlainSelect((PlainSelect) optSelect);
                     } else if (optSelect instanceof WithItem) {
                         WithItem withItem = (WithItem) optSelect;
-                        if (withItem.getSubSelect().getSelectBody() != null) {
-                            processSelectBody(withItem.getSubSelect().getSelectBody());
-                        }
+                        processSelectBody(withItem.getSubSelect().getSelectBody());
                     }
                 }
             }
@@ -178,32 +176,38 @@ public class SqlServerParse {
         return false;
     }
 
-    public static void main(String[] args) {
-        String sql1 = "select * from (select s.username,s.create_time,s.realname,jr.create_by,jr.`name` from sys_user s INNER JOIN jimu_report jr on s.username = jr.create_by where jr.type='chartinfo'  ORDER BY jr.create_time)a";
-        String sql2 = "select * from sys_user ORDER BY create_time,a,c desc";
-        String sql3 = "SELECT cf.DB_FIELD_NAME,cf.DB_FIELD_TXT FROM ONL_CGFORM_FIELD cf INNER JOIN ONL_CGFORM_HEAD ch ON cf.CGFORM_HEAD_ID = ch.ID WHERE ch.TABLE_NAME = :tableName ORDER BY cf.ORDER_NUM ";
-        String sql4 = "  select count(*) as visit\n" +
-                "        \t   ,count(distinct(ip)) as ip\n" +
-                "             ,CONVERT(varchar(100), create_time, 23) as tian\n" +
-                "        \t   ,RIGHT(CONVERT(varchar(100), create_time, 23),5) as type\n" +
-                "         from sys_log \n" +
-                "         where log_type = 1 and create_time >= :dayStart and create_time < :dayEnd \n" +
-                "         group by CONVERT(varchar(100), create_time, 23),RIGHT(CONVERT(varchar(100), create_time, 23),5)  \n" +
-                "         order by CONVERT(varchar(100), create_time, 23) \n" +
-                " asc\t  ";
-        String sql5 = "SELECT * FROM jimu_report jr WHERE 1=1 and jr.CREATE_BY = :jimuReport.createBy and jr.TYPE = :jimuReport.type and jr.DEL_FLAG = :jimuReport.delFlag and jr.TEMPLATE = :jimuReport.template ORDER BY jr.create_time DESC";
-        String sql6 = "SELECT count(*) FROM (SELECT * FROM sys_user order by id OFFSET 1 ROWS FETCH NEXT 3 ROWS ONLY) AS a";
-        String sql7 = "SELECT * FROM jimu_report as jr WHERE jr.create_by in (SELECT top 100 username FROM sys_user  ORDER BY create_time) ORDER BY create_time desc";
-        String sql8 = "select  a.*  from (SELECT top 100  jr.create_time,jr.name,jr.code from jimu_report jr LEFT JOIN sys_user s on jr.create_by = s.username ORDER BY  s.create_time) a ORDER BY  a.create_time ASC";
-        String sql9 = "select * from sys_user order by CASE WHEN sex='1' THEN create_time else update_time END";
-        try {
-            //System.out.println(getKeyListByContent(sql6));
-            System.out.println(sql9);
-            System.out.println(SqlServerParse.class.newInstance().removeOrderBy(sql9));
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
+//    public static void main(String[] args) {
+//        String sql1 = "select * from (select s.username,s.create_time,s.realname,jr.create_by,jr.`name` from sys_user s INNER JOIN jimu_report jr on s.username = jr.create_by where jr.type='chartinfo'  ORDER BY jr.create_time)a";
+//        String sql2 = "select * from sys_user ORDER BY create_time,a,c desc";
+//        String sql3 = "SELECT cf.DB_FIELD_NAME,cf.DB_FIELD_TXT FROM ONL_CGFORM_FIELD cf INNER JOIN ONL_CGFORM_HEAD ch ON cf.CGFORM_HEAD_ID = ch.ID WHERE ch.TABLE_NAME = :tableName ORDER BY cf.ORDER_NUM ";
+//        String sql4 = "  select count(*) as visit\n" +
+//                "        \t   ,count(distinct(ip)) as ip\n" +
+//                "             ,CONVERT(varchar(100), create_time, 23) as tian\n" +
+//                "        \t   ,RIGHT(CONVERT(varchar(100), create_time, 23),5) as type\n" +
+//                "         from sys_log \n" +
+//                "         where log_type = 1 and create_time >= :dayStart and create_time < :dayEnd \n" +
+//                "         group by CONVERT(varchar(100), create_time, 23),RIGHT(CONVERT(varchar(100), create_time, 23),5)  \n" +
+//                "         order by CONVERT(varchar(100), create_time, 23) \n" +
+//                " asc\t  ";
+//        String sql5 = "SELECT * FROM jimu_report jr WHERE 1=1 and jr.CREATE_BY = :jimuReport.createBy and jr.TYPE = :jimuReport.type and jr.DEL_FLAG = :jimuReport.delFlag and jr.TEMPLATE = :jimuReport.template ORDER BY jr.create_time DESC";
+//        String sql6 = "SELECT count(*) FROM (SELECT * FROM sys_user order by id OFFSET 1 ROWS FETCH NEXT 3 ROWS ONLY) AS a";
+//        String sql7 = "SELECT * FROM jimu_report as jr WHERE jr.create_by in (SELECT top 100 username FROM sys_user  ORDER BY create_time) ORDER BY create_time desc";
+//        String sql8 = "select  a.*  from (SELECT top 100  jr.create_time,jr.name,jr.code from jimu_report jr LEFT JOIN sys_user s on jr.create_by = s.username ORDER BY  s.create_time) a ORDER BY  a.create_time ASC";
+//        String sql9 = "select * from sys_user order by CASE WHEN sex='1' THEN create_time else update_time END";
+//        try {
+//            System.out.println("1= "+ RemoveSqlOrderByUtil.class.newInstance().removeOrderBy(sql1));
+//            System.out.println("2= "+ RemoveSqlOrderByUtil.class.newInstance().removeOrderBy(sql2));
+//            System.out.println("3= "+ RemoveSqlOrderByUtil.class.newInstance().removeOrderBy(sql3));
+//            System.out.println("4= "+ RemoveSqlOrderByUtil.class.newInstance().removeOrderBy(sql4));
+//            System.out.println("5= "+ RemoveSqlOrderByUtil.class.newInstance().removeOrderBy(sql5));
+//            System.out.println("6= "+ RemoveSqlOrderByUtil.class.newInstance().removeOrderBy(sql6));
+//            System.out.println("7= "+ RemoveSqlOrderByUtil.class.newInstance().removeOrderBy(sql7));
+//            System.out.println("8= "+ RemoveSqlOrderByUtil.class.newInstance().removeOrderBy(sql8));
+//            System.out.println("9= "+ RemoveSqlOrderByUtil.class.newInstance().removeOrderBy(sql9));
+//
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
+//    }
 
 }

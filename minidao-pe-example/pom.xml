@@ -3,28 +3,28 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.jeecgframework.boot3</groupId>
 	<artifactId>minidao-pe-example</artifactId>
-	<version>1.9.6</version>
+	<version>1.10.1</version>
 	<packaging>jar</packaging>
 	<url>http://www.jeecg.com</url>
 	<parent>
 		<groupId>org.jeecgframework.boot3</groupId>
 		<artifactId>minidao-parent</artifactId>
-		<version>1.9.6</version>
+		<version>1.10.1</version>
 	</parent>
 	
 	<properties>
-		<minidao.version>1.9.6</minidao.version>
+		<minidao.version>1.10.1</minidao.version>
 		<junit.version>4.13.1</junit.version>
 		<springframework.version>6.0.13</springframework.version>
 		<!-- 数据库驱动 -->
 		<mysql.version>8.0.21</mysql.version>
-		<postgresql.version>42.2.6</postgresql.version>
+		<postgresql.version>42.4.3</postgresql.version>
 		<ojdbc6.version>11.2.0.3</ojdbc6.version>
 		<sqljdbc4.version>4.0</sqljdbc4.version>
 		<mariadb.version>2.6.2</mariadb.version>
-		<sqlit.version>3.7.2</sqlit.version>
+		<sqlit.version>3.41.2.2</sqlit.version>
 
-		<druid.version>1.2.20</druid.version>
+		<druid.version>1.2.22</druid.version>
 		<log4j.version>1.2.16</log4j.version>
 	</properties>
 
@@ -64,7 +64,7 @@
 			<artifactId>minidao-pe</artifactId>
 			<version>${minidao.version}</version>
 		</dependency>
-		<!-- 代码生成器 -->
+		<!-- 代码生成器 
 		<dependency>
 			<groupId>org.jeecgframework.p3</groupId>
 			<artifactId>jeecg-p3-generate</artifactId>
@@ -116,6 +116,8 @@
 				</exclusion>
 			</exclusions>
 		</dependency>
+		-->
+		
 		<dependency>
 			<groupId>com.alibaba</groupId>
 			<artifactId>druid</artifactId>
@@ -187,19 +189,19 @@
 		<dependency>
 			<groupId>org.hsqldb</groupId>
 			<artifactId>hsqldb</artifactId>
-			<version>2.2.8</version>
+			<version>2.7.1</version>
 		</dependency>
 		<!--h2-->
 		<dependency>
 			<groupId>com.h2database</groupId>
 			<artifactId>h2</artifactId>
-			<version>1.4.197</version>
+			<version>2.2.220</version>
 		</dependency>
 		<!--derby-->
 		<dependency>
 			<groupId>org.apache.derby</groupId>
 			<artifactId>derby</artifactId>
-			<version>10.9.1.0</version>
+			<version>10.17.1.0</version>
 		</dependency>
 		<dependency>
 			<groupId>org.apache.derby</groupId>
@@ -218,10 +220,9 @@
 			<artifactId>jcc</artifactId>
 			<version>11.5.0.0</version>
 		</dependency>
-
 	</dependencies>
 
-
+	
 	<build>
 		<plugins>
 			<plugin>
@@ -270,7 +271,5 @@
 			</resource>
 		</resources>
 	</build>
-
-
 
 </project>

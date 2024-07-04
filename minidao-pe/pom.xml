@@ -4,7 +4,7 @@
 	
 	<groupId>org.jeecgframework.boot3</groupId>
 	<artifactId>minidao-pe</artifactId>
-	<version>1.9.6</version>
+	<version>1.10.1</version>
 	<packaging>jar</packaging>
 	
 	<name>minidao-pe</name>
@@ -30,7 +30,7 @@
 	</scm>
     
 	<properties>
-		<aspectj.version>1.9.6</aspectj.version>
+		<aspectj.version>1.9.9</aspectj.version>
 		<commons-collections.version>3.2.2</commons-collections.version>
 		<freemarker.version>2.3.32</freemarker.version>
 		<ognl.version>3.2.21</ognl.version>
@@ -38,7 +38,8 @@
 		<commons-lang3.version>3.12.0</commons-lang3.version>
 		<org.springframework.version>6.0.13</org.springframework.version>
 		<javassist.version>3.25.0-GA</javassist.version>
-		<jsqlparser.version>4.4</jsqlparser.version>
+        <jsqlparser.version>4.6</jsqlparser.version>
+        <junit.version>4.13.1</junit.version>
 	</properties>
 
 	<dependencies>
@@ -54,6 +55,12 @@
 			<version>${org.springframework.version}</version>
 		</dependency>
 		<!-- spring end -->
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<version>${junit.version}</version>
+			<scope>test</scope>
+		</dependency>
 
 		<!-- freemarker -->
 		<dependency>
@@ -107,10 +114,12 @@
 			<version>${javassist.version}</version>
 		</dependency>
 		<!-- jsqlparser -->
+		<!-- 依赖在编译时和测试时需要，但在运行时由容器或其他外部配置按需提供，不提供的话则使用简单sql解析引擎 -->
 		<dependency>
 			<groupId>com.github.jsqlparser</groupId>
 			<artifactId>jsqlparser</artifactId>
 			<version>${jsqlparser.version}</version>
+			<scope>provided</scope>
 		</dependency>
 		<dependency>
 			<groupId>jakarta.annotation</groupId>

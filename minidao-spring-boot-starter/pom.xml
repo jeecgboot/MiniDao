@@ -3,7 +3,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.jeecgframework.boot3</groupId>
 	<artifactId>minidao-spring-boot-starter</artifactId>
-	<version>1.9.6</version>
+	<version>1.10.1</version>
 	<packaging>jar</packaging>
 
 	<parent>
@@ -33,8 +33,8 @@
 
 	<properties>
 		<!-- minidao -->
-		<minidao.version>1.9.6</minidao.version>
-		<druid.version>1.2.20</druid.version>
+		<minidao.version>1.10.1</minidao.version>
+		<druid.version>1.2.22</druid.version>
 	</properties>
 	
 	<dependencies>
@@ -67,12 +67,12 @@
          </dependency>
 		
 		<!-- db connect -->
-		<dependency>
-			<groupId>com.mysql</groupId>
-			<artifactId>mysql-connector-j</artifactId>
-			<optional>true</optional>
+        <dependency>
+            <groupId>com.mysql</groupId>
+            <artifactId>mysql-connector-j</artifactId>
+            <optional>true</optional>
             <scope>runtime</scope>
-		</dependency>
+        </dependency>
 		<dependency>
 			<groupId>com.alibaba</groupId>
 			<artifactId>druid</artifactId>

@@ -1,8 +1,7 @@
 package jeecg.aop;
 
+import org.apache.commons.lang3.StringUtils;
 import org.jeecgframework.minidao.aspect.EmptyInterceptor;
-import org.jeecgframework.p3.core.author.LoginUser;
-import org.jeecgframework.p3.core.util.plugin.ContextHolderUtils;
 import org.springframework.stereotype.Service;
 
 import java.lang.reflect.Field;
@@ -22,36 +21,24 @@ public class MinidaoInterceptor implements EmptyInterceptor {
 	 * 支付窗账号ID，保存用户Session会话中
 	 */
 	public static final String ALIPAY_ACCOUNT_ID = "ALIPAY_ACCOUNT_ID";
-	
+
 	@Override
 	public boolean onInsert(Field[] fields, Object obj) {
 		Map<Object, Object> map = new HashMap<Object, Object>();
 		for (int j = 0; j < fields.length; j++) {
 			fields[j].setAccessible(true);
 			String fieldName = fields[j].getName();
-			//获取登录用户
-			LoginUser loginUser = ContextHolderUtils.getLoginSessionUser();
-			if(loginUser!=null){
+			
+			//TODO 模拟获取登录用户
+            String loginUserName = "scott";
+            
+			if(StringUtils.isNotBlank(loginUserName)){
 				if ("createBy".equals(fieldName)) {
-					map.put("createBy", loginUser.getUserName());
+					map.put("createBy", loginUserName);
 				}
 			}
 			if ("createDate".equals(fieldName)) {
 				map.put("createDate", new Date());
-			}
-			
-			//营销平台，支付窗拦截器，注入当前在线公众ID
-			if ("accountid".equals(fieldName)) {
-				try {
-					//Object accountid = ContextHolderUtils.getSession().get.getAttribute(ALIPAY_ACCOUNT_ID);
-					Object accountid = null;
-					if(accountid!=null){
-						map.put("accountid", accountid);
-					}
-				} catch (Exception e) {
-					
-				}
-				
 			}
 		}
 		try {
@@ -69,11 +56,12 @@ public class MinidaoInterceptor implements EmptyInterceptor {
 		for (int j = 0; j < fields.length; j++) {
 			fields[j].setAccessible(true);
 			String fieldName = fields[j].getName();
-			//获取登录用户
-			LoginUser loginUser = ContextHolderUtils.getLoginSessionUser();
-			if(loginUser!=null){
+			
+            //TODO 模拟获取登录用户
+            String loginUserName = "scott";
+            if(StringUtils.isNotBlank(loginUserName)){
 				if ("updateBy".equals(fieldName)) {
-					map.put("updateBy", loginUser.getUserName());
+					map.put("updateBy", loginUserName);
 				}
 			}
 			if ("updateDate".equals(fieldName)) {

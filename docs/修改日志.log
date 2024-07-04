@@ -63,3 +63,27 @@ minidao-pe/src/main/java/org/jeecgframework/minidao/aop/MiniDaoHandler.java
 minidao-pe-example/src/test/java/test/spring/SpringTxTestCase.java
 ---author:chenrui---date:2024/1/8-----for:[QQYUN-7775]minidao springboot3版本打包，报junit错误---
 
+
+
+---author:chenrui---date:20240321-----for:minidao-pe-example去掉老的p3代码生成器的相关代码，导致单元测试不输出日志---
+minidao-pe-example/jeecg\codegenerate\OneToMainUtil.java（-）
+minidao-pe-example/jeecg\codegenerate\CodeGenerateUtil.java（-）
+minidao-pe-example/jeecg\aop\MinidaoInterceptor.java（-）
+minidao-pe-example/examples\util\JdbcUtils.java（-）
+minidao-pe-example/pom.xml
+---author:chenrui---date:20240321-----for:minidao-pe-example去掉老的p3代码生成器的相关代码，导致单元测试不输出日志---
+
+---author:scott---date:2024-07-04-----for:SQL解析兼容机制（判断支持JSqlParser，才用JSqlParser引擎）---
+// 默认可不引入jsqlparser依赖，避免版本冲突问题
+org/jeecgframework/minidao/aop/MiniDaoHandler.java
+org/jeecgframework/minidao/pagehelper/dialect/helper/SqlServerDialect.java
+org/jeecgframework/minidao/sqlparser/impl/util/JSqlCountSqlParser.java 更名路径
+org/jeecgframework/minidao/sqlparser/impl/util/JSqlRemoveSqlOrderBy.java 更名路径
+org/jeecgframework/minidao/sqlparser/impl/util/JSqlServerPagesHelper.java 更名路径
+org/jeecgframework/minidao/sqlparser/impl/util/JSqlSubSelectBody.java 更名路径
+org/jeecgframework/minidao/sqlparser/impl/JsqlparserSqlProcessor.java（+）
+org/jeecgframework/minidao/sqlparser/impl/SimpleSqlProcessor.java（+）
+org/jeecgframework/minidao/sqlparser/AbstractSqlProcessor.java（+）
+org/jeecgframework/minidao/util/MiniDaoUtil.java
+org/jeecgframework/minidao/util/ReflectUtil.java
+---author:scott---date:2024-07-04-----for:SQL解析兼容机制（判断支持JSqlParser，才用JSqlParser引擎）---

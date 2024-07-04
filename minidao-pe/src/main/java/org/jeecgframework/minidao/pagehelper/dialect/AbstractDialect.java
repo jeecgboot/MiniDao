@@ -1,6 +1,5 @@
 package org.jeecgframework.minidao.pagehelper.dialect;
 
-import org.jeecgframework.minidao.pagehelper.parser.CountSqlParser;
 import org.jeecgframework.minidao.pojo.MiniDaoPage;
 
 /**
@@ -8,8 +7,6 @@ import org.jeecgframework.minidao.pojo.MiniDaoPage;
  *
  */
 public abstract class AbstractDialect implements Dialect {
-    //TODO 处理SQL
-    protected CountSqlParser countSqlParser = new CountSqlParser();
 
     /**
      * 处理分页参数

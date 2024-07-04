@@ -1,4 +1,4 @@
-package org.jeecgframework.minidao.pagehelper.parser;
+package org.jeecgframework.minidao.sqlparser.impl.util;
 
 import net.sf.jsqlparser.JSQLParserException;
 import net.sf.jsqlparser.expression.Alias;
@@ -31,8 +31,8 @@ import java.util.regex.Pattern;
  * </ol>
  * 该类设计为一个独立的工具类，依赖jsqlparser,可以独立使用
  */
-public class SqlServerParser {
-    private static final Log logger = LogFactory.getLog(SqlServerParser.class);
+public class JSqlServerPagesHelper {
+    private static final Log logger = LogFactory.getLog(JSqlServerPagesHelper.class);
     //开始行号
     public static final String START_ROW = String.valueOf(Long.MIN_VALUE);
     //结束行号
@@ -341,8 +341,8 @@ public class SqlServerParser {
             processPlainSelect((PlainSelect) selectBody, level + 1);
         } else if (selectBody instanceof WithItem) {
             WithItem withItem = (WithItem) selectBody;
-            if (withItem.getSubSelect().getSelectBody() != null) {
-                processSelectBody(withItem.getSubSelect().getSelectBody(), level + 1);
+            if (JSqlSubSelectBody.getItemSelectBody(withItem) != null) {
+                processSelectBody(JSqlSubSelectBody.getItemSelectBody(withItem), level + 1);
             }
         } else {
             SetOperationList operationList = (SetOperationList) selectBody;

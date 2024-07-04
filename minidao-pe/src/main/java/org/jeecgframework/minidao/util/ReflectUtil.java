@@ -1,5 +1,8 @@
 package org.jeecgframework.minidao.util;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.Map;
@@ -10,7 +13,8 @@ import java.util.Map;
  * @date: 2021年07月26日 19:49
  */
 public class ReflectUtil {
-
+    private static final Log logger = LogFactory.getLog(ReflectUtil.class);
+    
     /**
      * 设置bean 属性值
      *
@@ -131,4 +135,5 @@ public class ReflectUtil {
         }
         return false;
     }
+
 }

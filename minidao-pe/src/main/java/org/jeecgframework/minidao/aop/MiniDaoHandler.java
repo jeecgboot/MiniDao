@@ -1,7 +1,19 @@
 package org.jeecgframework.minidao.aop;
 
+import java.lang.reflect.Field;
+import java.lang.reflect.InvocationHandler;
+import java.lang.reflect.Method;
+import java.math.BigDecimal;
+import java.util.*;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+import java.util.stream.Collectors;
+
+import net.sf.jsqlparser.JSQLParserException;
+import netscape.javascript.JSException;
 import ognl.Ognl;
 import ognl.OgnlException;
+
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -14,7 +26,6 @@ import org.jeecgframework.minidao.annotation.id.TableId;
 import org.jeecgframework.minidao.aspect.EmptyInterceptor;
 import org.jeecgframework.minidao.def.MiniDaoConstants;
 import org.jeecgframework.minidao.pagehelper.dialect.PageAutoDialect;
-import org.jeecgframework.minidao.pagehelper.parser.CountSqlParser;
 import org.jeecgframework.minidao.pojo.MiniDaoPage;
 import org.jeecgframework.minidao.spring.rowMapper.MiniColumnMapRowMapper;
 import org.jeecgframework.minidao.spring.rowMapper.MiniColumnOriginalMapRowMapper;
@@ -35,14 +46,6 @@ import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 
 import javax.sql.DataSource;
-import java.lang.reflect.Field;
-import java.lang.reflect.InvocationHandler;
-import java.lang.reflect.Method;
-import java.math.BigDecimal;
-import java.util.*;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-import java.util.stream.Collectors;
 
 /**
  * 
@@ -69,7 +72,7 @@ public class MiniDaoHandler implements InvocationHandler {
 	@Lazy
 	private NamedParameterJdbcTemplate namedParameterJdbcTemplate;
 	/** minidao拦截器 */
-	@Autowired
+	@Autowired(required = false)
 	@Lazy
 	private EmptyInterceptor emptyInterceptor;
 
@@ -90,8 +93,6 @@ public class MiniDaoHandler implements InvocationHandler {
 
 	//自定获取方言
 	protected PageAutoDialect pageAutoDialect = new PageAutoDialect();
-	//处理SQL
-	protected CountSqlParser countSqlParser = new CountSqlParser();
      //序列查询sql
 	public static final String SEQ_NEXTVAL_SQL = "SELECT %s.nextval FROM DUAL";
 
@@ -417,11 +418,11 @@ public class MiniDaoHandler implements InvocationHandler {
 				if (page != 0 && rows != 0) {
 					if (returnType.isAssignableFrom(MiniDaoPage.class)) {
 						if (paramMap != null) {
-							String countsql = countSqlParser.getSmartCountSql(executeSql);
-							logger.info("page countsql===> "+countsql);
+							String countsql = MiniDaoUtil.getCountSql(executeSql);
+							logger.info("page smart countsql===> "+countsql);
 							pageSetting.setTotal(namedParameterJdbcTemplate.queryForObject(countsql, paramMap, Integer.class));
 						} else {
-							String countsql = countSqlParser.getSmartCountSql(executeSql);
+							String countsql = MiniDaoUtil.getCountSql(executeSql);
 							logger.info("page countsql===> "+countsql);
 							pageSetting.setTotal(jdbcTemplate.queryForObject(countsql, Integer.class));
 						}

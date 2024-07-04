@@ -1,24 +1,38 @@
 package org.jeecgframework.minidao.pagehelper.dialect.helper;
 
+import org.jeecgframework.minidao.sqlparser.AbstractSqlProcessor;
 import org.jeecgframework.minidao.pagehelper.dialect.AbstractHelperDialect;
-import org.jeecgframework.minidao.pagehelper.parser.SqlServerParser;
 import org.jeecgframework.minidao.pojo.MiniDaoPage;
+import org.jeecgframework.minidao.sqlparser.impl.JsqlparserSqlProcessor;
+import org.jeecgframework.minidao.sqlparser.impl.SimpleSqlProcessor;
+import org.jeecgframework.minidao.util.MiniDaoUtil;
 
 /**
  * SqlServer
  */
 public class SqlServerDialect extends AbstractHelperDialect {
-    protected static SqlServerParser pageSql = new SqlServerParser();
+
+    //update-begin---author:scott ---date:2024-07-04  for：SQL解析引擎改造支持普通和jsqlparser切换----
+    protected static AbstractSqlProcessor abstractSqlProcessor;
+
+    static {
+        if (MiniDaoUtil.isJSqlParserAvailable()) {
+            abstractSqlProcessor = new JsqlparserSqlProcessor();
+        } else {
+            abstractSqlProcessor = new SimpleSqlProcessor();
+        }
+    }
+    //update-end---author:scott ---date:2024-07-04  for：SQL解析引擎改造支持普通和jsqlparser切换----
 
     @Override
     public String getPageSql(String sql, MiniDaoPage miniDaoPage) {
-            int page = miniDaoPage.getPage();
-            int rows = miniDaoPage.getRows();
-            int beginNum = (page - 1) * rows;
-            String cacheSql = sql;
-            cacheSql = pageSql.convertToPageSql(cacheSql, null, null);
-            cacheSql = cacheSql.replace(String.valueOf(Long.MIN_VALUE), String.valueOf(beginNum));
-            cacheSql = cacheSql.replace(String.valueOf(Long.MAX_VALUE), String.valueOf(rows));
-            return cacheSql;
+        String pageSql = null;
+        try {
+            pageSql = abstractSqlProcessor.getSqlServerPageSql(sql, miniDaoPage);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return pageSql;
     }
+
 }

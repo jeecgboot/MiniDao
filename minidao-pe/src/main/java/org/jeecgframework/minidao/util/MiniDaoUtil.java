@@ -6,6 +6,9 @@ import org.jeecgframework.minidao.pagehelper.PageException;
 import org.jeecgframework.minidao.pagehelper.dialect.AbstractHelperDialect;
 import org.jeecgframework.minidao.pagehelper.dialect.PageAutoDialect;
 import org.jeecgframework.minidao.pojo.MiniDaoPage;
+import org.jeecgframework.minidao.sqlparser.AbstractSqlProcessor;
+import org.jeecgframework.minidao.sqlparser.impl.JsqlparserSqlProcessor;
+import org.jeecgframework.minidao.sqlparser.impl.SimpleSqlProcessor;
 
 import javax.sql.DataSource;
 import java.io.BufferedReader;
@@ -17,6 +20,9 @@ import java.lang.reflect.Modifier;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.text.MessageFormat;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
 /**
  * 
@@ -64,9 +70,21 @@ public class MiniDaoUtil {
 	public static final String DATABSE_TYPE_HIGHGO = "highgo";//瀚高数据库
 	public static final String DATABSE_TYPE_XUGU = "xugu";//瀚高数据库
 	public static final String DATABSE_TYPE_ZENITH = "zenith"; //华为高斯 GaussDB
-
 	public static final String DATABSE_TYPE_POLARDB = "polardb"; //PolarDB
 
+
+	//update-begin---author:scott ---date:2024-07-04  for：SQL解析引擎改造支持普通和jsqlparser切换----
+	private static final boolean JSQLPARSER_AVAILABLE = checkJSqlParserAvailability();
+	protected static AbstractSqlProcessor abstractSqlProcessor;
+	static {
+		if (MiniDaoUtil.isJSqlParserAvailable()) {
+			abstractSqlProcessor = new JsqlparserSqlProcessor();
+		} else {
+			abstractSqlProcessor = new SimpleSqlProcessor();
+		}
+	}
+	//update-end---author:scott ---date::2024-07-04  for：SQL解析引擎改造支持普通和jsqlparser切换----
+	
 //	/**
 //	 * 分页SQL
 //	 */
@@ -189,6 +207,78 @@ public class MiniDaoUtil {
 		return executePageSql;
 	}
 
+	/**
+	 * 获取SQL查询记录数SQL
+	 *
+	 * @param sql
+	 * @return
+	 */
+	public static String getCountSql(String sql) {
+		try {
+			sql = abstractSqlProcessor.getCountSql(sql);
+		} catch (Exception e) {
+			logger.warn("getCountSql error:" + e.getMessage());
+		}
+		return sql;
+	}
+
+	/**
+	 * 去除SQL中的order by (为了兼容SQLServer)
+	 *
+	 * @param sql
+	 * @return
+	 */
+	public static String removeOrderBy(String sql) {
+		try {
+			sql = abstractSqlProcessor.removeOrderBy(sql);
+		} catch (Exception e) {
+			logger.warn("removeOrderBy error:" + e.getMessage());
+		}
+		return sql;
+	}
+
+
+	/**
+	 * 解析SQL查询字段
+	 *
+	 * @param parsedSql
+	 * @return
+	 */
+	public static List<Map<String, Object>> parseSqlFields(String parsedSql) {
+		List<Map<String, Object>> list = new ArrayList<>();
+		try {
+			list = abstractSqlProcessor.parseSqlFields(parsedSql);
+		} catch (Exception e) {
+			logger.warn("parseSqlFields error:" + e.getMessage());
+		}
+		return list;
+	}
+
+	/**
+	 * 判断当前环境是否支持jsqlparser
+	 *
+	 * @return
+	 */
+	public static boolean isJSqlParserAvailable() {
+		return JSQLPARSER_AVAILABLE;
+	}
+	
+	/**
+	 * 判断当前环境是否存在jsqlparser，返回true或false
+	 *
+	 * @return
+	 */
+	private static boolean checkJSqlParserAvailability() {
+		try {
+			Class.forName("net.sf.jsqlparser.statement.select.SelectBody");
+			logger.info("【Sql Parser】 The environment supports jsqlparser engine");
+			return true;
+		} catch (ClassNotFoundException e) {
+			logger.warn("【Sql Parser】 The environment does not support jsqlparser engine");
+			return false;
+		}
+	}
+	
 //	/**
 //	 * 按照数据库类型，封装SQL
 //	 *

@@ -1,0 +1,170 @@
+package org.jeecgframework.minidao.sqlparser.impl;
+
+import net.sf.jsqlparser.JSQLParserException;
+import net.sf.jsqlparser.expression.*;
+import net.sf.jsqlparser.parser.CCJSqlParserUtil;
+import net.sf.jsqlparser.parser.SimpleNode;
+import net.sf.jsqlparser.schema.Column;
+import net.sf.jsqlparser.statement.select.*;
+import org.jeecgframework.minidao.pojo.MiniDaoPage;
+import org.jeecgframework.minidao.sqlparser.AbstractSqlProcessor;
+import org.jeecgframework.minidao.sqlparser.impl.util.JSqlCountSqlParser;
+import org.jeecgframework.minidao.sqlparser.impl.util.JSqlRemoveSqlOrderBy;
+import org.jeecgframework.minidao.sqlparser.impl.util.JSqlServerPagesHelper;
+import java.util.*;
+
+/**
+ * jsqlparser解析SQL
+ *
+ * @author zhang
+ */
+public class JsqlparserSqlProcessor implements AbstractSqlProcessor {
+    protected static JSqlCountSqlParser jsqlCountSqlParser = new JSqlCountSqlParser();
+    protected static JSqlServerPagesHelper jsqlServerPagesHelper = new JSqlServerPagesHelper();
+    protected static JSqlRemoveSqlOrderBy jsqlRemoveSqlOrderBy = new JSqlRemoveSqlOrderBy();
+    
+    @Override
+    public String getSqlServerPageSql(String sql, MiniDaoPage miniDaoPage) {
+        int page = miniDaoPage.getPage();
+        int rows = miniDaoPage.getRows();
+        int beginNum = (page - 1) * rows;
+        String pageSql = jsqlServerPagesHelper.convertToPageSql(sql);
+        pageSql = pageSql.replace(String.valueOf(Long.MIN_VALUE), String.valueOf(beginNum));
+        pageSql = pageSql.replace(String.valueOf(Long.MAX_VALUE), String.valueOf(rows));
+        return pageSql;
+    }
+
+    @Override
+    public String getCountSql(String sql) {
+        return jsqlCountSqlParser.getSmartCountSql(sql);
+    }
+
+    /**
+     * 去除排序SQL片段
+     *
+     * @param sql
+     * @return
+     */
+    @Override
+    public String removeOrderBy(String sql) {
+        if (sql == null) {
+            return null;
+        }
+        try {
+            sql = jsqlRemoveSqlOrderBy.removeOrderBy(sql);
+        } catch (JSQLParserException e) {
+            throw new RuntimeException(e);
+        }
+        return sql;
+    }
+
+
+    /**
+     * 解析SQL查询字段
+     *
+     * @param parsedSql
+     * @return
+     */
+    @Override
+    public List<Map<String, Object>> parseSqlFields(String parsedSql) {
+        List<Map<String, Object>> list = new ArrayList<>();
+        Select select = null;
+        try {
+            //update-begin---author:wangshuai ---date:20220215  for：[issues/I4STNJ]SQL Server表名关键字查询失败
+            select = (Select) CCJSqlParserUtil.parse(parsedSql, parser -> parser.withSquareBracketQuotation(true));
+            //update-end---author:wangshuai ---date:20220215  for：[issues/I4STNJ]SQL Server表名关键字查询失败
+        } catch (JSQLParserException jsqlParserException) {
+            jsqlParserException.printStackTrace();
+        }
+        PlainSelect plain;
+        // 处理union的情况
+        SelectBody selectBody = select.getSelectBody();
+        if (selectBody instanceof SetOperationList) {
+            SetOperationList selectBodyList = (SetOperationList) selectBody;
+            List<SelectBody> selects = selectBodyList.getSelects();
+            for (int i = 0; i < selects.size(); i++) {
+                plain = (PlainSelect) selects.get(i);
+                // 获取字段名的集合
+                List<String> tableAndColumns = getTableAndColumns(plain);
+                // 将list循环放到map中(key和value均是字段名)
+                getMapFiled(list, tableAndColumns);
+            }
+        }
+        if (selectBody instanceof PlainSelect) {
+            plain = (PlainSelect) selectBody;
+            List<String> tableAndColumns = getTableAndColumns(plain);
+            getMapFiled(list, tableAndColumns);
+        }
+        return list;
+    }
+
+
+    private static void getMapFiled(List<Map<String, Object>> list, List<String> tableAndColumns) {
+        Map<String, Object> map = new HashMap(5);
+        for (String str : tableAndColumns) {
+            //排除*不展示
+            if (!"*".equals(str)) {
+                map.put(str, str);
+            }
+        }
+        list.add(map);
+    }
+
+    private static List<String> getTableAndColumns(PlainSelect plain) {
+        // 获取select后面的语句
+        List<SelectItem> selectItems = plain.getSelectItems();
+        List<String> items = new ArrayList<>();
+        if (selectItems != null) {
+            for (SelectItem selectItem : selectItems) {
+                if (selectItem instanceof SelectExpressionItem) {
+                    SelectExpressionItem selectExpressionItem = (SelectExpressionItem) selectItem;
+                    String columnName = "";
+                    Alias alias = selectExpressionItem.getAlias();
+                    Expression expression = selectExpressionItem.getExpression();
+                    if (expression instanceof CaseExpression) {
+                        // case表达式
+                        columnName = alias.getName();
+                    } else if (expression instanceof LongValue || expression instanceof StringValue
+                            || expression instanceof DateValue || expression instanceof DoubleValue) {
+                        // 值表达式
+                        columnName = Objects.nonNull(alias.getName()) ? alias.getName()
+                                : expression.getASTNode().jjtGetValue().toString();
+                    } else if (expression instanceof TimeKeyExpression) {
+                        // 日期
+                        columnName = alias.getName();
+                    } else {
+                        if (alias != null) {
+                            columnName = alias.getName();
+                        } else {
+                            SimpleNode node = expression.getASTNode();
+                            Object value = node.jjtGetValue();
+                            if (value instanceof Column) {
+                                columnName = ((Column) value).getColumnName();
+                            } else if (value instanceof Function) {
+                                columnName = value.toString();
+                            } else {
+                                // 增加对select 'aaa' from table; 的支持
+                                columnName = String.valueOf(value);
+                                columnName = columnName.replace("'", "");
+                                columnName = columnName.replace("\"", "");
+                                columnName = columnName.replace("`", "");
+                            }
+                        }
+                    }
+
+                    columnName = columnName.replace("'", "");
+                    columnName = columnName.replace("\"", "");
+                    columnName = columnName.replace("`", "");
+
+                    items.add(columnName);
+                } else if (selectItem instanceof AllTableColumns) {
+                    AllTableColumns allTableColumns = (AllTableColumns) selectItem;
+                    items.add(allTableColumns.toString());
+                } else {
+                    items.add(selectItem.toString());
+                }
+            }
+        }
+        return items;
+    }
+}

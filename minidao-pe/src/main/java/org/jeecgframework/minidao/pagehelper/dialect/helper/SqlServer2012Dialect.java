@@ -12,17 +12,16 @@ public class SqlServer2012Dialect extends SqlServerDialect {
     @Override
     public String getPageSql(String sql, MiniDaoPage miniDaoPage) {
         StringBuilder sqlBuilder = new StringBuilder(sql.length() + 64);
-        //update-begin--Author:wangshuai--Date:20211201--for:判断sqlserver是否包含offset或next,包含用select包裹起来，不包含直接拼接
-        if(sql.toUpperCase().contains("OFFSET") && sql.toUpperCase().contains("NEXT")){
-            sqlBuilder.append("SELECT * FROM (");
-            sqlBuilder.append(sql);
-            sqlBuilder.append(") TMP_PAGE ");
-            sqlBuilder.append("\n OFFSET {0} ROWS FETCH NEXT {1} ROWS ONLY ");
-        }else{
-            sqlBuilder.append(sql);
-            sqlBuilder.append("\n OFFSET {0} ROWS FETCH NEXT {1} ROWS ONLY ");  
-        }
-        //update-end--Author:wangshuai--Date:20211201--for:判断sqlserver是否包含offset或next,包含用select包裹起来，不包含直接拼接
+
+        /**
+         * 在SQL Server中，使用OFFSET关键字来实现分页查询时，通常需要搭配ORDER BY子句来指定排序规则，因为OFFSET必须和ORDER BY一起使用。
+         * 如果不需要排序，可以使用ORDER BY (SELECT NULL)来实现类似无排序的效果。
+         */
+        sqlBuilder.append("SELECT * FROM (");
+        sqlBuilder.append(sql);
+        sqlBuilder.append(") TMP_PAGE ");
+        sqlBuilder.append(" ORDER BY (SELECT NULL) ");
+        sqlBuilder.append("\n OFFSET {0} ROWS FETCH NEXT {1} ROWS ONLY ");
         String newSql = sqlBuilder.toString();
         newSql = super.format(newSql, super.getPageParam(miniDaoPage));
         return newSql;

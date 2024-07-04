@@ -2,6 +2,8 @@ package test;
 
 import examples.dao.EmployeeDao;
 import examples.entity.Employee;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.jeecgframework.minidao.pojo.MiniDaoPage;
 import org.junit.Before;
 import org.junit.Test;
@@ -21,7 +23,8 @@ import java.util.UUID;
  * 
  */
 public class EmployeeDaoJunit extends SpringTxTestCase {
-
+	private final Log logger = LogFactory.getLog(EmployeeDaoJunit.class);
+	
 	@Resource(name = "employeeDao")
 	private EmployeeDao employeeDao;
 
@@ -77,7 +80,7 @@ public class EmployeeDaoJunit extends SpringTxTestCase {
 	@Test
 	public void testGetEntity() {
 		Employee employee = employeeDao.get("AD1024E0DAD84D2DB76A82E779F85B76");
-		logger.info("testGetEntity --" + employee.getName());
+		logger.info("testGetEntity --" + (employee != null ? employee.getName() : "查询不到对象"));
 	}
 
 	@Test
