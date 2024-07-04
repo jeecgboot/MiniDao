@@ -1,4 +1,4 @@
-package org.jeecgframework.minidao.util;
+package org.jeecgframework.minidao.sqlparser.impl.util;
 
 import net.sf.jsqlparser.JSQLParserException;
 import net.sf.jsqlparser.parser.CCJSqlParserUtil;
@@ -17,8 +17,8 @@ import java.util.regex.Pattern;
 /**
  * sqlserver工具类，去掉order by
  */
-public class SqlServerParse {
-    private static final Log logger = LogFactory.getLog(SqlServerParse.class);
+public class JSqlRemoveSqlOrderBy {
+    private static final Log logger = LogFactory.getLog(JSqlRemoveSqlOrderBy.class);
     /**
      * 匹配:user.name这样的参数表达式
      */
@@ -94,8 +94,8 @@ public class SqlServerParse {
             processPlainSelect((PlainSelect) selectBody);
         } else if (selectBody instanceof WithItem) {
             WithItem withItem = (WithItem) selectBody;
-            if (ReflectUtil.getItemSelectBody(withItem)!=null) {
-                processSelectBody(ReflectUtil.getItemSelectBody(withItem));
+            if (JSqlSubSelectBody.getItemSelectBody(withItem)!=null) {
+                processSelectBody(JSqlSubSelectBody.getItemSelectBody(withItem));
             }
         } else {
             SetOperationList operationList = (SetOperationList) selectBody;
@@ -106,9 +106,7 @@ public class SqlServerParse {
                         processPlainSelect((PlainSelect) optSelect);
                     } else if (optSelect instanceof WithItem) {
                         WithItem withItem = (WithItem) optSelect;
-                        if (ReflectUtil.getItemSelectBody(withItem)!=null) {
-                            processSelectBody(ReflectUtil.getItemSelectBody(withItem));
-                        }
+                        processSelectBody(withItem.getSubSelect().getSelectBody());
                     }
                 }
             }
@@ -197,15 +195,15 @@ public class SqlServerParse {
 //        String sql8 = "select  a.*  from (SELECT top 100  jr.create_time,jr.name,jr.code from jimu_report jr LEFT JOIN sys_user s on jr.create_by = s.username ORDER BY  s.create_time) a ORDER BY  a.create_time ASC";
 //        String sql9 = "select * from sys_user order by CASE WHEN sex='1' THEN create_time else update_time END";
 //        try {
-//            System.out.println(SqlServerParse.class.newInstance().removeOrderBy(sql3));
-//            System.out.println(SqlServerParse.class.newInstance().removeOrderBy(sql4));
-//            System.out.println(SqlServerParse.class.newInstance().removeOrderBy(sql5));
-//            System.out.println(SqlServerParse.class.newInstance().removeOrderBy(sql6));
-//            System.out.println(SqlServerParse.class.newInstance().removeOrderBy(sql7));
-//            System.out.println(SqlServerParse.class.newInstance().removeOrderBy(sql8));
-//            
-//            System.out.println(sql9);
-//            System.out.println(SqlServerParse.class.newInstance().removeOrderBy(sql9));
+//            System.out.println("1= "+ RemoveSqlOrderByUtil.class.newInstance().removeOrderBy(sql1));
+//            System.out.println("2= "+ RemoveSqlOrderByUtil.class.newInstance().removeOrderBy(sql2));
+//            System.out.println("3= "+ RemoveSqlOrderByUtil.class.newInstance().removeOrderBy(sql3));
+//            System.out.println("4= "+ RemoveSqlOrderByUtil.class.newInstance().removeOrderBy(sql4));
+//            System.out.println("5= "+ RemoveSqlOrderByUtil.class.newInstance().removeOrderBy(sql5));
+//            System.out.println("6= "+ RemoveSqlOrderByUtil.class.newInstance().removeOrderBy(sql6));
+//            System.out.println("7= "+ RemoveSqlOrderByUtil.class.newInstance().removeOrderBy(sql7));
+//            System.out.println("8= "+ RemoveSqlOrderByUtil.class.newInstance().removeOrderBy(sql8));
+//            System.out.println("9= "+ RemoveSqlOrderByUtil.class.newInstance().removeOrderBy(sql9));
 //
 //        } catch (Exception e) {
 //            e.printStackTrace();

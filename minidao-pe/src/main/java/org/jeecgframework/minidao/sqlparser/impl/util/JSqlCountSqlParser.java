@@ -1,4 +1,4 @@
-package org.jeecgframework.minidao.pagehelper.parser;
+package org.jeecgframework.minidao.sqlparser.impl.util;
 
 import net.sf.jsqlparser.JSQLParserException;
 import net.sf.jsqlparser.expression.Alias;
@@ -11,7 +11,6 @@ import net.sf.jsqlparser.statement.select.*;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.jeecgframework.minidao.util.ReflectUtil;
 
 import java.util.*;
 import java.util.regex.Matcher;
@@ -22,8 +21,8 @@ import java.util.regex.Pattern;
  *
  * @author jeecg
  */
-public class CountSqlParser {
-    private static final Log logger = LogFactory.getLog(CountSqlParser.class);
+public class JSqlCountSqlParser {
+    private static final Log logger = LogFactory.getLog(JSqlCountSqlParser.class);
     public static final String KEEP_ORDERBY = "/*keep orderby*/";
     private static final Alias TABLE_ALIAS;
     /**
@@ -154,6 +153,8 @@ public class CountSqlParser {
     /**
      * 获取智能的countSql
      *
+     * 处理body-去order by
+     * 
      * @param sql
      * @param countColumn 列名，默认 0
      * @return
@@ -342,8 +343,8 @@ public class CountSqlParser {
             processPlainSelect((PlainSelect) selectBody);
         } else if (selectBody instanceof WithItem) {
             WithItem withItem = (WithItem) selectBody;
-            if (ReflectUtil.getItemSelectBody(withItem)!=null) {
-                processSelectBody(ReflectUtil.getItemSelectBody(withItem));
+            if (JSqlSubSelectBody.getItemSelectBody(withItem)!=null) {
+                processSelectBody(JSqlSubSelectBody.getItemSelectBody(withItem));
             }
         } else {
             SetOperationList operationList = (SetOperationList) selectBody;
@@ -389,7 +390,7 @@ public class CountSqlParser {
     public void processWithItemsList(List<WithItem> withItemsList) {
         if (withItemsList != null && withItemsList.size() > 0) {
             for (WithItem item : withItemsList) {
-                processSelectBody(ReflectUtil.getItemSelectBody(item));
+                processSelectBody(JSqlSubSelectBody.getItemSelectBody(item));
             }
         }
     }
