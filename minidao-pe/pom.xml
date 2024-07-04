@@ -114,10 +114,12 @@
 			<version>${javassist.version}</version>
 		</dependency>
 		<!-- jsqlparser -->
+		<!-- 依赖在编译时和测试时需要，但在运行时由容器或其他外部配置按需提供，不提供的话则使用简单sql解析引擎 -->
 		<dependency>
 			<groupId>com.github.jsqlparser</groupId>
 			<artifactId>jsqlparser</artifactId>
 			<version>${jsqlparser.version}</version>
+			<scope>provided</scope>
 		</dependency>
 	</dependencies>
 
