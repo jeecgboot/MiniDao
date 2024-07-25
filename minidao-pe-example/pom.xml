@@ -15,7 +15,7 @@
 	<properties>
 		<minidao.version>1.10.1</minidao.version>
 		<junit.version>4.13.1</junit.version>
-		<springframework.version>6.0.13</springframework.version>
+		<springframework.version>6.1.11</springframework.version>
 		<!-- 数据库驱动 -->
 		<mysql.version>8.0.21</mysql.version>
 		<postgresql.version>42.4.3</postgresql.version>
