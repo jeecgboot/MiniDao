@@ -237,6 +237,25 @@ public class MiniDaoUtil {
 		return sql;
 	}
 
+	/**
+	 * 在SQL的最外层增加或修改ORDER BY子句
+	 * @for TV360X-2551
+	 * @param sql 原始SQL
+	 * @param field 新的ORDER BY字段
+	 * @param isAsc 是否正序
+	 * @return
+	 * @author chenrui
+	 * @date 2024/9/27 17:25
+	 */
+	public static String addOrderBy(String sql, String field, boolean isAsc){
+		try {
+			sql = abstractSqlProcessor.addOrderBy(sql,field,isAsc);
+		} catch (Exception e) {
+			logger.warn("addOrderBy error:" + e.getMessage());
+		}
+		return sql;
+	}
+
 
 	/**
 	 * 解析SQL查询字段
