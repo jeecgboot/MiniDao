@@ -8,7 +8,9 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.jeecgframework.minidao.annotation.MiniDao;
 import org.springframework.beans.factory.annotation.AnnotatedBeanDefinition;
+import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.beans.factory.config.BeanDefinitionHolder;
+import org.springframework.beans.factory.config.RuntimeBeanReference;
 import org.springframework.beans.factory.support.BeanDefinitionRegistry;
 import org.springframework.beans.factory.support.GenericBeanDefinition;
 import org.springframework.context.annotation.ClassPathBeanDefinitionScanner;
@@ -42,7 +44,12 @@ public class MiniDaoClassPathMapperScanner extends ClassPathBeanDefinitionScanne
         GenericBeanDefinition definition;
         for (BeanDefinitionHolder holder : beanDefinitions) {
             definition = (GenericBeanDefinition) holder.getBeanDefinition();
-            definition.getPropertyValues().add("proxy", getRegistry().getBeanDefinition("miniDaoHandler"));
+            //update-begin---author:chenrui ---date:20241021  for：[TV360X-2759]springboot3使用分库数据源配置，启动提示Bean被提前实例化 #3001------------
+            // 代理类应该引用现成的miniDaoHandler,而不是一个新的bean定义
+            RuntimeBeanReference miniDaoHandler = new RuntimeBeanReference("miniDaoHandler");
+            definition.getPropertyValues().add("proxy", miniDaoHandler);
+            definition.setRole(BeanDefinition.ROLE_INFRASTRUCTURE);
+            //update-end---author:chenrui ---date:20241021  for：[TV360X-2759]springboot3使用分库数据源配置，启动提示Bean被提前实例化 #3001------------
             definition.getPropertyValues().add("daoInterface", definition.getBeanClassName());
             if (logger.isInfoEnabled()) {
                 logger.info("register minidao name is { " + definition.getBeanClassName() + " }");

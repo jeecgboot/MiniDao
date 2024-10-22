@@ -4,6 +4,7 @@ import org.jeecgframework.minidao.annotation.MiniDao;
 import org.jeecgframework.minidao.aop.MiniDaoHandler;
 import org.jeecgframework.minidao.aspect.EmptyInterceptor;
 import org.springframework.beans.BeansException;
+import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.beans.factory.config.ConfigurableListableBeanFactory;
 import org.springframework.beans.factory.support.BeanDefinitionRegistry;
 import org.springframework.beans.factory.support.BeanDefinitionRegistryPostProcessor;
@@ -80,6 +81,10 @@ public class MiniDaoBeanScannerConfigurer implements BeanDefinitionRegistryPostP
 		jdbcDaoProxyDefinition.getPropertyValues().add("formatSql", formatSql);
 		jdbcDaoProxyDefinition.getPropertyValues().add("keyType", keyType);
 		jdbcDaoProxyDefinition.getPropertyValues().add("showSql", showSql);
+		//update-begin---author:chenrui ---date:20241021  for：[TV360X-2759]springboot3使用分库数据源配置，启动提示Bean被提前实例化 #3001------------
+		// 标识miniDaoHandler为框架基础设施角色
+		jdbcDaoProxyDefinition.setRole(BeanDefinition.ROLE_INFRASTRUCTURE);
+		//update-end---author:chenrui ---date:20241021  for：[TV360X-2759]springboot3使用分库数据源配置，启动提示Bean被提前实例化 #3001------------
 		//jdbcDaoProxyDefinition.getPropertyValues().add("dbType", dbType);
 		if(emptyInterceptor!=null){
 			jdbcDaoProxyDefinition.getPropertyValues().add("emptyInterceptor", emptyInterceptor);

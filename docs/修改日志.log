@@ -86,3 +86,8 @@ minidao-pe-example/src/test/java/test/SqlParserTest.java (+)
 minidao-pe-example/pom.xml
 minidao-spring-boot-starter/pom.xml
 ---author:chenrui---date:2024/9/27-----for:[TV360X-2551]添加在sql语句最外层添加OrderBy字段---
+
+---author:chenrui---date:2024/10/22-----for:[TV360X-2759]springboot3使用分库数据源配置，启动提示Bean被提前实例化 #3001---
+src/main/java/org/jeecgframework/minidao/factory/MiniDaoClassPathMapperScanner.java
+src/main/java/org/jeecgframework/minidao/factory/MiniDaoBeanScannerConfigurer.java
+---author:chenrui---date:2024/10/22-----for:[TV360X-2759]springboot3使用分库数据源配置，启动提示Bean被提前实例化 #3001---
