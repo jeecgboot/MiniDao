@@ -87,3 +87,8 @@ org/jeecgframework/minidao/sqlparser/AbstractSqlProcessor.java（+）
 org/jeecgframework/minidao/util/MiniDaoUtil.java
 org/jeecgframework/minidao/util/ReflectUtil.java
 ---author:scott---date:2024-07-04-----for:SQL解析兼容机制（判断支持JSqlParser，才用JSqlParser引擎）---
+
+---author:chenrui---date:2024/10/22-----for:[TV360X-2759]springboot3使用分库数据源配置，启动提示Bean被提前实例化 #3001---
+src/main/java/org/jeecgframework/minidao/factory/MiniDaoClassPathMapperScanner.java
+src/main/java/org/jeecgframework/minidao/factory/MiniDaoBeanScannerConfigurer.java
+---author:chenrui---date:2024/10/22-----for:[TV360X-2759]springboot3使用分库数据源配置，启动提示Bean被提前实例化 #3001---
