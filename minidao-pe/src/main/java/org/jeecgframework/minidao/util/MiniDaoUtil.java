@@ -184,7 +184,7 @@ public class MiniDaoUtil {
 		String dbUrl = getUrl(dataSource);
 		String dbType = getDbType(dbUrl);
         long endTime=System.currentTimeMillis();
-        logger.info("获取DB类型："+ dbType+ "，耗时："+ (endTime-startTime) +"ms");
+        logger.debug("获取DB类型："+ dbType+ "，耗时："+ (endTime-startTime) +"ms");
 		return dbType;
 	}
 
