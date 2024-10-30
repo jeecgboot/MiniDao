@@ -184,7 +184,7 @@ public class MiniDaoUtil {
 		String dbUrl = getUrl(dataSource);
 		String dbType = getDbType(dbUrl);
         long endTime=System.currentTimeMillis();
-        logger.info("获取DB类型："+ dbType+ "，耗时："+ (endTime-startTime) +"ms");
+        logger.debug("获取DB类型："+ dbType+ "，耗时："+ (endTime-startTime) +"ms");
 		return dbType;
 	}
 
@@ -290,7 +290,7 @@ public class MiniDaoUtil {
 	private static boolean checkJSqlParserAvailability() {
 		try {
 			Class.forName("net.sf.jsqlparser.statement.select.SelectBody");
-			logger.info("【Sql Parser】 The environment supports jsqlparser engine");
+			logger.debug("【Sql Parser】 The environment supports jsqlparser engine");
 			return true;
 		} catch (ClassNotFoundException e) {
 			logger.warn("【Sql Parser】 The environment does not support jsqlparser engine");

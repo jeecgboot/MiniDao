@@ -416,18 +416,24 @@ public class MiniDaoHandler implements InvocationHandler {
 					if (returnType.isAssignableFrom(MiniDaoPage.class)) {
 						if (paramMap != null) {
 							String countsql = MiniDaoUtil.getCountSql(executeSql);
-							logger.info("page smart countsql===> "+countsql);
+							if (showSql) {
+								logger.info("page smart countsql===> "+countsql);
+							}
 							pageSetting.setTotal(namedParameterJdbcTemplate.queryForObject(countsql, paramMap, Integer.class));
 						} else {
 							String countsql = MiniDaoUtil.getCountSql(executeSql);
-							logger.info("page countsql===> "+countsql);
+							if (showSql) {
+								logger.info("page countsql===> "+countsql);
+							}
 							pageSetting.setTotal(jdbcTemplate.queryForObject(countsql, Integer.class));
 						}
 					}
 					//判断方言，获取分页sql
 					if (pageAutoDialect.getDelegate()!=null) {
 						 executeSql = pageAutoDialect.getDelegate().getPageSql(executeSql,pageSetting);
-						 logger.info("page executeSql===> "+executeSql);
+						if (showSql) {
+							logger.info("page executeSql===> "+executeSql);
+						}
 					}
 					//executeSql = MiniDaoUtil.createPageSql(dbType, executeSql, page, rows);
 				}
