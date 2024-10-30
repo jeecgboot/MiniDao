@@ -3,7 +3,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.jeecgframework.boot3</groupId>
 	<artifactId>minidao-parent</artifactId>
-	<version>1.10.1</version>
+	<version>1.10.3</version>
 	<packaging>pom</packaging>
 	
 	<!-- 项目属性 -->

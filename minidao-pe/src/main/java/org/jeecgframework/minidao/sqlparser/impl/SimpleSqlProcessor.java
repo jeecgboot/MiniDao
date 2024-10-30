@@ -5,6 +5,7 @@ import org.jeecgframework.minidao.sqlparser.AbstractSqlProcessor;
 import org.jeecgframework.minidao.util.MiniDaoUtil;
 import java.text.MessageFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.regex.Matcher;
@@ -83,6 +84,86 @@ public class SimpleSqlProcessor implements AbstractSqlProcessor {
         }
 
         return list;
+    }
+
+
+    /**
+     * 排序方向
+     * @for TV360X-2551
+     */
+    private static final List<String> ORDER_DIRECTION = Arrays.asList("ASC", "DESC");
+
+    /**
+     * 在SQL的最外层增加或修改ORDER BY子句
+     * @for TV360X-2551
+     * @param sql 原始SQL
+     * @param field 新的ORDER BY字段
+     * @param isAsc 是否正序
+     * @return
+     * @author chenrui
+     * @date 2024/9/27 17:25
+     */
+    @Override
+    public String addOrderBy(String sql, String field, boolean isAsc) {
+        // 解析SQL以找到最外层的ORDER BY
+        int orderByIndex = findOuterOrderBy(sql);
+        field = field.trim().toLowerCase();  // 处理新字段
+
+        String orderField = " " + field + " " + (isAsc ? "ASC" : "DESC") + " ";
+
+        if (orderByIndex != -1) {
+            // 找到最外层的ORDER BY
+            String existingOrderByClause = sql.substring(orderByIndex + 8).trim().toLowerCase(); // 获取ORDER BY之后的字段
+
+            // 检查新字段是否已经存在
+            String replaceReg = "\\s*[,;\\s]\\s*";
+            String[] existingOrderByFields = existingOrderByClause.split(replaceReg);
+            for (String existingOrderByField : existingOrderByFields) {
+                if (null != existingOrderByField
+                        && !ORDER_DIRECTION.contains(existingOrderByField.trim())) {
+                    if(existingOrderByField.equalsIgnoreCase(field)){
+                        // 新字段已存在，直接返回原SQL
+                        return sql;
+                    }
+                }
+            }
+
+            // 新字段插入现有ORDER BY之前
+            return sql.substring(0, orderByIndex + 8) + " " + orderField + ", " + sql.substring(orderByIndex + 8);
+        } else {
+            // 如果没有ORDER BY，则在SQL的最后插入ORDER BY
+            if(sql.trim().endsWith(";")){
+                sql = sql.substring(0, sql.lastIndexOf(";"));
+            }
+            return sql.trim() + " ORDER BY " + orderField;
+        }
+    }
+
+    /**
+     * 查找最外层的ORDER BY的索引
+     *
+     * @param sql 要解析的SQL字符串
+     * @return 最外层ORDER BY的索引，如果没有则返回-1
+     */
+    private static int findOuterOrderBy(String sql) {
+        int nestedLevel = 0;  // 记录括号的嵌套层次
+        int orderByIndex = -1;
+        String lowerSql = sql.toLowerCase();  // 转换为小写以便不区分大小写
+
+        // 遍历SQL字符串，处理括号嵌套情况
+        for (int i = 0; i < lowerSql.length(); i++) {
+            char c = lowerSql.charAt(i);
+            if (c == '(') {
+                nestedLevel++;  // 进入嵌套
+            } else if (c == ')') {
+                nestedLevel--;  // 退出嵌套
+            } else if (nestedLevel == 0 && lowerSql.startsWith("order by", i)) {
+                // 只有在最外层时匹配到ORDER BY
+                orderByIndex = i;
+                break;
+            }
+        }
+        return orderByIndex;
     }
 
 

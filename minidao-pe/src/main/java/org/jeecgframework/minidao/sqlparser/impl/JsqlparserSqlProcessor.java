@@ -5,6 +5,7 @@ import net.sf.jsqlparser.expression.*;
 import net.sf.jsqlparser.parser.CCJSqlParserUtil;
 import net.sf.jsqlparser.parser.SimpleNode;
 import net.sf.jsqlparser.schema.Column;
+import net.sf.jsqlparser.statement.Statement;
 import net.sf.jsqlparser.statement.select.*;
 import org.jeecgframework.minidao.pojo.MiniDaoPage;
 import org.jeecgframework.minidao.sqlparser.AbstractSqlProcessor;
@@ -96,6 +97,58 @@ public class JsqlparserSqlProcessor implements AbstractSqlProcessor {
             getMapFiled(list, tableAndColumns);
         }
         return list;
+    }
+
+    /**
+     * 在SQL的最外层增加或修改ORDER BY子句
+     * @for TV360X-2551
+     * @param sql 原始SQL
+     * @param field 新的ORDER BY字段
+     * @param isAsc 是否正序
+     * @return
+     * @author chenrui
+     * @date 2024/9/27 17:25
+     */
+    @Override
+    public String addOrderBy(String sql, String field, boolean isAsc) {
+        Statement statement = null;
+        try {
+            statement = CCJSqlParserUtil.parse(sql);
+        } catch (JSQLParserException e) {
+            throw new RuntimeException(e);
+        }
+
+        if(statement instanceof Select){
+            Select selectStatement = (Select) statement;
+            SelectBody selectBody = selectStatement.getSelectBody();
+            if (selectBody instanceof PlainSelect) {
+                PlainSelect plainSelect = (PlainSelect) selectBody;
+                List<OrderByElement> orderByElements = plainSelect.getOrderByElements();
+                OrderByElement orderByElement = new OrderByElement();
+                orderByElement.setExpression(new Column(field)); // 你想要添加的字段
+                orderByElement.setAsc(isAsc); // 按正序排序
+                if (orderByElements != null && !orderByElements.isEmpty()) {
+                    // 如果已经有ORDER BY，则添加到现有的ORDER BY中
+                    long existsCount = orderByElements.stream().filter(orderByEl -> {
+                        Expression expression = orderByEl.getExpression();
+                        if (expression instanceof Column) {
+                            Column column = (Column) expression;
+                            return column.getColumnName().equalsIgnoreCase(field);
+                        } else {
+                            return false;
+                        }
+                    }).count();
+                    if (existsCount == 0) {
+                        orderByElements.add(orderByElement);
+                    }
+                } else {
+                    // 如果没有ORDER BY，则创建一个新的ORDER BY子句
+                    plainSelect.setOrderByElements(Collections.singletonList(orderByElement));
+                }
+                sql = plainSelect.toString();
+            }
+        }
+        return sql;
     }
 
 
