@@ -70,7 +70,9 @@ public class MiniDaoUtil {
 	public static final String DATABSE_TYPE_HIGHGO = "highgo";//瀚高数据库
 	public static final String DATABSE_TYPE_XUGU = "xugu";//瀚高数据库
 	public static final String DATABSE_TYPE_ZENITH = "zenith"; //华为高斯 GaussDB
-	public static final String DATABSE_TYPE_POLARDB = "polardb"; //PolarDB
+	public static final String DATABSE_TYPE_POLARDB = "polardb";
+	//涛思数据库TDengine
+	public static final String DATABSE_TYPE_TDENGINE= "taos"; //PolarDB
 
 
 	//update-begin---author:scott ---date:2024-07-04  for：SQL解析引擎改造支持普通和jsqlparser切换----
