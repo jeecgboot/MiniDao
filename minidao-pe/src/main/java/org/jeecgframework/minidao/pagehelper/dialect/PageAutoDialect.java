@@ -49,7 +49,8 @@ public class PageAutoDialect {
         //SQLite数据库 应用平台mobile
         registerDialectAlias("sqlite", MySqlDialect.class);
         registerDialectAlias("clickhouse", MySqlDialect.class);
-
+        //涛思数据库 [国产]
+        registerDialectAlias("taos", MySqlDialect.class);
 
         registerDialectAlias("herddb", HerdDBDialect.class);
 
