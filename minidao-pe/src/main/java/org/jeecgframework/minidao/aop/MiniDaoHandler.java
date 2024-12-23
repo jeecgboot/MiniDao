@@ -417,7 +417,8 @@ public class MiniDaoHandler implements InvocationHandler {
 						if (paramMap != null) {
 							String countsql = MiniDaoUtil.getCountSql(executeSql);
 							if (showSql) {
-								logger.info("page smart countsql===> "+countsql);
+								logger.info("page smart countsql===> "+ countsql);
+								logger.info("page smart params===> "+ paramMap);
 							}
 							pageSetting.setTotal(namedParameterJdbcTemplate.queryForObject(countsql, paramMap, Integer.class));
 						} else {
@@ -443,6 +444,9 @@ public class MiniDaoHandler implements InvocationHandler {
 				Class resultClassType = getListClassType(method);
 				List list;
 				if (paramMap != null) {
+					if (showSql) {
+						logger.info("page executeSql params===> "+paramMap);
+					}
 					if (resultClassType.isAssignableFrom(String.class) || resultClassType.isAssignableFrom(Date.class) || resultClassType.isAssignableFrom(Integer.class) || resultClassType.isAssignableFrom(Double.class) || resultClassType.isAssignableFrom(Long.class)) {
 						list = namedParameterJdbcTemplate.queryForList(executeSql, paramMap, resultClassType);
 					} else {
