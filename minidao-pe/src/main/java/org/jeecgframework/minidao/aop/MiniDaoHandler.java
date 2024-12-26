@@ -131,7 +131,9 @@ public class MiniDaoHandler implements InvocationHandler {
 			if(e instanceof EmptyResultDataAccessException){
 				//数据查询为空，不抛出Spring异常
 			}else{
-				e.printStackTrace();
+				//update-begin---author:chenrui ---date:20241225  for：[QQYUN-10614]执行sql报错,加了try仍然打印错误堆栈------------
+				//e.printStackTrace();
+				//update-end---author:chenrui ---date:20241225  for：[QQYUN-10614]执行sql报错,加了try仍然打印错误堆栈------------
 				throw e;
 			}
 		}
