@@ -1,5 +1,10 @@
 package org.jeecgframework.minidao.util;
 
+import net.sf.jsqlparser.JSQLParserException;
+import net.sf.jsqlparser.parser.CCJSqlParserUtil;
+import net.sf.jsqlparser.schema.Table;
+import net.sf.jsqlparser.statement.select.PlainSelect;
+import net.sf.jsqlparser.statement.select.Select;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.jeecgframework.minidao.pagehelper.PageException;
@@ -19,7 +24,6 @@ import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import java.sql.Connection;
 import java.sql.SQLException;
-import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -273,6 +277,28 @@ public class MiniDaoUtil {
 			logger.warn("parseSqlFields error:" + e.getMessage());
 		}
 		return list;
+	}
+
+	/**
+	 * 解析SQL表名
+	 * @param parsedSql
+	 * @return
+	 */
+	public static String parseTable(String parsedSql) {
+		Select select = null;
+
+		try {
+			select = (Select) CCJSqlParserUtil.parse(parsedSql, (parser) -> {
+				parser.withSquareBracketQuotation(true);
+			});
+
+			return ((Table)((PlainSelect)select.getSelectBody()).getFromItem()).getName();
+		} catch (JSQLParserException var10) {
+			JSQLParserException jsqlParserException = var10;
+			jsqlParserException.printStackTrace();
+		}
+
+		return null;
 	}
 
 	/**
