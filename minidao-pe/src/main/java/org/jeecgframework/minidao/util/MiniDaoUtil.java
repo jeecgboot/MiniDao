@@ -280,28 +280,6 @@ public class MiniDaoUtil {
 	}
 
 	/**
-	 * 解析SQL表名
-	 * @param parsedSql
-	 * @return
-	 */
-	public static String parseTable(String parsedSql) {
-		Select select = null;
-
-		try {
-			select = (Select) CCJSqlParserUtil.parse(parsedSql, (parser) -> {
-				parser.withSquareBracketQuotation(true);
-			});
-
-			return ((Table)((PlainSelect)select.getSelectBody()).getFromItem()).getName();
-		} catch (JSQLParserException var10) {
-			JSQLParserException jsqlParserException = var10;
-			jsqlParserException.printStackTrace();
-		}
-
-		return null;
-	}
-
-	/**
 	 * 判断当前环境是否支持jsqlparser
 	 *
 	 * @return

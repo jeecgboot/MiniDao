@@ -5,6 +5,7 @@ import net.sf.jsqlparser.expression.*;
 import net.sf.jsqlparser.parser.CCJSqlParserUtil;
 import net.sf.jsqlparser.parser.SimpleNode;
 import net.sf.jsqlparser.schema.Column;
+import net.sf.jsqlparser.schema.Table;
 import net.sf.jsqlparser.statement.Statement;
 import net.sf.jsqlparser.statement.select.*;
 import org.jeecgframework.minidao.pojo.MiniDaoPage;
@@ -149,6 +150,24 @@ public class JsqlparserSqlProcessor implements AbstractSqlProcessor {
             }
         }
         return sql;
+    }
+
+    @Override
+    public String parseTable(String sql) {
+        Select select = null;
+
+        try {
+            select = (Select) CCJSqlParserUtil.parse(sql, (parser) -> {
+                parser.withSquareBracketQuotation(true);
+            });
+
+            return ((Table)((PlainSelect)select.getSelectBody()).getFromItem()).getName();
+        } catch (JSQLParserException var10) {
+            JSQLParserException jsqlParserException = var10;
+            jsqlParserException.printStackTrace();
+        }
+
+        return null;
     }
 
 
