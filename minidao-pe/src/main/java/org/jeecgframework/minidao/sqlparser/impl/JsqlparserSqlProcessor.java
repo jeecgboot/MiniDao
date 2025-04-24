@@ -167,7 +167,7 @@ public class JsqlparserSqlProcessor implements AbstractSqlProcessor {
             jsqlParserException.printStackTrace();
         }
 
-        return null;
+        return "";
     }
 
 
