@@ -1,10 +1,5 @@
 package org.jeecgframework.minidao.util;
 
-import net.sf.jsqlparser.JSQLParserException;
-import net.sf.jsqlparser.parser.CCJSqlParserUtil;
-import net.sf.jsqlparser.schema.Table;
-import net.sf.jsqlparser.statement.select.PlainSelect;
-import net.sf.jsqlparser.statement.select.Select;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.jeecgframework.minidao.pagehelper.PageException;
