@@ -274,6 +274,16 @@ public class MiniDaoUtil {
 		return list;
 	}
 
+	public static String parseTable(String sql) {
+		String tableName = "";
+		try {
+			tableName = abstractSqlProcessor.parseTable(sql);
+		} catch (Exception e) {
+			logger.warn("parseTable error:" + e.getMessage());
+		}
+		return tableName;
+	}
+
 	/**
 	 * 判断当前环境是否支持jsqlparser
 	 *
