@@ -792,7 +792,15 @@ public class MiniDaoHandler implements InvocationHandler {
 			logger.debug(" Match [" + m.group() + "] at positions " + m.start() + "-" + (m.end() - 1));
 			String ognl_key = m.group().replace(":", "").trim();
 			logger.debug(" --- minidao --- 解析参数 --- " + ognl_key);
-			map.put(ognl_key, Ognl.getValue(ognl_key, sqlParamsMap));
+			//update-begin---author:chenrui ---date:20241111  for：[issues/3108]报表sql里面字符串包含有:报表无法加载，解析sql也失败 #3108------------
+			Object value = null;
+			try {
+				value = Ognl.getValue(ognl_key, sqlParamsMap);
+			} catch (OgnlException e) {
+				logger.warn(e.getMessage());
+			}
+			map.put(ognl_key, value);
+			//update-end---author:chenrui ---date:20241111  for：[issues/3108]报表sql里面字符串包含有:报表无法加载，解析sql也失败 #3108------------
 		}
 		return map;
 	}
