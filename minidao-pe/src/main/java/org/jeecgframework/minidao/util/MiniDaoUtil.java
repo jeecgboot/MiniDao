@@ -9,6 +9,7 @@ import org.jeecgframework.minidao.pojo.MiniDaoPage;
 import org.jeecgframework.minidao.sqlparser.AbstractSqlProcessor;
 import org.jeecgframework.minidao.sqlparser.impl.JsqlparserSqlProcessor;
 import org.jeecgframework.minidao.sqlparser.impl.SimpleSqlProcessor;
+import org.springframework.util.CollectionUtils;
 
 import javax.sql.DataSource;
 import java.io.BufferedReader;
@@ -20,9 +21,7 @@ import java.lang.reflect.Modifier;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.text.MessageFormat;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * 
@@ -273,6 +272,27 @@ public class MiniDaoUtil {
 			logger.warn("parseSqlFields error:" + e.getMessage());
 		}
 		return list;
+	}
+	
+
+	/**
+	 * 解析SQL查询字段
+	 *
+	 * @param parsedSql
+	 * @return
+	 */
+	public static Map<String, Object> parsSqlField(String parsedSql) {
+		List<Map<String, Object>> list = new ArrayList<>();
+		try {
+			list = abstractSqlProcessor.parseSqlFields(parsedSql);
+		} catch (Exception e) {
+			logger.warn("parseSqlFields error:" + e.getMessage());
+		}
+		if(!CollectionUtils.isEmpty(list) && list.size() > 0){
+			return list.get(0);
+		}
+		
+		return null;
 	}
 
 	/**
