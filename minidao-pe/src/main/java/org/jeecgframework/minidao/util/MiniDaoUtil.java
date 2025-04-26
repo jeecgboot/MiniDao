@@ -20,8 +20,9 @@ import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import java.sql.Connection;
 import java.sql.SQLException;
-import java.text.MessageFormat;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
 /**
  * 
@@ -274,6 +275,16 @@ public class MiniDaoUtil {
 		return list;
 	}
 	
+
+	public static String parseTable(String sql) {
+		String tableName = "";
+		try {
+			tableName = abstractSqlProcessor.parseTable(sql);
+		} catch (Exception e) {
+			logger.warn("parseTable error:" + e.getMessage());
+		}
+		return tableName;
+	}
 
 	/**
 	 * 解析SQL查询字段

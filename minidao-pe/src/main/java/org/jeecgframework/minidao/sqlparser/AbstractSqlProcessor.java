@@ -57,4 +57,11 @@ public interface AbstractSqlProcessor {
      * @date 2024/9/27 17:25
      */
     String addOrderBy(String sql, String field, boolean isAsc);
+
+    /**
+     * 解析SQL中表名
+     * @param sql 被解析SQL
+     * @return
+     */
+    String parseTable(String sql);
 }
