@@ -19,7 +19,6 @@ import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import java.sql.Connection;
 import java.sql.SQLException;
-import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -273,6 +272,16 @@ public class MiniDaoUtil {
 			logger.warn("parseSqlFields error:" + e.getMessage());
 		}
 		return list;
+	}
+
+	public static String parseTable(String sql) {
+		String tableName = "";
+		try {
+			tableName = abstractSqlProcessor.parseTable(sql);
+		} catch (Exception e) {
+			logger.warn("parseTable error:" + e.getMessage());
+		}
+		return tableName;
 	}
 
 	/**
