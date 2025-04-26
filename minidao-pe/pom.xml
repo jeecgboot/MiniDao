@@ -125,7 +125,7 @@
 
 	<profiles>
 		<profile>
-			<id>temp</id>
+			<id>jeecg</id>
 			<build>
 				<plugins>
 					<plugin>
