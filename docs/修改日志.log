@@ -92,6 +92,12 @@ src/main/java/org/jeecgframework/minidao/factory/MiniDaoClassPathMapperScanner.j
 src/main/java/org/jeecgframework/minidao/factory/MiniDaoBeanScannerConfigurer.java
 ---author:chenrui---date:2024/10/22-----for:[TV360X-2759]springboot3使用分库数据源配置，启动提示Bean被提前实例化 #3001---
 
+
 ---author:chenrui---date:2024/11/11-----for:[issues/3108]报表sql里面字符串包含有:报表无法加载，解析sql也失败 #3108---
 src/main/java/org/jeecgframework/minidao/aop/MiniDaoHandler.java
 ---author:chenrui---date:2024/11/11-----for:[issues/3108]报表sql里面字符串包含有:报表无法加载，解析sql也失败 #3108---
+
+---author:chenrui---date:2024/12/25-----for:[QQYUN-10614]执行sql报错,加了try仍然打印错误堆栈---
+src/main/java/org/jeecgframework/minidao/aop/MiniDaoHandler.java
+---author:chenrui---date:2024/12/25-----for:[QQYUN-10614]执行sql报错,加了try仍然打印错误堆栈---
+

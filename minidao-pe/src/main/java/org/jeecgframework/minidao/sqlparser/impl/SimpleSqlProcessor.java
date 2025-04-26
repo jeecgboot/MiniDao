@@ -139,6 +139,19 @@ public class SimpleSqlProcessor implements AbstractSqlProcessor {
         }
     }
 
+    @Override
+    public String parseTable(String sql) {
+        String regex = "(?i)\\bfrom\\s+([\\w.]+)";
+
+        Pattern pattern = Pattern.compile(regex);
+        Matcher matcher = pattern.matcher(sql);
+
+        if (matcher.find()) {
+            return matcher.group(1);
+        }
+        return "";
+    }
+
     /**
      * 查找最外层的ORDER BY的索引
      *

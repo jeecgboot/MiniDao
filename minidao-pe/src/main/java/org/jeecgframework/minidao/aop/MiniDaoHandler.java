@@ -131,7 +131,9 @@ public class MiniDaoHandler implements InvocationHandler {
 			if(e instanceof EmptyResultDataAccessException){
 				//数据查询为空，不抛出Spring异常
 			}else{
-				e.printStackTrace();
+				//update-begin---author:chenrui ---date:20241225  for：[QQYUN-10614]执行sql报错,加了try仍然打印错误堆栈------------
+				//e.printStackTrace();
+				//update-end---author:chenrui ---date:20241225  for：[QQYUN-10614]执行sql报错,加了try仍然打印错误堆栈------------
 				throw e;
 			}
 		}
@@ -417,7 +419,8 @@ public class MiniDaoHandler implements InvocationHandler {
 						if (paramMap != null) {
 							String countsql = MiniDaoUtil.getCountSql(executeSql);
 							if (showSql) {
-								logger.info("page smart countsql===> "+countsql);
+								logger.info("page smart countsql===> "+ countsql);
+								logger.info("page smart params===> "+ paramMap);
 							}
 							pageSetting.setTotal(namedParameterJdbcTemplate.queryForObject(countsql, paramMap, Integer.class));
 						} else {
@@ -443,6 +446,9 @@ public class MiniDaoHandler implements InvocationHandler {
 				Class resultClassType = getListClassType(method);
 				List list;
 				if (paramMap != null) {
+					if (showSql) {
+						logger.info("page executeSql params===> "+paramMap);
+					}
 					if (resultClassType.isAssignableFrom(String.class) || resultClassType.isAssignableFrom(Date.class) || resultClassType.isAssignableFrom(Integer.class) || resultClassType.isAssignableFrom(Double.class) || resultClassType.isAssignableFrom(Long.class)) {
 						list = namedParameterJdbcTemplate.queryForList(executeSql, paramMap, resultClassType);
 					} else {
