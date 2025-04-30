@@ -101,3 +101,11 @@ src/main/java/org/jeecgframework/minidao/aop/MiniDaoHandler.java
 src/main/java/org/jeecgframework/minidao/aop/MiniDaoHandler.java
 ---author:chenrui---date:2024/12/25-----for:[QQYUN-10614]执行sql报错,加了try仍然打印错误堆栈---
 
+-- author:sjlei---date:20250430--for: [QQYUN-12128] 添加`parseAllSelectTable`方法用于解析所有查询的表名 ---
+minidao-pe/src/main/java/org/jeecgframework/minidao/sqlparser/AbstractSqlProcessor.java
+minidao-pe/src/main/java/org/jeecgframework/minidao/sqlparser/impl/SimpleSqlProcessor.java
+minidao-pe/src/main/java/org/jeecgframework/minidao/sqlparser/impl/JsqlparserSqlProcessor.java
+minidao-pe/src/main/java/org/jeecgframework/minidao/sqlparser/impl/JSqlParserUtils.java (+)
+minidao-pe/src/main/java/org/jeecgframework/minidao/sqlparser/impl/vo/SelectSqlInfo.java (+)
+minidao-pe/src/main/java/org/jeecgframework/minidao/sqlparser/impl/JSqlParserAllTableManager.java (+)
+-- author:sjlei---date:20250430--for: [QQYUN-12128] 添加`parseAllSelectTable`方法用于解析所有查询的表名 ---
