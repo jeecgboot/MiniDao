@@ -11,6 +11,7 @@ import net.sf.jsqlparser.statement.select.*;
 import org.jeecgframework.minidao.pojo.MiniDaoPage;
 import org.jeecgframework.minidao.sqlparser.AbstractSqlProcessor;
 import org.jeecgframework.minidao.sqlparser.impl.util.JSqlCountSqlParser;
+import org.jeecgframework.minidao.sqlparser.impl.util.JSqlParserSelectInfoUtil;
 import org.jeecgframework.minidao.sqlparser.impl.util.JSqlRemoveSqlOrderBy;
 import org.jeecgframework.minidao.sqlparser.impl.util.JSqlServerPagesHelper;
 import org.jeecgframework.minidao.sqlparser.impl.vo.SelectSqlInfo;
@@ -244,12 +245,12 @@ public class JsqlparserSqlProcessor implements AbstractSqlProcessor {
 
     @Override
     public Map<String, SelectSqlInfo> parseAllSelectTable(String selectSql) throws JSQLParserException {
-        return JSqlParserUtils.parseAllSelectTable(selectSql);
+        return JSqlParserSelectInfoUtil.parseAllSelectTable(selectSql);
     }
 
     @Override
     public SelectSqlInfo parseSelectSqlInfo(String selectSql) throws JSQLParserException {
-        return JSqlParserUtils.parseSelectSqlInfo(selectSql);
+        return JSqlParserSelectInfoUtil.parseSelectSqlInfo(selectSql);
     }
 
 }

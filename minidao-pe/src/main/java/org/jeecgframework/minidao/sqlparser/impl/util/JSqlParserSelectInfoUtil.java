@@ -1,4 +1,4 @@
-package org.jeecgframework.minidao.sqlparser.impl;
+package org.jeecgframework.minidao.sqlparser.impl.util;
 
 import net.sf.jsqlparser.JSQLParserException;
 import net.sf.jsqlparser.expression.*;
@@ -10,13 +10,14 @@ import net.sf.jsqlparser.statement.select.*;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.jeecgframework.minidao.sqlparser.impl.JsqlparserSqlProcessor;
 import org.jeecgframework.minidao.sqlparser.impl.vo.SelectSqlInfo;
 
 import java.io.StringReader;
 import java.util.List;
 import java.util.Map;
 
-public class JSqlParserUtils {
+public class JSqlParserSelectInfoUtil {
     private static final Log logger = LogFactory.getLog(JsqlparserSqlProcessor.class);
 
     /**
@@ -59,7 +60,7 @@ public class JSqlParserUtils {
         if (stmt instanceof Select) {
             Select selectStatement = (Select) stmt;
             // 3、解析select查询sql的信息
-            return JSqlParserUtils.parseBySelectBody(selectStatement.getSelectBody());
+            return JSqlParserSelectInfoUtil.parseBySelectBody(selectStatement.getSelectBody());
         } else {
             // 非 select 查询sql，不做处理
             throw new RuntimeException("非 select 查询sql，不做处理");
@@ -77,7 +78,7 @@ public class JSqlParserUtils {
         if (selectBody instanceof SetOperationList) {
             // 如果使用了union等操作，则只解析第一个查询
             List<SelectBody> selectBodyList = ((SetOperationList) selectBody).getSelects();
-            return JSqlParserUtils.parseBySelectBody(selectBodyList.get(0));
+            return JSqlParserSelectInfoUtil.parseBySelectBody(selectBodyList.get(0));
         }
         // 简单的select查询
         if (selectBody instanceof PlainSelect) {
@@ -96,7 +97,7 @@ public class JSqlParserUtils {
             } else if (fromItem instanceof SubSelect) {
                 // 通过子查询的方式from
                 SubSelect fromSubSelect = (SubSelect) fromItem;
-                SelectSqlInfo subSqlInfo = JSqlParserUtils.parseBySelectBody(fromSubSelect.getSelectBody());
+                SelectSqlInfo subSqlInfo = JSqlParserSelectInfoUtil.parseBySelectBody(fromSubSelect.getSelectBody());
                 sqlInfo.setFromSubSelect(subSqlInfo);
             }
             // 解析 selectFields
@@ -113,7 +114,7 @@ public class JSqlParserUtils {
                     SelectExpressionItem selectExpressionItem = (SelectExpressionItem) selectItem;
                     Expression expression = selectExpressionItem.getExpression();
                     Alias alias = selectExpressionItem.getAlias();
-                    JSqlParserUtils.handleExpression(sqlInfo, expression, alias);
+                    JSqlParserSelectInfoUtil.handleExpression(sqlInfo, expression, alias);
                 }
             }
             return sqlInfo;
@@ -133,13 +134,13 @@ public class JSqlParserUtils {
     private static void handleExpression(SelectSqlInfo sqlInfo, Expression expression, Alias alias) {
         // 处理函数式字段  CONCAT(name,'(',age,')')
         if (expression instanceof Function) {
-            JSqlParserUtils.handleFunctionExpression((Function) expression, sqlInfo);
+            JSqlParserSelectInfoUtil.handleFunctionExpression((Function) expression, sqlInfo);
             return;
         }
         // 处理字段上的子查询
         if (expression instanceof SubSelect) {
             SubSelect subSelect = (SubSelect) expression;
-            SelectSqlInfo subSqlInfo = JSqlParserUtils.parseBySelectBody(subSelect.getSelectBody());
+            SelectSqlInfo subSqlInfo = JSqlParserSelectInfoUtil.parseBySelectBody(subSelect.getSelectBody());
             // 注：字段上的子查询，必须只查询一个字段，否则会报错，所以可以放心合并
             sqlInfo.getSelectFields().addAll(subSqlInfo.getSelectFields());
             sqlInfo.getRealSelectFields().addAll(subSqlInfo.getAllRealSelectFields());
@@ -183,7 +184,7 @@ public class JSqlParserUtils {
     private static void handleFunctionExpression(Function functionExp, SelectSqlInfo sqlInfo) {
         List<Expression> expressions = functionExp.getParameters().getExpressions();
         for (Expression expression : expressions) {
-            JSqlParserUtils.handleExpression(sqlInfo, expression, null);
+            JSqlParserSelectInfoUtil.handleExpression(sqlInfo, expression, null);
         }
     }
 

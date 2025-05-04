@@ -1,4 +1,4 @@
-package org.jeecgframework.minidao.sqlparser.impl;
+package org.jeecgframework.minidao.sqlparser.impl.util;
 
 import net.sf.jsqlparser.JSQLParserException;
 import net.sf.jsqlparser.expression.*;
@@ -138,7 +138,7 @@ public class JSqlParserAllTableManager {
         try {
             String subSelectSql = subSelect.getSelectBody().toString();
             // 递归调用解析
-            Map<String, SelectSqlInfo> map = JSqlParserUtils.parseAllSelectTable(subSelectSql);
+            Map<String, SelectSqlInfo> map = JSqlParserSelectInfoUtil.parseAllSelectTable(subSelectSql);
             if (map != null) {
                 this.assignMap(map);
             }
