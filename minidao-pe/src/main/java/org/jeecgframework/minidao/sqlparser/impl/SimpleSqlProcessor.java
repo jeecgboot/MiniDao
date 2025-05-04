@@ -1,5 +1,6 @@
 package org.jeecgframework.minidao.sqlparser.impl;
 
+import com.sun.media.jfxmedia.logging.Logger;
 import org.jeecgframework.minidao.pojo.MiniDaoPage;
 import org.jeecgframework.minidao.sqlparser.AbstractSqlProcessor;
 import org.jeecgframework.minidao.sqlparser.impl.vo.SelectSqlInfo;
@@ -137,18 +138,6 @@ public class SimpleSqlProcessor implements AbstractSqlProcessor {
         }
     }
 
-    @Override
-    public String parseTable(String sql) {
-        String regex = "(?i)\\bfrom\\s+([\\w.]+)";
-
-        Pattern pattern = Pattern.compile(regex);
-        Matcher matcher = pattern.matcher(sql);
-
-        if (matcher.find()) {
-            return matcher.group(1);
-        }
-        return "";
-    }
 
     /**
      * 查找最外层的ORDER BY的索引
@@ -216,10 +205,9 @@ public class SimpleSqlProcessor implements AbstractSqlProcessor {
      */
     @Override
     public SelectSqlInfo parseSelectSqlInfo(String selectSql) {
-        SelectSqlInfo sqlInfo = new SelectSqlInfo(selectSql);
-        String tableName = parseTable(selectSql);
-        sqlInfo.setFromTableName(tableName);
-        return sqlInfo;
+        System.err.println("此方法未实现！！！");
+        // TODO Auto-generated method stub
+        return null;
     }
-
+    
 }

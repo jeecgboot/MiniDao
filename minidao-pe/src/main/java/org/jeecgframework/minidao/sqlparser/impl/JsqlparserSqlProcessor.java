@@ -155,25 +155,6 @@ public class JsqlparserSqlProcessor implements AbstractSqlProcessor {
         return sql;
     }
 
-    @Override
-    public String parseTable(String sql) {
-        Select select = null;
-
-        try {
-            select = (Select) CCJSqlParserUtil.parse(sql, (parser) -> {
-                parser.withSquareBracketQuotation(true);
-            });
-
-            return ((Table)((PlainSelect)select.getSelectBody()).getFromItem()).getName();
-        } catch (JSQLParserException var10) {
-            JSQLParserException jsqlParserException = var10;
-            jsqlParserException.printStackTrace();
-        }
-
-        return "";
-    }
-
-
     private static void getMapFiled(List<Map<String, Object>> list, List<String> tableAndColumns) {
         Map<String, Object> map = new HashMap(5);
         for (String str : tableAndColumns) {

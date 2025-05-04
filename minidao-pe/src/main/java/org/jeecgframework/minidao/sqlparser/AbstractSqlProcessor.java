@@ -60,13 +60,6 @@ public interface AbstractSqlProcessor {
     String addOrderBy(String sql, String field, boolean isAsc);
 
     /**
-     * 解析SQL中表名
-     * @param sql 被解析SQL
-     * @return
-     */
-    String parseTable(String sql);
-
-    /**
      * 解析 查询（select）sql的信息，
      * 此方法会展开所有子查询到一个map里，
      * key只存真实的表名，如果查询的没有真实的表名，则会被忽略。

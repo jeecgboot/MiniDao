@@ -276,17 +276,6 @@ public class MiniDaoUtil {
 		return list;
 	}
 	
-
-	public static String parseTable(String sql) {
-		String tableName = "";
-		try {
-			tableName = abstractSqlProcessor.parseTable(sql);
-		} catch (Exception e) {
-			logger.warn("parseTable error:" + e.getMessage());
-		}
-		return tableName;
-	}
-
 	/**
 	 * 解析SQL查询字段
 	 *
@@ -313,9 +302,24 @@ public class MiniDaoUtil {
 	 * @param parsedSql
 	 * @return Map<String, SelectSqlInfo>
 	 */
-	Map<String, SelectSqlInfo> parseAllSelectTable(String parsedSql) {
+	public static Map<String, SelectSqlInfo> parseAllSelectTable(String parsedSql) {
         try {
             return abstractSqlProcessor.parseAllSelectTable(parsedSql);
+        } catch (Exception e) {
+			logger.warn("parseTable error:" + e.getMessage());
+        }
+		return null;
+	}
+	
+	/**
+	 * 解析SQL查询字段
+	 *
+	 * @param parsedSql
+	 * @return SelectSqlInfo
+	 */
+	public static SelectSqlInfo parseSelectSqlInfo(String parsedSql) {
+        try {
+            return abstractSqlProcessor.parseSelectSqlInfo(parsedSql);
         } catch (Exception e) {
 			logger.warn("parseTable error:" + e.getMessage());
         }
