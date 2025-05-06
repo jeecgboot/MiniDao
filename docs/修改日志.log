@@ -109,3 +109,14 @@ minidao-pe/src/main/java/org/jeecgframework/minidao/sqlparser/impl/JSqlParserUti
 minidao-pe/src/main/java/org/jeecgframework/minidao/sqlparser/impl/vo/SelectSqlInfo.java (+)
 minidao-pe/src/main/java/org/jeecgframework/minidao/sqlparser/impl/JSqlParserAllTableManager.java (+)
 -- author:sjlei---date:20250430--for: [QQYUN-12128] 添加`parseAllSelectTable`方法用于解析所有查询的表名 ---
+
+-- author:sunjianlei---date:20250506--for: [QQYUN-12130] 适配 jsqlparser 4.9 版本 ---
+minidao-pe/src/main/java/org/jeecgframework/minidao/util/MiniDaoUtil.java
+minidao-pe/src/main/java/org/jeecgframework/minidao/sqlparser/impl/JsqlparserSqlProcessor49.java (+)
+minidao-pe/src/main/java/org/jeecgframework/minidao/sqlparser/impl/util/v49/JSqlSubSelectBody49.java (+)
+minidao-pe/src/main/java/org/jeecgframework/minidao/sqlparser/impl/util/v49/JSqlCountSqlParser49.java (+)
+minidao-pe/src/main/java/org/jeecgframework/minidao/sqlparser/impl/util/v49/JSqlRemoveSqlOrderBy49.java (+)
+minidao-pe/src/main/java/org/jeecgframework/minidao/sqlparser/impl/util/v49/JSqlServerPagesHelper49.java (+)
+minidao-pe/src/main/java/org/jeecgframework/minidao/sqlparser/impl/util/v49/JSqlParserSelectInfoUtil49.java (+)
+minidao-pe/src/main/java/org/jeecgframework/minidao/sqlparser/impl/util/v49/JSqlParserAllTableManager49.java (+)
+-- author:sunjianlei---date:20250506--for: [QQYUN-12130] 适配 jsqlparser 4.9 版本 ---
