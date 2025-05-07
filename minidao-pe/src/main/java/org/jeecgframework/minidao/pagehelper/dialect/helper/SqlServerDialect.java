@@ -3,7 +3,7 @@ package org.jeecgframework.minidao.pagehelper.dialect.helper;
 import org.jeecgframework.minidao.sqlparser.AbstractSqlProcessor;
 import org.jeecgframework.minidao.pagehelper.dialect.AbstractHelperDialect;
 import org.jeecgframework.minidao.pojo.MiniDaoPage;
-import org.jeecgframework.minidao.sqlparser.impl.JsqlparserSqlProcessor;
+import org.jeecgframework.minidao.sqlparser.impl.JsqlparserSqlProcessor49;
 import org.jeecgframework.minidao.sqlparser.impl.SimpleSqlProcessor;
 import org.jeecgframework.minidao.util.MiniDaoUtil;
 
@@ -17,7 +17,7 @@ public class SqlServerDialect extends AbstractHelperDialect {
 
     static {
         if (MiniDaoUtil.isJSqlParserAvailable()) {
-            abstractSqlProcessor = new JsqlparserSqlProcessor();
+            abstractSqlProcessor = new JsqlparserSqlProcessor49();
         } else {
             abstractSqlProcessor = new SimpleSqlProcessor();
         }

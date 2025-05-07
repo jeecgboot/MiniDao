@@ -3,11 +3,11 @@
 	<modelVersion>4.0.0</modelVersion>
 	
 	<groupId>org.jeecgframework</groupId>
-	<artifactId>minidao-pe</artifactId>
+	<artifactId>minidao-pe-jsqlparser-4.9</artifactId>
 	<version>1.10.7</version>
 	<packaging>jar</packaging>
 	
-	<name>minidao-pe</name>
+	<name>minidao-pe-jsqlparser-4.9</name>
 	<description>An powerful enhanced toolkit of SpringJdbc for simplify development</description>
 	<url>http://www.jeecg.com</url>
 	
@@ -38,7 +38,7 @@
 		<commons-lang3.version>3.12.0</commons-lang3.version>
 		<org.springframework.version>5.3.31</org.springframework.version>
 		<javassist.version>3.25.0-GA</javassist.version>
-		<jsqlparser.version>4.6</jsqlparser.version>
+		<jsqlparser.version>4.9</jsqlparser.version>
 		<junit.version>4.13.1</junit.version>
 	</properties>
 

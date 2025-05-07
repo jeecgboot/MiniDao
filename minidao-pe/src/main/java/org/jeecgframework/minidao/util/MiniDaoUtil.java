@@ -7,8 +7,7 @@ import org.jeecgframework.minidao.pagehelper.dialect.AbstractHelperDialect;
 import org.jeecgframework.minidao.pagehelper.dialect.PageAutoDialect;
 import org.jeecgframework.minidao.pojo.MiniDaoPage;
 import org.jeecgframework.minidao.sqlparser.AbstractSqlProcessor;
-import org.jeecgframework.minidao.sqlparser.impl.JsqlparserSqlProcessor;
-//import org.jeecgframework.minidao.sqlparser.impl.JsqlparserSqlProcessor49;
+import org.jeecgframework.minidao.sqlparser.impl.JsqlparserSqlProcessor49;
 import org.jeecgframework.minidao.sqlparser.impl.SimpleSqlProcessor;
 import org.jeecgframework.minidao.sqlparser.impl.vo.SelectSqlInfo;
 import org.springframework.util.CollectionUtils;
@@ -79,15 +78,16 @@ public class MiniDaoUtil {
 
 	//update-begin---author:scott ---date:2024-07-04  for：SQL解析引擎改造支持普通和jsqlparser切换----
 	private static final boolean JSQLPARSER_AVAILABLE = checkJSqlParserAvailability();
-//	private static final boolean JSQLPARSER49_AVAILABLE = checkJSqlParser49Availability();
+	private static final boolean JSQLPARSER49_AVAILABLE = checkJSqlParser49Availability();
 	protected static AbstractSqlProcessor abstractSqlProcessor;
 	static {
-//		if (MiniDaoUtil.isJSqlParser49Available()) {
-//			abstractSqlProcessor = new JsqlparserSqlProcessor49();
-//		} else 
-		if (MiniDaoUtil.isJSqlParserAvailable()) {
-			abstractSqlProcessor = new JsqlparserSqlProcessor();
-		} else {
+		if (MiniDaoUtil.isJSqlParser49Available()) {
+			abstractSqlProcessor = new JsqlparserSqlProcessor49();
+		} 
+//		else if (MiniDaoUtil.isJSqlParserAvailable()) {
+//			abstractSqlProcessor = new JsqlparserSqlProcessor();
+//		} 
+		else {
 			abstractSqlProcessor = new SimpleSqlProcessor();
 		}
 	}
@@ -340,14 +340,14 @@ public class MiniDaoUtil {
 		return JSQLPARSER_AVAILABLE;
 	}
 
-//	/**
-//	 * 判断当前环境是否支持jsqlparser4.9
-//	 *
-//	 * @return
-//	 */
-//	public static boolean isJSqlParser49Available() {
-//		return JSQLPARSER49_AVAILABLE;
-//	}
+	/**
+	 * 判断当前环境是否支持jsqlparser4.9
+	 *
+	 * @return
+	 */
+	public static boolean isJSqlParser49Available() {
+		return JSQLPARSER49_AVAILABLE;
+	}
 
 	/**
 	 * 判断当前环境是否存在jsqlparser，返回true或false
@@ -365,22 +365,22 @@ public class MiniDaoUtil {
 		}
 	}
 
-//	/**
-//	 * 判断当前环境是否存在jsqlparser 4.9，返回true或false
-//	 *
-//	 * @return boolean
-//	 */
-//	private static boolean checkJSqlParser49Availability() {
-//		try {
-//			// 此为 4.7 新增的类，4.9中也有，但 4.6 中没有
-//			Class.forName("net.sf.jsqlparser.expression.RangeExpression");
-//			logger.debug("【Sql Parser】 The environment supports jsqlparser 4.9 engine");
-//			return true;
-//		} catch (ClassNotFoundException e) {
-//			logger.warn("【Sql Parser】 The environment does not support jsqlparser 4.9 engine");
-//			return false;
-//		}
-//	}
+	/**
+	 * 判断当前环境是否存在jsqlparser 4.9，返回true或false
+	 *
+	 * @return boolean
+	 */
+	private static boolean checkJSqlParser49Availability() {
+		try {
+			// 此为 4.7 新增的类，4.9中也有，但 4.6 中没有
+			Class.forName("net.sf.jsqlparser.expression.RangeExpression");
+			logger.debug("【Sql Parser】 The environment supports jsqlparser 4.9 engine");
+			return true;
+		} catch (ClassNotFoundException e) {
+			logger.warn("【Sql Parser】 The environment does not support jsqlparser 4.9 engine");
+			return false;
+		}
+	}
 
 //	/**
 //	 * 按照数据库类型，封装SQL

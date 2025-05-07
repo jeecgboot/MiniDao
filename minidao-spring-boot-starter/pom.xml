@@ -2,7 +2,7 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.jeecgframework</groupId>
-	<artifactId>minidao-spring-boot-starter</artifactId>
+	<artifactId>minidao-spring-boot-starter-jsqlparser-4.9</artifactId>
 	<version>1.10.7</version>
 	<packaging>jar</packaging>
 
@@ -57,7 +57,7 @@
 		<!-- minidao -->
 		<dependency>
 			<groupId>org.jeecgframework</groupId>
-			<artifactId>minidao-pe</artifactId>
+			<artifactId>minidao-pe-jsqlparser-4.9</artifactId>
 			<version>${minidao.version}</version>
 		</dependency>
 
