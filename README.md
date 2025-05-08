@@ -43,7 +43,7 @@ MiniDao 是一款轻量级JAVA持久层框架，基于 SpringJdbc + freemarker �
 ```
 <dependency>
   <groupId>org.jeecgframework</groupId>
-  <artifactId>minidao-pe</artifactId>
+  <artifactId>minidao-spring-boot-starter</artifactId>
   <version>1.10.7</version>
 </dependency>
 ```
@@ -63,14 +63,15 @@ MiniDao 是一款轻量级JAVA持久层框架，基于 SpringJdbc + freemarker �
 项目介绍
 -----------------------------------
 
-| 项目名   |      中文名      |  备注 |
-|----------|:-------------:|------:|
-| minidao-pe-framework| 架构核心包|     |
-| minidao-code-generate |  代码快速生成 |  |
-| minidao-pe-spring-boot-starter | spring-boot2 starter  |  |
-| minidao-pe-example | 示例代码 |     |	 
-	
-	
+
+| 项目名   |         中文名         |  备注 |
+|----------|:-------------------:|------:|
+| minidao-pe|        架构核心包        |     |
+| minidao-spring-boot-starter | SpringBoot2 starter |  |
+| minidao-pe-example |        示例代码         |     |	 
+
+
+
 支持28种数据库
 -----------------------------------
 
