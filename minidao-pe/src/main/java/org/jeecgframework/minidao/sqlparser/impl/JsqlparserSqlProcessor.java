@@ -5,13 +5,17 @@ import net.sf.jsqlparser.expression.*;
 import net.sf.jsqlparser.parser.CCJSqlParserUtil;
 import net.sf.jsqlparser.parser.SimpleNode;
 import net.sf.jsqlparser.schema.Column;
+import net.sf.jsqlparser.schema.Table;
 import net.sf.jsqlparser.statement.Statement;
 import net.sf.jsqlparser.statement.select.*;
 import org.jeecgframework.minidao.pojo.MiniDaoPage;
 import org.jeecgframework.minidao.sqlparser.AbstractSqlProcessor;
 import org.jeecgframework.minidao.sqlparser.impl.util.JSqlCountSqlParser;
+import org.jeecgframework.minidao.sqlparser.impl.util.JSqlParserSelectInfoUtil;
 import org.jeecgframework.minidao.sqlparser.impl.util.JSqlRemoveSqlOrderBy;
 import org.jeecgframework.minidao.sqlparser.impl.util.JSqlServerPagesHelper;
+import org.jeecgframework.minidao.sqlparser.impl.vo.SelectSqlInfo;
+
 import java.util.*;
 
 /**
@@ -151,7 +155,6 @@ public class JsqlparserSqlProcessor implements AbstractSqlProcessor {
         return sql;
     }
 
-
     private static void getMapFiled(List<Map<String, Object>> list, List<String> tableAndColumns) {
         Map<String, Object> map = new HashMap(5);
         for (String str : tableAndColumns) {
@@ -220,4 +223,15 @@ public class JsqlparserSqlProcessor implements AbstractSqlProcessor {
         }
         return items;
     }
+
+    @Override
+    public Map<String, SelectSqlInfo> parseAllSelectTable(String selectSql) throws JSQLParserException {
+        return JSqlParserSelectInfoUtil.parseAllSelectTable(selectSql);
+    }
+
+    @Override
+    public SelectSqlInfo parseSelectSqlInfo(String selectSql) throws JSQLParserException {
+        return JSqlParserSelectInfoUtil.parseSelectSqlInfo(selectSql);
+    }
+
 }

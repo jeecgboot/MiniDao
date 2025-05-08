@@ -47,23 +47,9 @@ minidao-pe-spring-boot-starter\pom.xml
 src/main/java/org/jeecgframework/minidao/util/SimpleFormat.java
 --author:wangshuai-----date:20231008----for:【QQYUN-6633】升级 1.6.2-GA2 后，下拉树组件多选后参数传递到 sql 中 in 语句失效 增加拼接函数/in函数--
 
---author:scott-----date:20231219----for:修改jdk17版本升级，自动上传maven私服的配置--
-README.md
-pom.xml
-minidao-spring-boot-starter/pom.xml
-minidao-pe-example/pom.xml
-minidao-pe/pom.xml
---author:scott-----date:20231219----for:修改jdk17版本升级，自动上传maven私服的配置--
-
 ---author:chenrui---date:2023/12/26-----for:[jimu/issue/#2269]参数表达式新增中文支持---
 minidao-pe/src/main/java/org/jeecgframework/minidao/aop/MiniDaoHandler.java
 ---author:chenrui---date:2023/12/26-----for:[jimu/issue/#2269]参数表达式新增中文支持---
-
----author:chenrui---date:2024/1/8-----for:[QQYUN-7775]minidao springboot3版本打包，报junit错误---
-minidao-pe-example/src/test/java/test/spring/SpringTxTestCase.java
----author:chenrui---date:2024/1/8-----for:[QQYUN-7775]minidao springboot3版本打包，报junit错误---
-
-
 
 ---author:chenrui---date:20240321-----for:minidao-pe-example去掉老的p3代码生成器的相关代码，导致单元测试不输出日志---
 minidao-pe-example/jeecg\codegenerate\OneToMainUtil.java（-）
@@ -106,6 +92,31 @@ src/main/java/org/jeecgframework/minidao/factory/MiniDaoClassPathMapperScanner.j
 src/main/java/org/jeecgframework/minidao/factory/MiniDaoBeanScannerConfigurer.java
 ---author:chenrui---date:2024/10/22-----for:[TV360X-2759]springboot3使用分库数据源配置，启动提示Bean被提前实例化 #3001---
 
+
 ---author:chenrui---date:2024/11/11-----for:[issues/3108]报表sql里面字符串包含有:报表无法加载，解析sql也失败 #3108---
 src/main/java/org/jeecgframework/minidao/aop/MiniDaoHandler.java
 ---author:chenrui---date:2024/11/11-----for:[issues/3108]报表sql里面字符串包含有:报表无法加载，解析sql也失败 #3108---
+
+---author:chenrui---date:2024/12/25-----for:[QQYUN-10614]执行sql报错,加了try仍然打印错误堆栈---
+src/main/java/org/jeecgframework/minidao/aop/MiniDaoHandler.java
+---author:chenrui---date:2024/12/25-----for:[QQYUN-10614]执行sql报错,加了try仍然打印错误堆栈---
+
+-- author:sjlei---date:20250430--for: [QQYUN-12128] 添加`parseAllSelectTable`方法用于解析所有查询的表名 ---
+minidao-pe/src/main/java/org/jeecgframework/minidao/sqlparser/AbstractSqlProcessor.java
+minidao-pe/src/main/java/org/jeecgframework/minidao/sqlparser/impl/SimpleSqlProcessor.java
+minidao-pe/src/main/java/org/jeecgframework/minidao/sqlparser/impl/JsqlparserSqlProcessor.java
+minidao-pe/src/main/java/org/jeecgframework/minidao/sqlparser/impl/JSqlParserUtils.java (+)
+minidao-pe/src/main/java/org/jeecgframework/minidao/sqlparser/impl/vo/SelectSqlInfo.java (+)
+minidao-pe/src/main/java/org/jeecgframework/minidao/sqlparser/impl/JSqlParserAllTableManager.java (+)
+-- author:sjlei---date:20250430--for: [QQYUN-12128] 添加`parseAllSelectTable`方法用于解析所有查询的表名 ---
+
+-- author:sunjianlei---date:20250506--for: [QQYUN-12130] 适配 jsqlparser 4.9 版本 ---
+minidao-pe/src/main/java/org/jeecgframework/minidao/util/MiniDaoUtil.java
+minidao-pe/src/main/java/org/jeecgframework/minidao/sqlparser/impl/JsqlparserSqlProcessor49.java (+)
+minidao-pe/src/main/java/org/jeecgframework/minidao/sqlparser/impl/util/v49/JSqlSubSelectBody49.java (+)
+minidao-pe/src/main/java/org/jeecgframework/minidao/sqlparser/impl/util/v49/JSqlCountSqlParser49.java (+)
+minidao-pe/src/main/java/org/jeecgframework/minidao/sqlparser/impl/util/v49/JSqlRemoveSqlOrderBy49.java (+)
+minidao-pe/src/main/java/org/jeecgframework/minidao/sqlparser/impl/util/v49/JSqlServerPagesHelper49.java (+)
+minidao-pe/src/main/java/org/jeecgframework/minidao/sqlparser/impl/util/v49/JSqlParserSelectInfoUtil49.java (+)
+minidao-pe/src/main/java/org/jeecgframework/minidao/sqlparser/impl/util/v49/JSqlParserAllTableManager49.java (+)
+-- author:sunjianlei---date:20250506--for: [QQYUN-12130] 适配 jsqlparser 4.9 版本 ---

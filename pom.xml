@@ -3,7 +3,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.jeecgframework.boot3</groupId>
 	<artifactId>minidao-parent</artifactId>
-	<version>1.10.4</version>
+	<version>1.10.7</version>
 	<packaging>pom</packaging>
 	
 	<!-- 项目属性 -->
@@ -34,9 +34,6 @@
 				<executions>
 					<execution>
 						<phase>package</phase>
-						<goals>
-							<goal>jar-no-fork</goal>
-						</goals>
 					</execution>
 				</executions>
 			</plugin>

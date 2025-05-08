@@ -4,11 +4,11 @@
 	
 	<groupId>org.jeecgframework.boot3</groupId>
 	<artifactId>minidao-pe</artifactId>
-	<version>1.10.4</version>
+	<version>1.10.7</version>
 	<packaging>jar</packaging>
 	
 	<name>minidao-pe</name>
-	<description>一款极其轻量的JAVA持久层框架，基于 SpringJdbc + freemarker 实现，具备Mybatis一样的SQL分离和逻辑标签能力，可无缝集成springboot3项目</description>
+    <description>An powerful enhanced toolkit of SpringJdbc for simplify development</description>
 	<url>http://www.jeecg.com</url>
 	
 	<licenses>
@@ -38,8 +38,8 @@
 		<commons-lang3.version>3.12.0</commons-lang3.version>
 		<org.springframework.version>6.0.13</org.springframework.version>
 		<javassist.version>3.25.0-GA</javassist.version>
-        <jsqlparser.version>4.6</jsqlparser.version>
-        <junit.version>4.13.1</junit.version>
+		<jsqlparser.version>4.6</jsqlparser.version>
+		<junit.version>4.13.1</junit.version>
 	</properties>
 
 	<dependencies>
@@ -149,9 +149,6 @@
 						<executions>
 							<execution>
 								<phase>package</phase>
-								<goals>
-									<goal>jar-no-fork</goal>
-								</goals>
 							</execution>
 						</executions>
 					</plugin>
@@ -189,9 +186,6 @@
 						<executions>
 							<execution>
 								<phase>package</phase>
-								<goals>
-									<goal>jar-no-fork</goal>
-								</goals>
 							</execution>
 						</executions>
 					</plugin>

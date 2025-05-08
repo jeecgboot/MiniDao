@@ -2,12 +2,10 @@ package org.jeecgframework.minidao.sqlparser.impl;
 
 import org.jeecgframework.minidao.pojo.MiniDaoPage;
 import org.jeecgframework.minidao.sqlparser.AbstractSqlProcessor;
+import org.jeecgframework.minidao.sqlparser.impl.vo.SelectSqlInfo;
 import org.jeecgframework.minidao.util.MiniDaoUtil;
 import java.text.MessageFormat;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -139,6 +137,7 @@ public class SimpleSqlProcessor implements AbstractSqlProcessor {
         }
     }
 
+
     /**
      * 查找最外层的ORDER BY的索引
      *
@@ -177,4 +176,37 @@ public class SimpleSqlProcessor implements AbstractSqlProcessor {
         return selectIndex + (selectDistinctIndex == selectIndex ? 15 : 6);
     }
 
+    /**
+     * 注：使用正则方式解析具有缺陷，并不能保证能解析出所有表名，并且 SelectSqlInfo 中只有表名信息，没有其他字段的信息
+     * @param selectSql 待解析的SQL
+     * @return
+     */
+    @Override
+    public Map<String, SelectSqlInfo> parseAllSelectTable(String selectSql) {
+        Map<String, SelectSqlInfo> tableMap = new HashMap<>();
+        String regex = "(?i)\\b(from|join)\\s+([\\w.]+)";
+        Pattern pattern = Pattern.compile(regex);
+        Matcher matcher = pattern.matcher(selectSql);
+
+        while (matcher.find()) {
+            String tableName = matcher.group(2);
+            SelectSqlInfo selectSqlInfo = new SelectSqlInfo(selectSql);
+            selectSqlInfo.setFromTableName(tableName);
+            tableMap.put(tableName, selectSqlInfo);
+        }
+        return tableMap;
+    }
+
+    /**
+     * 注：使用正则方式解析具有缺陷， SelectSqlInfo 中只有表名信息，没有其他字段的信息
+     * @param selectSql 待解析的SQL
+     * @return
+     */
+    @Override
+    public SelectSqlInfo parseSelectSqlInfo(String selectSql) {
+        System.err.println("此方法未实现！！！");
+        // TODO Auto-generated method stub
+        return null;
+    }
+    
 }
