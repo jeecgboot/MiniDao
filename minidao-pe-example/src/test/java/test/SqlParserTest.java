@@ -1,6 +1,6 @@
 package test;
 
-import org.jeecgframework.minidao.sqlparser.impl.JsqlparserSqlProcessor;
+import org.jeecgframework.minidao.sqlparser.impl.JsqlparserSqlProcessor49;
 import org.jeecgframework.minidao.sqlparser.impl.SimpleSqlProcessor;
 import org.jeecgframework.minidao.util.MiniDaoUtil;
 import org.junit.Test;
@@ -54,7 +54,7 @@ public class SqlParserTest {
      */
      @Test
      public void testAddOrderJSqlParser() {
-         JsqlparserSqlProcessor processor = new JsqlparserSqlProcessor();
+         JsqlparserSqlProcessor49 processor = new JsqlparserSqlProcessor49();
          String sql = "SELECT COUNT(*) AS count,theme_name,base_theme_name FROM (" +
                  "SELECT x.theme_name,(" +
                  "SELECT theme_name FROM (" +
