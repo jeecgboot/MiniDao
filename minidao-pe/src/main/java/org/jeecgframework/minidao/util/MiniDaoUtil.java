@@ -78,7 +78,7 @@ public class MiniDaoUtil {
 
 
 	//update-begin---author:scott ---date:2024-07-04  for：SQL解析引擎改造支持普通和jsqlparser切换----
-	private static final boolean JSQLPARSER_AVAILABLE = checkJSqlParserAvailability();
+//	private static final boolean JSQLPARSER_AVAILABLE = checkJSqlParserAvailability();
 	private static final boolean JSQLPARSER49_AVAILABLE = checkJSqlParser49Availability();
 	protected static AbstractSqlProcessor abstractSqlProcessor;
 	static {
@@ -332,14 +332,14 @@ public class MiniDaoUtil {
 		return null;
 	}
 
-	/**
-	 * 判断当前环境是否支持jsqlparser
-	 *
-	 * @return
-	 */
-	public static boolean isJSqlParserAvailable() {
-		return JSQLPARSER_AVAILABLE;
-	}
+//	/**
+//	 * 判断当前环境是否支持jsqlparser
+//	 *
+//	 * @return
+//	 */
+//	public static boolean isJSqlParserAvailable() {
+//		return JSQLPARSER_AVAILABLE;
+//	}
 
 	/**
 	 * 判断当前环境是否支持jsqlparser4.9
@@ -350,21 +350,21 @@ public class MiniDaoUtil {
 		return JSQLPARSER49_AVAILABLE;
 	}
 
-	/**
-	 * 判断当前环境是否存在jsqlparser，返回true或false
-	 *
-	 * @return
-	 */
-	private static boolean checkJSqlParserAvailability() {
-		try {
-			Class.forName("net.sf.jsqlparser.statement.select.SelectBody");
-			logger.debug("【Sql Parser】 The environment supports jsqlparser engine");
-			return true;
-		} catch (ClassNotFoundException e) {
-			logger.warn("【Sql Parser】 The environment does not support jsqlparser engine");
-			return false;
-		}
-	}
+//	/**
+//	 * 判断当前环境是否存在jsqlparser，返回true或false
+//	 *
+//	 * @return
+//	 */
+//	private static boolean checkJSqlParserAvailability() {
+//		try {
+//			Class.forName("net.sf.jsqlparser.statement.select.SelectBody");
+//			logger.debug("【Sql Parser】 The environment supports jsqlparser engine");
+//			return true;
+//		} catch (ClassNotFoundException e) {
+//			logger.warn("【Sql Parser】 The environment does not support jsqlparser engine");
+//			return false;
+//		}
+//	}
 
 	/**
 	 * 判断当前环境是否存在jsqlparser 4.9，返回true或false

@@ -3,7 +3,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.jeecgframework.boot3</groupId>
 	<artifactId>minidao-spring-boot-starter-jsqlparser-4.9</artifactId>
-	<version>1.10.7</version>
+	<version>1.10.8</version>
 	<packaging>jar</packaging>
 
 	<parent>
@@ -33,7 +33,7 @@
 
 	<properties>
 		<!-- minidao -->
-		<minidao.version>1.10.7</minidao.version>
+		<minidao.version>1.10.8</minidao.version>
 		<druid.version>1.2.22</druid.version>
 	</properties>
 	

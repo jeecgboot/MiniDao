@@ -16,7 +16,7 @@ public class SqlServerDialect extends AbstractHelperDialect {
     protected static AbstractSqlProcessor abstractSqlProcessor;
 
     static {
-        if (MiniDaoUtil.isJSqlParserAvailable()) {
+        if (MiniDaoUtil.isJSqlParser49Available()) {
             abstractSqlProcessor = new JsqlparserSqlProcessor49();
         } else {
             abstractSqlProcessor = new SimpleSqlProcessor();
