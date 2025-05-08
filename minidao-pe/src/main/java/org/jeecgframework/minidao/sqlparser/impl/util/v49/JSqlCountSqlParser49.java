@@ -193,8 +193,8 @@ public class JSqlCountSqlParser49 {
             }
             //----------带点处理-------------------------------------------------------------------------------------
         }
-        ParenthesedSelect select = (ParenthesedSelect) stmt;
-        Select selectBody = select.getSelect();
+        PlainSelect select = (PlainSelect) stmt;
+        Select selectBody = select.getPlainSelect();
         try {
             //处理body-去order by
             processSelectBody(selectBody);
