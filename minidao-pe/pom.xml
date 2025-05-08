@@ -4,7 +4,7 @@
 	
 	<groupId>org.jeecgframework</groupId>
 	<artifactId>minidao-pe-jsqlparser-4.9</artifactId>
-	<version>1.10.7</version>
+	<version>1.10.8</version>
 	<packaging>jar</packaging>
 	
 	<name>minidao-pe-jsqlparser-4.9</name>

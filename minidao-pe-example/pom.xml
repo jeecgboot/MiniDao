@@ -3,17 +3,17 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.jeecgframework</groupId>
 	<artifactId>minidao-pe-example-jsqlparser-4.9</artifactId>
-	<version>1.10.7</version>
+	<version>1.10.8</version>
 	<packaging>jar</packaging>
 	<url>http://www.jeecg.com</url>
 	<parent>
 		<groupId>org.jeecgframework</groupId>
 		<artifactId>minidao-parent-jsqlparser-4.9</artifactId>
-		<version>1.10.7</version>
+		<version>1.10.8</version>
 	</parent>
 	
 	<properties>
-		<minidao.version>1.10.7</minidao.version>
+		<minidao.version>1.10.8</minidao.version>
 		<junit.version>4.13.1</junit.version>
 		<springframework.version>5.3.31</springframework.version>
 		<!-- 数据库驱动 -->
