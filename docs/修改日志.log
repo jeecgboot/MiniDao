@@ -120,3 +120,14 @@ minidao-pe/src/main/java/org/jeecgframework/minidao/sqlparser/impl/util/v49/JSql
 minidao-pe/src/main/java/org/jeecgframework/minidao/sqlparser/impl/util/v49/JSqlParserSelectInfoUtil49.java (+)
 minidao-pe/src/main/java/org/jeecgframework/minidao/sqlparser/impl/util/v49/JSqlParserAllTableManager49.java (+)
 -- author:sunjianlei---date:20250506--for: [QQYUN-12130] 适配 jsqlparser 4.9 版本 ---
+
+-- author:sjlei---date:20250512--for: [QQYUN-12419] 新增getQueryTableInfo方法（OnlReportQueryBlackListHandler.java改造） ---
+minidao-pe/src/main/java/org/jeecgframework/minidao/sqlparser/impl/util/v49/JSqlTableInfoHelper.java (+)
+minidao-pe/src/main/java/org/jeecgframework/minidao/sqlparser/impl/util/JSqlTableInfoHelper.java (+)
+minidao-pe/src/main/java/org/jeecgframework/minidao/sqlparser/impl/vo/QueryTable.java (+)
+minidao-pe/src/main/java/org/jeecgframework/minidao/sqlparser/impl/JsqlparserSqlProcessor.java
+minidao-pe/src/main/java/org/jeecgframework/minidao/sqlparser/impl/JsqlparserSqlProcessor49.java
+minidao-pe/src/main/java/org/jeecgframework/minidao/sqlparser/impl/SimpleSqlProcessor.java
+minidao-pe/src/main/java/org/jeecgframework/minidao/sqlparser/AbstractSqlProcessor.java
+minidao-pe/src/main/java/org/jeecgframework/minidao/util/MiniDaoUtil.java
+-- author:sjlei---date:20250512--for: [QQYUN-12419] 新增getQueryTableInfo方法（OnlReportQueryBlackListHandler.java改造） ---

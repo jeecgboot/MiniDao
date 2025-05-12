@@ -3,6 +3,7 @@ package org.jeecgframework.minidao.sqlparser.impl;
 import com.sun.media.jfxmedia.logging.Logger;
 import org.jeecgframework.minidao.pojo.MiniDaoPage;
 import org.jeecgframework.minidao.sqlparser.AbstractSqlProcessor;
+import org.jeecgframework.minidao.sqlparser.impl.vo.QueryTable;
 import org.jeecgframework.minidao.sqlparser.impl.vo.SelectSqlInfo;
 import org.jeecgframework.minidao.util.MiniDaoUtil;
 import java.text.MessageFormat;
@@ -209,5 +210,12 @@ public class SimpleSqlProcessor implements AbstractSqlProcessor {
         // TODO Auto-generated method stub
         return null;
     }
-    
+
+    @Override
+    public List<QueryTable> getQueryTableInfo(String sql) {
+        System.err.println("此方法未实现！！！");
+        // TODO Auto-generated method stub
+        return null;
+    }
+
 }
