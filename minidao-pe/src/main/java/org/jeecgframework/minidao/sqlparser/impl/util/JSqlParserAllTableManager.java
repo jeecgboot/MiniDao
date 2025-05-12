@@ -198,6 +198,14 @@ public class JSqlParserAllTableManager {
                 if (this.tableAliasMap.get(tableName) != null) {
                     tableName = this.tableAliasMap.get(tableName);
                 }
+            } else if (fromItem instanceof SubSelect) {
+                try {
+                    Map<String, SelectSqlInfo> map = JSqlParserSelectInfoUtil.parseAllSelectTable(fromItem.toString());
+                    assert map != null;
+                    tableName = map.keySet().iterator().next();
+                } catch (JSQLParserException e) {
+                    throw new RuntimeException(e);
+                }
             } else {
                 // 当column的table为空时，说明是 fromItem 中的字段
                 tableName = ((Table) fromItem).getName();

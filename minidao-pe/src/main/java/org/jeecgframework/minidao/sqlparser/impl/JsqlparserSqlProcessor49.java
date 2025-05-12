@@ -9,10 +9,8 @@
 //import net.sf.jsqlparser.statement.select.*;
 //import org.jeecgframework.minidao.pojo.MiniDaoPage;
 //import org.jeecgframework.minidao.sqlparser.AbstractSqlProcessor;
-//import org.jeecgframework.minidao.sqlparser.impl.util.v49.JSqlCountSqlParser49;
-//import org.jeecgframework.minidao.sqlparser.impl.util.v49.JSqlParserSelectInfoUtil49;
-//import org.jeecgframework.minidao.sqlparser.impl.util.v49.JSqlRemoveSqlOrderBy49;
-//import org.jeecgframework.minidao.sqlparser.impl.util.v49.JSqlServerPagesHelper49;
+//import org.jeecgframework.minidao.sqlparser.impl.util.v49.*;
+//import org.jeecgframework.minidao.sqlparser.impl.vo.QueryTable;
 //import org.jeecgframework.minidao.sqlparser.impl.vo.SelectSqlInfo;
 //
 //import java.util.*;
@@ -229,4 +227,8 @@
 //        return JSqlParserSelectInfoUtil49.parseSelectSqlInfo(selectSql);
 //    }
 //
+//    @Override
+//    public List<QueryTable> getQueryTableInfo(String sql) {
+//        return JSqlTableInfoHelper.getQueryTableInfo(sql);
+//    }
 //}
