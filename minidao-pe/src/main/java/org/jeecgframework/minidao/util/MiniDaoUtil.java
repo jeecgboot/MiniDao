@@ -9,6 +9,7 @@ import org.jeecgframework.minidao.pojo.MiniDaoPage;
 import org.jeecgframework.minidao.sqlparser.AbstractSqlProcessor;
 import org.jeecgframework.minidao.sqlparser.impl.JsqlparserSqlProcessor49;
 import org.jeecgframework.minidao.sqlparser.impl.SimpleSqlProcessor;
+import org.jeecgframework.minidao.sqlparser.impl.vo.QueryTable;
 import org.jeecgframework.minidao.sqlparser.impl.vo.SelectSqlInfo;
 import org.springframework.util.CollectionUtils;
 
@@ -328,6 +329,21 @@ public class MiniDaoUtil {
         } catch (Exception e) {
 			logger.warn("parseTable error:" + e.getMessage());
         }
+		return null;
+	}
+
+	/**
+	 * 根据 sql语句 获取表和字段信息
+	 *
+	 * @param sql sql语句
+	 */
+	public static List<QueryTable> getQueryTableInfo(String sql) {
+		try {
+			return abstractSqlProcessor.getQueryTableInfo(sql);
+		} catch (Exception e) {
+			e.printStackTrace();
+			logger.warn("getQueryTableInfo error:" + e.getMessage());
+		}
 		return null;
 	}
 
