@@ -1,6 +1,7 @@
 package org.jeecgframework.minidao.sqlparser;
 
 import org.jeecgframework.minidao.pojo.MiniDaoPage;
+import org.jeecgframework.minidao.sqlparser.impl.vo.QueryTable;
 import org.jeecgframework.minidao.sqlparser.impl.vo.SelectSqlInfo;
 
 import java.util.List;
@@ -78,5 +79,12 @@ public interface AbstractSqlProcessor {
      * @param selectSql 待解析的SQL
      */
     SelectSqlInfo parseSelectSqlInfo(String selectSql) throws Exception;
+
+    /**
+     * 根据 sql语句 获取表和字段信息
+     *
+     * @param sql sql语句
+     */
+    List<QueryTable> getQueryTableInfo(String sql);
 
 }
