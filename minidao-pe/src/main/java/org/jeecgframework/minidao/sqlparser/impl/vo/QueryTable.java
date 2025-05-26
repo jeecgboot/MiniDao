@@ -4,6 +4,8 @@ import java.util.HashSet;
 import java.util.Set;
 
 public class QueryTable {
+    //数据库名
+    private String dbName;
     //表名
     private String name;
     //表的别名
@@ -21,6 +23,22 @@ public class QueryTable {
         this.alias = alias;
         this.all = false;
         this.fields = new HashSet<>();
+    }
+
+    public QueryTable(String dbName, String name, String alias) {
+        this.dbName = dbName;
+        this.name = name;
+        this.alias = alias;
+        this.all = false;
+        this.fields = new HashSet<>();
+    }
+
+    public String getDbName() {
+        return dbName;
+    }
+
+    public void setDbName(String dbName) {
+        this.dbName = dbName;
     }
 
     public void setName(String name) {
