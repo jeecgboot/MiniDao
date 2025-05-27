@@ -126,18 +126,27 @@ public class JSqlTableInfoHelper {
      * 处理表名
      */
     private void handleTable(PlainSelect plainSelect) {
-        FromItem fromItem = plainSelect.getFromItem();
-        if (fromItem instanceof Table) {
-            Table table = (Table) plainSelect.getFromItem();
-            addTableAlias(table);
-            // 获取join的表
-            List<Join> list = plainSelect.getJoins();
-            if (list != null) {
-                for (Join join : list) {
-                    Table joinTable = (Table) join.getRightItem();
-                    addTableAlias(joinTable);
-                }
+        // 1、处理 fromItem
+        this.handleFromItem(plainSelect.getFromItem());
+        // 2、获取join的表
+        List<Join> list = plainSelect.getJoins();
+        if (list != null) {
+            for (Join join : list) {
+                Table joinTable = (Table) join.getRightItem();
+                addTableAlias(joinTable);
             }
+        }
+    }
+
+    /**
+     * 处理 fromItem，可 flat fromItem
+     */
+    private void handleFromItem(FromItem fromItem) {
+        if (fromItem instanceof ParenthesedFromItem) {
+            this.handleFromItem(((ParenthesedFromItem) fromItem).getFromItem());
+        } else if (fromItem instanceof Table) {
+            Table table = (Table) fromItem;
+            addTableAlias(table);
         } else if (fromItem instanceof Select) {
             PlainSelect select = ((Select) fromItem).getPlainSelect();
             handleTable(select);
@@ -161,7 +170,7 @@ public class JSqlTableInfoHelper {
             threadLocalMainTableAlias.set(alias);
         }
         //tableMap.put(alias, new QueryTable(table.getName(), alias));
-        addQueryTable(alias, new QueryTable(table.getName(), alias));
+        addQueryTable(alias, new QueryTable(table.getSchemaName(), table.getName(), alias));
     }
 
     /**
