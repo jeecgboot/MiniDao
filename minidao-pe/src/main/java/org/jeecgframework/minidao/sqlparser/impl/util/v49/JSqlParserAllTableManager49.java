@@ -110,7 +110,7 @@ public class JSqlParserAllTableManager49 {
                     sqlInfo.setRealSelectFields(null);
                 }
                 // 6.3 各种字段表达式处理
-                else if (expression instanceof Select) {
+                else {
                     Alias alias = selectItem.getAlias();
                     this.handleExpression(expression, alias, plainSelect.getFromItem());
                 }
