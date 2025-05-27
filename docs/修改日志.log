@@ -131,3 +131,7 @@ minidao-pe/src/main/java/org/jeecgframework/minidao/sqlparser/impl/SimpleSqlProc
 minidao-pe/src/main/java/org/jeecgframework/minidao/sqlparser/AbstractSqlProcessor.java
 minidao-pe/src/main/java/org/jeecgframework/minidao/util/MiniDaoUtil.java
 -- author:sjlei---date:20250512--for: [QQYUN-12419] 新增getQueryTableInfo方法（OnlReportQueryBlackListHandler.java改造） ---
+
+-- author:sunjianlei---date:20250527--for: [QQYUN-12629]修复JSqlParserAllTableManager49解析不出来字段的问题 ---
+minidao-pe/src/main/java/org/jeecgframework/minidao/sqlparser/impl/util/v49/JSqlParserAllTableManager49.java
+-- author:sunjianlei---date:20250527--for: [QQYUN-12629]修复JSqlParserAllTableManager49解析不出来字段的问题 ---
