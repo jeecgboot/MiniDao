@@ -131,3 +131,12 @@ minidao-pe/src/main/java/org/jeecgframework/minidao/sqlparser/impl/SimpleSqlProc
 minidao-pe/src/main/java/org/jeecgframework/minidao/sqlparser/AbstractSqlProcessor.java
 minidao-pe/src/main/java/org/jeecgframework/minidao/util/MiniDaoUtil.java
 -- author:sjlei---date:20250512--for: [QQYUN-12419] 新增getQueryTableInfo方法（OnlReportQueryBlackListHandler.java改造） ---
+
+-- author:sunjianlei---date:20250526--for: 【QQYUN-12606】[jsql_v4.6]修复`getQueryTableInfo`无法解析带括号的表名、增加数据库名解析能力 ---
+minidao-pe/src/main/java/org/jeecgframework/minidao/sqlparser/impl/vo/QueryTable.java
+minidao-pe/src/main/java/org/jeecgframework/minidao/sqlparser/impl/util/JSqlTableInfoHelper.java
+-- author:sunjianlei---date:20250526--for: 【QQYUN-12606】[jsql_v4.6]修复`getQueryTableInfo`无法解析带括号的表名、增加数据库名解析能力 ---
+
+-- author:sunjianlei---date:20250526--for: 【QQYUN-12606】[jsql_v4.9]修复`getQueryTableInfo`无法解析带括号的表名、增加数据库名解析能力 ---
+minidao-pe/src/main/java/org/jeecgframework/minidao/sqlparser/impl/util/v49/JSqlTableInfoHelper.java
+-- author:sunjianlei---date:20250526--for: 【QQYUN-12606】[jsql_v4.9]修复`getQueryTableInfo`无法解析带括号的表名、增加数据库名解析能力 ---
