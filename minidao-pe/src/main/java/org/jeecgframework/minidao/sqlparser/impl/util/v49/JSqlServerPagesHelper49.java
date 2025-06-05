@@ -263,6 +263,16 @@ public class JSqlServerPagesHelper49 {
         //设置selectItems
         List<SelectItem<?>> selectItems = new ArrayList<>();
         for (SelectItem<?> selectItem : plainSelect.getSelectItems()) {
+            // update-begin---author:wangshuai---date:2025-06-05---for:【issues/3802】sprintboot3.3.6集成报表1.9.5，数据库是SQLserver。打开http://localhost:8080/jmreport/list报错，不能显示已有的报表---
+            // 别名需要特殊处理
+            if (selectItem.getAlias() != null) {
+                // 直接使用别名 
+                Column column = new Column(selectItem.getAlias().getName());
+                selectItems.add(new SelectItem<>(column));
+                continue;
+            }
+            // update-end---author:wangshuai---date:2025-06-05---for:【issues/3802】sprintboot3.3.6集成报表1.9.5，数据库是SQLserver。打开http://localhost:8080/jmreport/list报错，不能显示已有的报表---
+
             Expression expression = selectItem.getExpression();
             if (expression instanceof AllTableColumns) {
                 selectItems.add(new SelectItem<>(new AllColumns()));
@@ -274,12 +284,6 @@ public class JSqlServerPagesHelper49 {
                 } else {
                     selectItems.add(selectItem);
                 }
-            }
-            //别名需要特殊处理
-            else if (selectItem.getAlias() != null) {
-                //直接使用别名
-                Column column = new Column(selectItem.getAlias().getName());
-                selectItems.add(new SelectItem<>(column));
             } else {
                 selectItems.add(selectItem);
             }
