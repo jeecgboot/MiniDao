@@ -43,9 +43,9 @@ MiniDao 是一款轻量级JAVA持久层框架，基于 SpringJdbc + freemarker �
 
 ```
 <dependency>
-  <groupId>org.jeecgframework.boot3</groupId>
-  <artifactId>minidao-spring-boot-starter</artifactId>
-  <version>1.10.11</version>
+    <groupId>org.jeecgframework.boot3</groupId>
+    <artifactId>minidao-spring-boot-starter-jsqlparser-4.9</artifactId>
+    <version>1.10.11</version>
 </dependency>
 ```
 
