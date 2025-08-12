@@ -141,7 +141,7 @@ public class MiniDaoHandler implements InvocationHandler {
 			}
 		}
 		if (showSql) {
-			logger.info("Print MiniDao-Original-SQL :\n\n" + executeSql);
+			logger.info("Print MiniDao-Original-SQL :\n" + executeSql);
 		}
 		return returnObj;
 	}

@@ -1,5 +1,7 @@
 package org.jeecgframework.minidao.factory;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.jeecgframework.minidao.annotation.MiniDao;
 import org.jeecgframework.minidao.aop.MiniDaoHandler;
 import org.jeecgframework.minidao.aspect.EmptyInterceptor;
@@ -22,6 +24,8 @@ import java.lang.annotation.Annotation;
  * @date 2014年11月15日 下午9:48:31
  */
 public class MiniDaoBeanScannerConfigurer implements BeanDefinitionRegistryPostProcessor {
+	private static final Log logger = LogFactory.getLog(MiniDaoBeanScannerConfigurer.class);
+	
 	/**
 	 * ,; \t\n
 	 */
@@ -63,7 +67,11 @@ public class MiniDaoBeanScannerConfigurer implements BeanDefinitionRegistryPostP
 		/**
 		 * 加载Dao层接口
 		 */
-		scanner.scan(StringUtils.tokenizeToStringArray(this.basePackage, ConfigurableApplicationContext.CONFIG_LOCATION_DELIMITERS));
+		if(this.basePackage != null){
+			scanner.scan(StringUtils.tokenizeToStringArray(this.basePackage, ConfigurableApplicationContext.CONFIG_LOCATION_DELIMITERS));
+		}else{
+			logger.error("MiniDao 扫描路径未配置，请设置 minidao.base-package 属性，否则 MiniDao 无法使用！");
+		}
 	}
 
 	@Override
