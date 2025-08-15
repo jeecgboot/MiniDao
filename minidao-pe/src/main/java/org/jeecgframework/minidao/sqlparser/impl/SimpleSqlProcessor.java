@@ -1,6 +1,5 @@
 package org.jeecgframework.minidao.sqlparser.impl;
 
-import com.sun.media.jfxmedia.logging.Logger;
 import org.jeecgframework.minidao.pojo.MiniDaoPage;
 import org.jeecgframework.minidao.sqlparser.AbstractSqlProcessor;
 import org.jeecgframework.minidao.sqlparser.impl.vo.QueryTable;

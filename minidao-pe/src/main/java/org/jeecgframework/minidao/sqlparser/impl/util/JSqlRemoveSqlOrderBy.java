@@ -7,10 +7,7 @@
 //import org.apache.commons.logging.Log;
 //import org.apache.commons.logging.LogFactory;
 //
-//import java.util.ArrayList;
-//import java.util.LinkedHashSet;
-//import java.util.List;
-//import java.util.Set;
+//import java.util.*;
 //import java.util.regex.Matcher;
 //import java.util.regex.Pattern;
 //
@@ -36,6 +33,11 @@
 //    public String removeOrderBy(String sql) throws JSQLParserException {
 //        Statement stmt = null;
 //        List<String> sqList = null;
+//        //---------------------------------------------------------------------------------------------
+//        // 如果包含mybatis变量，先将其替换为占位符，避免解析时出错
+//        Map<String, String> mbMap = new LinkedHashMap<>();
+//        sql = SqlParserUtils.maskMyBatisPlaceholders(sql, mbMap);
+//        //---------------------------------------------------------------------------------------------
 //        try {
 //            //update-begin---author:wangshuai ---date:20220215  for：[issues/I4STNJ]SQL Server表名关键字查询失败
 //            stmt = CCJSqlParserUtil.parse(sql,parser -> parser.withSquareBracketQuotation(true));
@@ -68,6 +70,10 @@
 //            }
 //            logger.debug(" --- JSQLParser with DIAN --- convert end sql=" + sql);
 //        }
+//        //---------------------------------------------------------------------------------------------
+//        //---------------------------------------------------------------------------------------------
+//        // 如果包含mybatis变量，恢复占位符
+//        returnSql = SqlParserUtils.restoreMyBatisPlaceholders(returnSql, mbMap);
 //        //---------------------------------------------------------------------------------------------
 //        return returnSql;
 //    }

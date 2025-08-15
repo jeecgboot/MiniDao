@@ -3,6 +3,7 @@ package test;
 import org.jeecgframework.minidao.sqlparser.impl.JsqlparserSqlProcessor49;
 import org.jeecgframework.minidao.sqlparser.impl.SimpleSqlProcessor;
 import org.jeecgframework.minidao.util.MiniDaoUtil;
+import org.junit.Assert;
 import org.junit.Test;
 
 /**
@@ -124,5 +125,46 @@ public class SqlParserTest {
         System.out.println("after4:" + result1);
     }
 
+    /**
+     * 测试miniDaoUtil:移除order by 当有 mybatis占位符时是否正常
+     * @author chenrui
+     * @date 2025/8/15 12:02
+     */
+    @Test
+    public void testRemoveOrderWithMybatis() {
+        String sql = "SELECT * FROM sys_user WHERE 1=1 AND username like concat('%',#{params.username}) ORDER BY create_time DESC, username ASC";
+        System.out.println("before:" + sql);
+        String result = MiniDaoUtil.removeOrderBy(sql);
+        System.out.println("after:" + result);
+        Assert.assertTrue(result.contains("#{params.username}"));
+    }
+
+    /**
+     * 测试miniDaoUtil:获取count语句 当有 mybatis占位符时是否正常
+     * @author chenrui
+     * @date 2025/8/15 12:02
+     */
+    @Test
+    public void testCountWithMybatis() {
+        String sql = "SELECT * FROM sys_user WHERE 1=1 AND username like concat('%',#{params.username}) ORDER BY create_time DESC, username ASC";
+        System.out.println("before:" + sql);
+        String result = MiniDaoUtil.getCountSql(sql);
+        System.out.println("after:" + result);
+        Assert.assertTrue(result.contains("#{params.username}"));
+    }
+
+    /**
+     * 测试miniDaoUtil:添加order by 当有 mybatis占位符时是否正常
+     * @author chenrui
+     * @date 2025/8/15 12:02
+     */
+    @Test
+    public void testAddOrderWithMybatis() {
+        String sql = "SELECT * FROM sys_user WHERE 1=1 AND username like concat('%',#{params.username}) ORDER BY create_time DESC, username ASC";
+        System.out.println("before:" + sql);
+        String result = MiniDaoUtil.addOrderBy(sql,"sex", false);
+        System.out.println("after:" + result);
+        Assert.assertTrue(result.contains("sex DESC"));
+    }
 
 }

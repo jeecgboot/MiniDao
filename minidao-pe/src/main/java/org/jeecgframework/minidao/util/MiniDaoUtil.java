@@ -9,6 +9,7 @@ import org.jeecgframework.minidao.pojo.MiniDaoPage;
 import org.jeecgframework.minidao.sqlparser.AbstractSqlProcessor;
 import org.jeecgframework.minidao.sqlparser.impl.JsqlparserSqlProcessor49;
 import org.jeecgframework.minidao.sqlparser.impl.SimpleSqlProcessor;
+import org.jeecgframework.minidao.sqlparser.impl.util.SqlParserUtils;
 import org.jeecgframework.minidao.sqlparser.impl.vo.QueryTable;
 import org.jeecgframework.minidao.sqlparser.impl.vo.SelectSqlInfo;
 import org.springframework.util.CollectionUtils;
@@ -23,6 +24,7 @@ import java.lang.reflect.Modifier;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -212,7 +214,16 @@ public class MiniDaoUtil {
 		MiniDaoPage pageSetting = new MiniDaoPage();
 		pageSetting.setPage(page);
 		pageSetting.setRows(rows);
+		//---------------------------------------------------------------------------------------------
+		// 如果包含mybatis变量，先将其替换为占位符，避免解析时出错
+		Map<String,String> tokenToRaw = new LinkedHashMap<>();
+		sql = SqlParserUtils.maskMyBatisPlaceholders(sql, tokenToRaw);
+		//---------------------------------------------------------------------------------------------
 		String executePageSql = dialect.getPageSql(sql,pageSetting);
+		//---------------------------------------------------------------------------------------------
+		// 如果包含mybatis变量，恢复占位符
+		executePageSql = SqlParserUtils.restoreMyBatisPlaceholders(executePageSql, tokenToRaw);
+		//---------------------------------------------------------------------------------------------
 		return executePageSql;
 	}
 
