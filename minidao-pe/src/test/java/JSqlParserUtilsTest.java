@@ -46,6 +46,45 @@ public class JSqlParserUtilsTest {
                     "WHERE sd.dict_id = '3d9a351be3436fbefb1307d4cfb49bf2'",
     };
 
+    /**
+     * 测试 SQLServer 的分页 SQL 生成
+     */
+    @Test
+    public void testSqlserverCreatePageSql() {
+        String dbUrl = "jdbc:sqlserver://192.168.1.188:1433;SelectMethod=cursor;DatabaseName=jeecgbootbpm";
+
+        // 简单分页
+        String sql1 = "SELECT id, username FROM sys_user ORDER BY id";
+        System.out.println("分页SQL1：" + MiniDaoUtil.createPageSql(dbUrl, sql1, 1, 10));
+        System.out.println();
+
+        // 多字段排序
+        String sql2 = "SELECT id, username FROM sys_user ORDER BY id DESC, username ASC";
+        System.out.println("分页SQL2：" + MiniDaoUtil.createPageSql(dbUrl, sql2, 2, 10));
+        System.out.println();
+
+        // 带聚合函数
+        String sql3 = "SELECT sex, COUNT(*) as total FROM sys_user GROUP BY sex ORDER BY total DESC";
+        System.out.println("分页SQL3：" + MiniDaoUtil.createPageSql(dbUrl, sql3, 1, 5));
+        System.out.println();
+
+        // 带子查询
+        String sql4 = "SELECT COUNT(*) AS c, FORMAT(create_time, 'yyyy-MM-dd') AS date\n" +
+                "FROM jmreport_big_screen\n" +
+                "GROUP BY FORMAT(create_time, 'yyyy-MM-dd')\n" +
+                "ORDER BY date DESC;\n";
+        System.out.println("分页SQL4：" + MiniDaoUtil.createPageSql(dbUrl, sql4, 3, 10));
+        System.out.println();
+
+        // 带函数和别名
+        String sql5 = "SELECT id, UPPER(name) as uname, age FROM demo WHERE age > 18 ORDER BY uname";
+        System.out.println("分页SQL5：" + MiniDaoUtil.createPageSql(dbUrl, sql5, 1, 20));
+        System.out.println();
+    }
+    
+    
+    
+    
     @Test
     public void testParseSelectSql() {
         System.out.println("-----------------------------------------");

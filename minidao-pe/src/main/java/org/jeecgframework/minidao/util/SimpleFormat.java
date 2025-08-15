@@ -166,6 +166,8 @@ public class SimpleFormat {
 	public String getInStrs(List<String> params) {
 		StringBuffer join = new StringBuffer();
 		for(String p:params){
+			// SQL注入检查
+			SqlInjectionUtil.check(p,null);
 			join.append("'"+p+"',");
 		}
 		
@@ -187,6 +189,8 @@ public class SimpleFormat {
 	public String concat(String... str) {
 		StringBuilder sb = new StringBuilder();
 		for (String s : str) {
+			// SQL注入检查
+			SqlInjectionUtil.check(s,null);
 			sb.append(s);
 		}
 		return sb.toString();
@@ -205,6 +209,9 @@ public class SimpleFormat {
 		String[] params = str.split(",");
 		StringBuilder join = new StringBuilder();
 		for (String p : params) {
+			// SQL注入检查
+			SqlInjectionUtil.check(p,null);
+			
 			join.append("'").append(p).append("',");
 		}
 		String result = join.toString();
