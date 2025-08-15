@@ -5,7 +5,6 @@ import net.sf.jsqlparser.expression.*;
 import net.sf.jsqlparser.parser.CCJSqlParserUtil;
 import net.sf.jsqlparser.parser.SimpleNode;
 import net.sf.jsqlparser.schema.Column;
-import net.sf.jsqlparser.schema.Table;
 import net.sf.jsqlparser.statement.Statement;
 import net.sf.jsqlparser.statement.select.*;
 import org.jeecgframework.minidao.pojo.MiniDaoPage;
@@ -25,7 +24,7 @@ public class JsqlparserSqlProcessor implements AbstractSqlProcessor {
     protected static JSqlCountSqlParser jsqlCountSqlParser = new JSqlCountSqlParser();
     protected static JSqlServerPagesHelper jsqlServerPagesHelper = new JSqlServerPagesHelper();
     protected static JSqlRemoveSqlOrderBy jsqlRemoveSqlOrderBy = new JSqlRemoveSqlOrderBy();
-    
+
     @Override
     public String getSqlServerPageSql(String sql, MiniDaoPage miniDaoPage) {
         int page = miniDaoPage.getPage();
@@ -114,11 +113,6 @@ public class JsqlparserSqlProcessor implements AbstractSqlProcessor {
     @Override
     public String addOrderBy(String sql, String field, boolean isAsc) {
         Statement statement = null;
-        //---------------------------------------------------------------------------------------------
-        // 如果包含mybatis变量，先将其替换为占位符，避免解析时出错
-        Map<String, String> mbMap = new LinkedHashMap<>();
-        sql = SqlParserUtils.maskMyBatisPlaceholders(sql, mbMap);
-        //---------------------------------------------------------------------------------------------
         try {
             statement = CCJSqlParserUtil.parse(sql);
         } catch (JSQLParserException e) {
@@ -155,10 +149,6 @@ public class JsqlparserSqlProcessor implements AbstractSqlProcessor {
                 sql = plainSelect.toString();
             }
         }
-        //---------------------------------------------------------------------------------------------
-        // 如果包含mybatis变量，恢复占位符
-        sql = SqlParserUtils.restoreMyBatisPlaceholders(sql, mbMap);
-        //---------------------------------------------------------------------------------------------
         return sql;
     }
 
@@ -246,4 +236,29 @@ public class JsqlparserSqlProcessor implements AbstractSqlProcessor {
         return JSqlTableInfoHelper.getQueryTableInfo(sql);
     }
 
+    /**
+     * 为SQL语句增加查询条件（直接使用条件语句）
+     * for [issues/8336]支持SqlServer数据使用sql排序，新方案。
+     * @param sql 原始SQL
+     * @param condition 查询条件（不含where关键字）
+     * @return 添加查询条件后的SQL
+     */
+    @Override
+    public String addWhereCondition(String sql, String condition) {
+        return JSqlParserAddWhereHelper.addWhereCondition(sql, condition);
+    }
+
+    /**
+     * 为SQL语句增加查询条件（使用字段、值和操作符）
+     * for [issues/8336]支持SqlServer数据使用sql排序，新方案。
+     * @param sql 原始SQL
+     * @param field 字段名
+     * @param value 字段值
+     * @param operator 比较操作符（如：=, >, <, !=, like等）
+     * @return 添加查询条件后的SQL
+     */
+    @Override
+    public String addWhereCondition(String sql, String field, Object value, String operator) {
+        return JSqlParserAddWhereHelper.addWhereCondition(sql, field, value, operator);
+    }
 }

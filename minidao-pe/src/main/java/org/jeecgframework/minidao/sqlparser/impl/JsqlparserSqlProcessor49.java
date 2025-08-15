@@ -9,7 +9,6 @@
 //import net.sf.jsqlparser.statement.select.*;
 //import org.jeecgframework.minidao.pojo.MiniDaoPage;
 //import org.jeecgframework.minidao.sqlparser.AbstractSqlProcessor;
-//import org.jeecgframework.minidao.sqlparser.impl.util.SqlParserUtils;
 //import org.jeecgframework.minidao.sqlparser.impl.util.v49.*;
 //import org.jeecgframework.minidao.sqlparser.impl.vo.QueryTable;
 //import org.jeecgframework.minidao.sqlparser.impl.vo.SelectSqlInfo;
@@ -116,11 +115,6 @@
 //    @Override
 //    public String addOrderBy(String sql, String field, boolean isAsc) {
 //        Statement statement = null;
-//        //---------------------------------------------------------------------------------------------
-//        // 如果包含mybatis变量，先将其替换为占位符，避免解析时出错
-//        Map<String, String> mbMap = new LinkedHashMap<>();
-//        sql = SqlParserUtils.maskMyBatisPlaceholders(sql, mbMap);
-//        //---------------------------------------------------------------------------------------------
 //        try {
 //            statement = CCJSqlParserUtil.parse(sql);
 //        } catch (JSQLParserException e) {
@@ -152,10 +146,6 @@
 //            }
 //            sql = selectBody.toString();
 //        }
-//        //---------------------------------------------------------------------------------------------
-//        // 如果包含mybatis变量，恢复占位符
-//        sql = SqlParserUtils.restoreMyBatisPlaceholders(sql, mbMap);
-//        //---------------------------------------------------------------------------------------------
 //        return sql;
 //    }
 //
@@ -226,6 +216,32 @@
 //        return items;
 //    }
 //
+//
+//    /**
+//     * 为SQL语句增加查询条件（直接使用条件语句）
+//     * for [issues/8336]支持SqlServer数据使用sql排序，新方案。
+//     * @param sql 原始SQL
+//     * @param condition 查询条件（不含where关键字）
+//     * @return 添加查询条件后的SQL
+//     */
+//    @Override
+//    public String addWhereCondition(String sql, String condition) {
+//        return JSqlParserAddWhereHelper49.addWhereCondition(sql, condition);
+//    }
+//
+//    /**
+//     * 为SQL语句增加查询条件（使用字段、值和操作符）
+//     * for [issues/8336]支持SqlServer数据使用sql排序，新方案。
+//     * @param sql 原始SQL
+//     * @param field 字段名
+//     * @param value 字段值
+//     * @param operator 比较操作符（如：=, >, <, !=, like等）
+//     * @return 添加查询条件后的SQL
+//     */
+//    @Override
+//    public String addWhereCondition(String sql, String field, Object value, String operator) {
+//        return JSqlParserAddWhereHelper49.addWhereCondition(sql, field, value, operator);
+//    }
 //
 //    @Override
 //    public Map<String, SelectSqlInfo> parseAllSelectTable(String selectSql) throws JSQLParserException {

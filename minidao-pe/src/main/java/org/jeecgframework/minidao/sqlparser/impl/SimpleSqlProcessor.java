@@ -1,11 +1,11 @@
 package org.jeecgframework.minidao.sqlparser.impl;
 
-import com.sun.media.jfxmedia.logging.Logger;
 import org.jeecgframework.minidao.pojo.MiniDaoPage;
 import org.jeecgframework.minidao.sqlparser.AbstractSqlProcessor;
 import org.jeecgframework.minidao.sqlparser.impl.vo.QueryTable;
 import org.jeecgframework.minidao.sqlparser.impl.vo.SelectSqlInfo;
 import org.jeecgframework.minidao.util.MiniDaoUtil;
+import org.jeecgframework.minidao.sqlparser.impl.util.SimpleAddWhereHelper;
 import java.text.MessageFormat;
 import java.util.*;
 import java.util.regex.Matcher;
@@ -89,6 +89,7 @@ public class SimpleSqlProcessor implements AbstractSqlProcessor {
 
     /**
      * 排序方向
+     *
      * @for TV360X-2551
      */
     private static final List<String> ORDER_DIRECTION = Arrays.asList("ASC", "DESC");
@@ -216,6 +217,33 @@ public class SimpleSqlProcessor implements AbstractSqlProcessor {
         System.err.println("此方法未实现！！！");
         // TODO Auto-generated method stub
         return null;
+    }
+
+
+    /**
+     * 为SQL语句增加查询条件（直接使用条件语句）
+     * for [issues/8336]支持SqlServer数据使用sql排序，新方案。
+     * @param sql       原始SQL
+     * @param condition 查询条件（不含where关键字）
+     * @return 添加查询条件后的SQL
+     */
+    @Override
+    public String addWhereCondition(String sql, String condition) {
+        return SimpleAddWhereHelper.addWhereCondition(sql, condition);
+    }
+
+    /**
+     * 为SQL语句增加查询条件（使用字段、值和操作符）
+     * for [issues/8336]支持SqlServer数据使用sql排序，新方案。
+     * @param sql      原始SQL
+     * @param field    字段名
+     * @param value    字段值
+     * @param operator 比较操作符（如：=, >, <, !=, like等）
+     * @return 添加查询条件后的SQL
+     */
+    @Override
+    public String addWhereCondition(String sql, String field, Object value, String operator) {
+        return SimpleAddWhereHelper.addWhereCondition(sql, field, value, operator);
     }
 
 }

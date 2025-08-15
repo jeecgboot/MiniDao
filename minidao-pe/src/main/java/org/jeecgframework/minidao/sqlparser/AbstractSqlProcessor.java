@@ -61,6 +61,26 @@ public interface AbstractSqlProcessor {
     String addOrderBy(String sql, String field, boolean isAsc);
 
     /**
+     * 为SQL语句增加查询条件（直接使用条件语句）
+     * for [issues/8336]支持SqlServer数据使用sql排序，新方案。
+     * @param sql 原始SQL
+     * @param condition 查询条件（不含where关键字）
+     * @return 添加查询条件后的SQL
+     */
+    String addWhereCondition(String sql, String condition);
+
+    /**
+     * 为SQL语句增加查询条件（使用字段、值和操作符）
+     * for [issues/8336]支持SqlServer数据使用sql排序，新方案。
+     * @param sql 原始SQL
+     * @param field 字段名
+     * @param value 字段值
+     * @param operator 比较操作符（如：=, >, <, !=, like等）
+     * @return 添加查询条件后的SQL
+     */
+    String addWhereCondition(String sql, String field, Object value, String operator);
+
+    /**
      * 解析 查询（select）sql的信息，
      * 此方法会展开所有子查询到一个map里，
      * key只存真实的表名，如果查询的没有真实的表名，则会被忽略。
