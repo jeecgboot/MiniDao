@@ -9,6 +9,7 @@
 //import net.sf.jsqlparser.statement.select.*;
 //import org.jeecgframework.minidao.pojo.MiniDaoPage;
 //import org.jeecgframework.minidao.sqlparser.AbstractSqlProcessor;
+//import org.jeecgframework.minidao.sqlparser.impl.util.SqlParserUtils;
 //import org.jeecgframework.minidao.sqlparser.impl.util.v49.*;
 //import org.jeecgframework.minidao.sqlparser.impl.vo.QueryTable;
 //import org.jeecgframework.minidao.sqlparser.impl.vo.SelectSqlInfo;
@@ -115,6 +116,11 @@
 //    @Override
 //    public String addOrderBy(String sql, String field, boolean isAsc) {
 //        Statement statement = null;
+//        //---------------------------------------------------------------------------------------------
+//        // 如果包含mybatis变量，先将其替换为占位符，避免解析时出错
+//        Map<String, String> mbMap = new LinkedHashMap<>();
+//        sql = SqlParserUtils.maskMyBatisPlaceholders(sql, mbMap);
+//        //---------------------------------------------------------------------------------------------
 //        try {
 //            statement = CCJSqlParserUtil.parse(sql);
 //        } catch (JSQLParserException e) {
@@ -146,6 +152,10 @@
 //            }
 //            sql = selectBody.toString();
 //        }
+//        //---------------------------------------------------------------------------------------------
+//        // 如果包含mybatis变量，恢复占位符
+//        sql = SqlParserUtils.restoreMyBatisPlaceholders(sql, mbMap);
+//        //---------------------------------------------------------------------------------------------
 //        return sql;
 //    }
 //

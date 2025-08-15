@@ -140,3 +140,16 @@ minidao-pe/src/main/java/org/jeecgframework/minidao/sqlparser/impl/util/JSqlTabl
 -- author:sunjianlei---date:20250526--for: 【QQYUN-12606】[jsql_v4.9]修复`getQueryTableInfo`无法解析带括号的表名、增加数据库名解析能力 ---
 minidao-pe/src/main/java/org/jeecgframework/minidao/sqlparser/impl/util/v49/JSqlTableInfoHelper.java
 -- author:sunjianlei---date:20250526--for: 【QQYUN-12606】[jsql_v4.9]修复`getQueryTableInfo`无法解析带括号的表名、增加数据库名解析能力 ---
+
+---author:chenrui---date:2025/8/15-----for:支持mybatis占位符---
+minidao-pe/src/main/java/org/jeecgframework/minidao/sqlparser/impl/util/v49/JSqlCountSqlParser49.java
+minidao-pe/src/main/java/org/jeecgframework/minidao/sqlparser/impl/util/v49/JSqlRemoveSqlOrderBy49.java
+minidao-pe/src/main/java/org/jeecgframework/minidao/sqlparser/impl/util/JSqlCountSqlParser.java
+minidao-pe/src/main/java/org/jeecgframework/minidao/sqlparser/impl/util/JSqlRemoveSqlOrderBy.java
+minidao-pe/src/main/java/org/jeecgframework/minidao/sqlparser/impl/util/SqlParserUtils.java (+)
+minidao-pe/src/main/java/org/jeecgframework/minidao/sqlparser/impl/JsqlparserSqlProcessor.java
+minidao-pe/src/main/java/org/jeecgframework/minidao/sqlparser/impl/JsqlparserSqlProcessor49.java
+minidao-pe/src/main/java/org/jeecgframework/minidao/sqlparser/impl/SimpleSqlProcessor.java
+minidao-pe/src/main/java/org/jeecgframework/minidao/util/MiniDaoUtil.java
+minidao-pe-example/src/test/java/test/SqlParserTest.java
+---author:chenrui---date:2025/8/15-----for:支持mybatis占位符---

@@ -154,7 +154,7 @@ public class JSqlCountSqlParser {
      * 获取智能的countSql
      *
      * 处理body-去order by
-     * 
+     *
      * @param sql
      * @param countColumn 列名，默认 0
      * @return
@@ -168,6 +168,11 @@ public class JSqlCountSqlParser {
         if (sql.indexOf(KEEP_ORDERBY) >= 0) {
             return getSimpleCountSql(sql, countColumn);
         }
+        //---------------------------------------------------------------------------------------------
+        // 如果包含mybatis变量，先将其替换为占位符，避免解析时出错
+        Map<String, String> mbMap = new LinkedHashMap<>();
+        sql = SqlParserUtils.maskMyBatisPlaceholders(sql, mbMap);
+        //---------------------------------------------------------------------------------------------
         try {
             stmt = CCJSqlParserUtil.parse(sql);
         } catch (Throwable e) {
@@ -217,6 +222,10 @@ public class JSqlCountSqlParser {
             logger.debug(" --- JSQLParser with DIAN --- convert end sql = " + result);
         }
         //-----带点处理-------------------------------------------------------------------------------------------
+        //---------------------------------------------------------------------------------------------
+        // 如果包含mybatis变量，恢复占位符
+        result = SqlParserUtils.restoreMyBatisPlaceholders(result, mbMap);
+        //---------------------------------------------------------------------------------------------
         return result;
     }
 
