@@ -182,16 +182,16 @@
 						</executions>
 					</plugin>
 					<!--Nexus Staging Maven插件是将组件部署到OSS并将其发布到Central Repository的推荐方法-->
-                    <plugin>
-                        <groupId>org.sonatype.central</groupId>
-                        <artifactId>central-publishing-maven-plugin</artifactId>
-                        <version>0.7.0</version>
-                        <extensions>true</extensions>
-                        <configuration>
-                            <!-- 注意：这类必须要和Maven配置环境中的server id对应上 -->
-                            <publishingServerId>oss</publishingServerId>
-                        </configuration>
-                    </plugin>
+					<plugin>
+						<groupId>org.sonatype.central</groupId>
+						<artifactId>central-publishing-maven-plugin</artifactId>
+						<version>0.7.0</version>
+						<extensions>true</extensions>
+						<configuration>
+							<!-- 注意：这类必须要和Maven配置环境中的server id对应上 -->
+							<publishingServerId>oss</publishingServerId>
+						</configuration>
+					</plugin>
 				</plugins>
 			</build>
 		</profile>
