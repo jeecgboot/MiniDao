@@ -18,6 +18,11 @@ import java.util.regex.Pattern;
  */
 public class SimpleSqlProcessor implements AbstractSqlProcessor {
     private static final String SQLSERVER_SQL = "select * from ( select row_number() over(order by tempColumn) tempRowNumber, * from (select top {1} tempColumn = 0, {0}) t ) tt where tempRowNumber > {2}"; // sqlserver
+    /**
+     * 提取SELECT语句中的字段
+     * for [QQYUN-13476]online 报表SqlServer兼容改造完
+     */
+    private static final Pattern SELECT_PATTERN = Pattern.compile("select(.*?)from", Pattern.CASE_INSENSITIVE | Pattern.DOTALL);
 
     @Override
     public String getSqlServerPageSql(String sql, MiniDaoPage miniDaoPage) {
@@ -217,6 +222,32 @@ public class SimpleSqlProcessor implements AbstractSqlProcessor {
         System.err.println("此方法未实现！！！");
         // TODO Auto-generated method stub
         return null;
+    }
+
+    @Override
+    public Map<String, String> parseSelectAliasMap(String sql) {
+        Map<String, String> fieldAliasMap = new HashMap<>();
+        Matcher m = SELECT_PATTERN.matcher(sql);
+        if (m.find()) {
+            String selectPart = m.group(1);
+            String[] cols = selectPart.split(",");
+            for (String col : cols) {
+                String c = col.trim();
+                if (c.isEmpty()) continue;
+
+                // 按AS或空格拆分别名
+                String[] parts = c.split("(?i)\\s+as\\s+|\\s+", 2);
+                String expr = parts[0].trim();
+                String aliasName;
+                if (parts.length > 1) {
+                    aliasName = parts[1].trim();
+                } else {
+                    aliasName = expr.contains(".") ? expr.substring(expr.indexOf('.') + 1) : expr;
+                }
+                fieldAliasMap.put(aliasName, expr);
+            }
+        }
+        return fieldAliasMap;
     }
 
 

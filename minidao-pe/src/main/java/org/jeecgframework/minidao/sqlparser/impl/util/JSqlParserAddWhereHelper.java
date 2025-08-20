@@ -37,6 +37,11 @@ public class JSqlParserAddWhereHelper {
         // 掩码占位符，避免解析时丢失 # 后内容
         Map<String, String> mbMap = new LinkedHashMap<>();
         String maskedCondition = SqlParserUtils.maskMyBatisPlaceholders(condition, mbMap);
+        //---------------------------------------------------------------------------------------------
+        // 如果包含mybatis变量，先将其替换为占位符，避免解析时出错
+        Map<String, String> sqlMbMap = new LinkedHashMap<>();
+        sql = SqlParserUtils.maskMyBatisPlaceholders(sql, sqlMbMap, "_SQL_");
+        //---------------------------------------------------------------------------------------------
         try {
             // 解析 SQL 为抽象语法树（支持方括号转义）
             Statement statement = CCJSqlParserUtil.parse(sql, parser -> parser.withSquareBracketQuotation(true));
@@ -57,6 +62,7 @@ public class JSqlParserAddWhereHelper {
                         // 无 WHERE：直接设置
                         plainSelect.setWhere(conditionExpression);
                     }
+                    sql =  SqlParserUtils.restoreMyBatisPlaceholders(selectBody.toString(), mbMap);
                 } else if (selectBody instanceof SetOperationList) {
                     // 复合查询（UNION/INTERSECT 等）：外包一层并追加 WHERE
                     SetOperationList setOperationList = (SetOperationList) selectBody;
@@ -74,11 +80,15 @@ public class JSqlParserAddWhereHelper {
                     // 生成最终 SQL 字符串
                     Select newSelect = new Select();
                     newSelect.setSelectBody(newOuterSelect);
-                    return SqlParserUtils.restoreMyBatisPlaceholders(newSelect.toString(), mbMap);
+                    sql = SqlParserUtils.restoreMyBatisPlaceholders(newSelect.toString(), mbMap);
                 }
                 // 非复合场景：返回修改后的 SQL（还原占位符）
-                return SqlParserUtils.restoreMyBatisPlaceholders(selectStatement.toString(), mbMap);
+                sql = SqlParserUtils.restoreMyBatisPlaceholders(selectStatement.toString(), mbMap);
             }
+            //---------------------------------------------------------------------------------------------
+            // 如果包含mybatis变量，恢复占位符
+            sql = SqlParserUtils.restoreMyBatisPlaceholders(sql, sqlMbMap);
+            //---------------------------------------------------------------------------------------------
             // 非 SELECT：原样返回
             return sql;
         } catch (JSQLParserException e) {

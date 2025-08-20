@@ -236,6 +236,84 @@ public class JsqlparserSqlProcessor implements AbstractSqlProcessor {
         return JSqlTableInfoHelper.getQueryTableInfo(sql);
     }
 
+    @Override
+    public Map<String, String> parseSelectAliasMap(String sql) {
+        //---------------------------------------------------------------------------------------------
+        // 如果包含mybatis变量，先将其替换为占位符，避免解析时出错
+        Map<String, String> mbMap = new LinkedHashMap<>();
+        sql = SqlParserUtils.maskMyBatisPlaceholders(sql, mbMap);
+        //---------------------------------------------------------------------------------------------
+        Statement stmt;
+        try {
+            stmt = CCJSqlParserUtil.parse(sql, parser -> parser.withSquareBracketQuotation(true));
+        } catch (JSQLParserException e) {
+            throw new RuntimeException(e);
+        }
+        if (!(stmt instanceof Select)) {
+            return Collections.emptyMap();
+        }
+        Select select = (Select) stmt;
+        SelectBody selectBody = select.getSelectBody();
+        if (!(selectBody instanceof PlainSelect)) {
+            // 与 v4.9 版本保持一致，当前仅处理最外层 PlainSelect
+            return Collections.emptyMap();
+        }
+        PlainSelect plain = (PlainSelect) selectBody;
+
+        List<SelectItem> selectItems = plain.getSelectItems();
+        Map<String, String> fieldMap = new LinkedHashMap<>();
+        if (selectItems != null) {
+            for (SelectItem selectItem : selectItems) {
+                String key;
+                String value;
+
+                if (selectItem instanceof SelectExpressionItem) {
+                    SelectExpressionItem sei = (SelectExpressionItem) selectItem;
+                    Expression expression = sei.getExpression();
+                    value = expression != null ? expression.toString() : selectItem.toString();
+
+                    Alias alias = sei.getAlias();
+                    if (alias != null) {
+                        key = alias.getName();
+                    } else if (expression instanceof Column) {
+                        key = ((Column) expression).getColumnName();
+                    } else if (expression instanceof SubSelect) {
+                        key = value; // 子查询
+                    } else if (expression instanceof Function) {
+                        key = value; // 函数
+                    } else if (expression instanceof StringValue
+                            || expression instanceof LongValue
+                            || expression instanceof DoubleValue
+                            || expression instanceof DateValue
+                            || expression instanceof TimeKeyExpression
+                            || expression instanceof CaseExpression) {
+                        key = value.replaceAll("['\"`]", "");
+                    } else {
+                        key = value;
+                    }
+                } else if (selectItem instanceof AllTableColumns) {
+                    // table.*
+                    value = selectItem.toString();
+                    key = value;
+                } else if (selectItem instanceof AllColumns) {
+                    // *
+                    value = selectItem.toString();
+                    key = value;
+                } else {
+                    value = selectItem.toString();
+                    key = value;
+                }
+
+                fieldMap.put(key, value);
+            }
+        }
+        //---------------------------------------------------------------------------------------------
+        // 如果包含mybatis变量，恢复占位符
+        String out = SqlParserUtils.restoreMyBatisPlaceholders(plain.toString(), mbMap);
+        // 由于上面恢复的是整个 SQL 的字符串，但我们需要返回映射；为保持一致性，直接返回映射（映射中表达式字符串不再替换）。
+        return fieldMap;
+    }
+
     /**
      * 为SQL语句增加查询条件（直接使用条件语句）
      * for [issues/8336]支持SqlServer数据使用sql排序，新方案。

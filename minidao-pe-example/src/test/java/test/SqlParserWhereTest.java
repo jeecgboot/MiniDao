@@ -460,21 +460,21 @@
 //     */
 //    @Test
 //    public void testMybatis() {
-//        String sql = "WITH user_count AS (SELECT dept_id, COUNT(*) as count FROM user GROUP BY dept_id) " + "SELECT d.name, uc.count FROM department d JOIN user_count uc ON d.id = uc.dept_id";
+//        String sql = "WITH user_count AS (SELECT dept_id, COUNT(*) as count FROM user GROUP BY dept_id) " + "SELECT d.name, uc.count FROM department d JOIN user_count uc ON d.id = uc.dept_id WHERE d.status = ${params.status}";
 //        String condition = "name like #{param.name, jdbcType=VARCHAR}";
 //
-//        System.out.println("============ SimpleSqlProcessor 测试 (WITH子句) ============\n");
+//        System.out.println("============ SimpleSqlProcessor 测试 (Mybatis) ============\n");
 //        System.out.println("原始SQL: " + sql);
 //        String simpleResult = simpleSqlProcessor.addWhereCondition(sql, condition);
 //        System.out.println("SimpleSqlProcessor实际SQL: " + simpleResult);
-//        Assert.assertTrue(simpleResult.contains("WHERE name like #{param.name, jdbcType=VARCHAR}"));
+//        Assert.assertTrue(simpleResult.contains("WHERE d.status = ${params.status} AND name like #{param.name, jdbcType=VARCHAR}"));
 //
-//        System.out.println("============ JsqlparserSqlProcessor 测试 (WITH子句) ============\n");
+//        System.out.println("============ JsqlparserSqlProcessor 测试 (Mybatis) ============\n");
 //        System.out.println("原始SQL: " + sql);
 //        try {
 //            String jsqlResult = jsqlparserSqlProcessor.addWhereCondition(sql, condition);
 //            System.out.println("JsqlparserSqlProcessor实际SQL: " + jsqlResult);
-//            Assert.assertTrue(jsqlResult.contains("WHERE name LIKE #{param.name, jdbcType=VARCHAR}"));
+//            Assert.assertTrue(jsqlResult.contains("WHERE d.status = ${params.status} AND name LIKE #{param.name, jdbcType=VARCHAR}"));
 //        } catch (Exception e) {
 //            System.out.println("JsqlparserSqlProcessor无法处理WITH子句: " + e.getMessage());
 //        }

@@ -18,7 +18,7 @@ public class SqlParserUtils {
     /**
      * MyBatis占位符正则
      */
-    public static final Pattern MB_PLACEHOLDER = Pattern.compile("(#\\{[^}]+})|($\\{[^}]+})");
+    public static final Pattern MB_PLACEHOLDER = Pattern.compile("(#\\{[^}]+})|(\\$\\{[^}]+})");
     /**
      * sql替换占位符前缀
      */
@@ -36,18 +36,34 @@ public class SqlParserUtils {
      * @author chenrui
      * @date 2025/8/14 20:32
      */
-    public static String maskMyBatisPlaceholders(String text, Map<String, String> tokenToRaw) {
+    public static String maskMyBatisPlaceholders(String text, Map<String, String> tokenToRaw){
+        return maskMyBatisPlaceholders(text, tokenToRaw, "");
+    }
+
+    /**
+     * 将 #{..}/${..} 替换为占位
+     * @param text
+     * @param tokenToRaw
+     * @param customMaskKey 自定义占位符前缀
+     * @return
+     * @author chenrui
+     * @date 2025/8/14 20:32
+     */
+    public static String maskMyBatisPlaceholders(String text, Map<String, String> tokenToRaw, String customMaskKey) {
         logger.debug("[Mybatis替换占位符] maskMyBatisPlaceholders: " + text);
         // 如果没有传入占位符映射，则直接返回原文本
         if (text == null || text.isEmpty()) {
             return text;
+        }
+        if(customMaskKey == null || customMaskKey.isEmpty()) {
+            customMaskKey = "";
         }
         Matcher m = MB_PLACEHOLDER.matcher(text);
         StringBuffer sb = new StringBuffer();
         int idx = 0;
         while (m.find()) {
             String raw = m.group();
-            String token = MB_PREFIX + idx + MB_SUFFIX;
+            String token = MB_PREFIX + customMaskKey + idx + MB_SUFFIX;
             tokenToRaw.put(token, raw);
             m.appendReplacement(sb, Matcher.quoteReplacement("'" + token + "'"));
             idx++;
