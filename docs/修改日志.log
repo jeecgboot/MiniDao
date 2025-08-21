@@ -167,3 +167,14 @@ org/jeecgframework/minidao/sqlparser/impl/JsqlparserSqlProcessor49.java
 org/jeecgframework/minidao/sqlparser/impl/SimpleSqlProcessor.java
 org/jeecgframework/minidao/sqlparser/AbstractSqlProcessor.java
 ---author:chenrui---date:2025/8/15-----for:添加addWhereCondition方法---
+
+---author:chenrui---date:2025/8/20-----for:[QQYUN-13476]online 报表SqlServer兼容改造完---
+minidao-pe/src/main/java/org/jeecgframework/minidao/sqlparser/impl/util/v49/JSqlParserAddWhereHelper49.java
+minidao-pe/src/main/java/org/jeecgframework/minidao/sqlparser/impl/util/SqlParserUtils.java
+minidao-pe/src/main/java/org/jeecgframework/minidao/sqlparser/impl/JsqlparserSqlProcessor49.java
+minidao-pe/src/main/java/org/jeecgframework/minidao/sqlparser/impl/SimpleSqlProcessor.java
+minidao-pe/src/main/java/org/jeecgframework/minidao/sqlparser/AbstractSqlProcessor.java
+minidao-pe/src/main/java/org/jeecgframework/minidao/util/MiniDaoUtil.java
+minidao-pe-example/src/test/java/test/ParseSqlFieldsTest.java (+)
+minidao-pe-example/src/test/java/test/SqlParserWhereTest.java
+---author:chenrui---date:2025/8/20-----for:[QQYUN-13476]online 报表SqlServer兼容改造完---

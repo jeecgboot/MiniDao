@@ -345,6 +345,25 @@ public class MiniDaoUtil {
 
 		return null;
 	}
+
+	/**
+	 * 解析 SQL 查询，将 SELECT 字段映射到 (alias或列名) -> (完整字段表达式) 的 Map 中。
+	 * for [QQYUN-13476]online 报表SqlServer兼容改造完
+	 *
+	 * @param parsedSql 要解析的 SQL 查询语句
+	 * @return 字段映射：key 为别名（若有）或列名（无表名前缀），value 为对应的完整表达式字符串
+	 * @author chenrui
+	 * @date 2025/8/20 16:41
+	 */
+	public static Map<String, String> parseSelectAliasMap(String parsedSql) {
+		Map<String, String> resp = new LinkedHashMap<>();
+		try {
+			resp = abstractSqlProcessor.parseSelectAliasMap(parsedSql);
+		} catch (Exception e) {
+			logger.warn("parseSelectAliasMap error:" + e.getMessage());
+		}
+		return resp;
+	}
 	
 	/**
 	 * 解析SQL查询字段

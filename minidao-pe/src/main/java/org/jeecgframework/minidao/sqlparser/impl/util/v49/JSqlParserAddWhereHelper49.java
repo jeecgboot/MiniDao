@@ -37,6 +37,11 @@ public class JSqlParserAddWhereHelper49 {
         // 掩码占位符，避免 JSqlParser 解析时丢失 # 之后内容
         Map<String, String> mbMap = new LinkedHashMap<>();
         String maskedCondition = SqlParserUtils.maskMyBatisPlaceholders(condition, mbMap);
+        //---------------------------------------------------------------------------------------------
+        // 如果包含mybatis变量，先将其替换为占位符，避免解析时出错
+        Map<String, String> sqlMbMap = new LinkedHashMap<>();
+        sql = SqlParserUtils.maskMyBatisPlaceholders(sql, sqlMbMap, "_SQL_");
+        //---------------------------------------------------------------------------------------------
         try {
             // 解析 SQL 为抽象语法树（支持方括号转义）
             Statement statement = CCJSqlParserUtil.parse(sql, parser -> parser.withSquareBracketQuotation(true));
@@ -56,6 +61,7 @@ public class JSqlParserAddWhereHelper49 {
                         // 无 WHERE：直接设置
                         plainSelect.setWhere(conditionExpression);
                     }
+                    sql =  SqlParserUtils.restoreMyBatisPlaceholders(selectStmt.toString(), mbMap);
                 } else if (selectStmt instanceof SetOperationList) {
                     // 复合查询（UNION）：外包一层 SELECT * 并追加 WHERE
                     SetOperationList setOperationList = (SetOperationList) selectStmt;
@@ -67,7 +73,7 @@ public class JSqlParserAddWhereHelper49 {
                     Expression conditionExpression = CCJSqlParserUtil.parseCondExpression(maskedCondition);
                     outer.setWhere(conditionExpression);
                     // 返回前还原占位符
-                    return SqlParserUtils.restoreMyBatisPlaceholders(outer.toString(), mbMap);
+                    sql =  SqlParserUtils.restoreMyBatisPlaceholders(outer.toString(), mbMap);
                 } else if (statement instanceof ParenthesedSelect) {
                     // 顶层是括号查询：内部 普通查询 则直接合并 WHERE，否则外包一层
                     ParenthesedSelect ps = (ParenthesedSelect) statement;
@@ -82,7 +88,7 @@ public class JSqlParserAddWhereHelper49 {
                             inner.setWhere(conditionExpression);
                         }
                         // 返回前还原占位符
-                        return SqlParserUtils.restoreMyBatisPlaceholders(ps.toString(), mbMap);
+                        sql =  SqlParserUtils.restoreMyBatisPlaceholders(ps.toString(), mbMap);
                     } else {
                         // 内部为复合查询：外包一层 SELECT * 并追加 WHERE
                         PlainSelect outer = new PlainSelect();
@@ -94,12 +100,16 @@ public class JSqlParserAddWhereHelper49 {
                         Expression conditionExpression = CCJSqlParserUtil.parseCondExpression(maskedCondition);
                         outer.setWhere(conditionExpression);
                         // 返回前还原占位符
-                        return SqlParserUtils.restoreMyBatisPlaceholders(outer.toString(), mbMap);
+                        sql =  SqlParserUtils.restoreMyBatisPlaceholders(outer.toString(), mbMap);
                     }
+                }else {
+                    sql =  SqlParserUtils.restoreMyBatisPlaceholders(selectStmt.toString(), mbMap);
                 }
-                // 返回修改后的 SQL（统一在此处还原占位符）
-                return SqlParserUtils.restoreMyBatisPlaceholders(selectStmt.toString(), mbMap);
             }
+            //---------------------------------------------------------------------------------------------
+            // 如果包含mybatis变量，恢复占位符
+            sql = SqlParserUtils.restoreMyBatisPlaceholders(sql, sqlMbMap);
+            //---------------------------------------------------------------------------------------------
             // 非 SELECT：原样返回
             return sql;
         } catch (JSQLParserException e) {

@@ -265,6 +265,72 @@ public class JsqlparserSqlProcessor49 implements AbstractSqlProcessor {
 
     @Override
     public List<QueryTable> getQueryTableInfo(String sql) {
+        //---------------------------------------------------------------------------------------------
+        // 如果包含mybatis变量，先将其替换为占位符，避免解析时出错
+        Map<String, String> mbMap = new LinkedHashMap<>();
+        sql = SqlParserUtils.maskMyBatisPlaceholders(sql, mbMap);
+        //---------------------------------------------------------------------------------------------
         return JSqlTableInfoHelper.getQueryTableInfo(sql);
+    }
+
+    @Override
+    public Map<String, String> parseSelectAliasMap(String sql) {
+        Statement stmt ;
+        //---------------------------------------------------------------------------------------------
+        // 如果包含mybatis变量，先将其替换为占位符，避免解析时出错
+        Map<String, String> mbMap = new LinkedHashMap<>();
+        sql = SqlParserUtils.maskMyBatisPlaceholders(sql, mbMap);
+        //---------------------------------------------------------------------------------------------
+        try {
+            stmt = CCJSqlParserUtil.parse(sql, parser -> parser.withSquareBracketQuotation(true));
+        } catch (JSQLParserException e) {
+            throw new RuntimeException(e);
+        }
+        if (!(stmt instanceof Select)) {
+            return Collections.emptyMap();
+        }
+        Select select = (Select) stmt;
+
+        if (!(select instanceof PlainSelect)) {
+            return Collections.emptyMap();
+        }
+        PlainSelect plain = (PlainSelect) select;
+
+        List<SelectItem<?>> selectItems = plain.getSelectItems();
+        Map<String, String> fieldMap = new LinkedHashMap<>();
+
+        if (selectItems != null) {
+            for (SelectItem<?> selectItem : selectItems) {
+                Expression expression = selectItem.getExpression();
+                String value = expression.toString(); // 完整表达式
+                String key;
+
+                Alias alias = selectItem.getAlias();
+                if (alias != null) {
+                    // 有别名优先
+                    key = alias.getName();
+                } else if (expression instanceof Column) {
+                    // 列引用
+                    key = ((Column) expression).getColumnName();
+                } else if (expression instanceof ParenthesedSelect) {
+                    // 子查询 (select xxx ...)
+                    key = value;
+                } else if (expression instanceof Function) {
+                    key = value;
+                } else if (expression instanceof StringValue
+                        || expression instanceof LongValue
+                        || expression instanceof DoubleValue
+                        || expression instanceof DateValue
+                        || expression instanceof TimeKeyExpression
+                        || expression instanceof CaseExpression) {
+                    key = value.replaceAll("['\"`]", "");
+                } else {
+                    key = value;
+                }
+
+                fieldMap.put(key, value);
+            }
+        }
+        return fieldMap;
     }
 }
