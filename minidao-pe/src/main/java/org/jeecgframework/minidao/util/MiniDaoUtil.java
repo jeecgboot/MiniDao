@@ -7,7 +7,7 @@ import org.jeecgframework.minidao.pagehelper.dialect.AbstractHelperDialect;
 import org.jeecgframework.minidao.pagehelper.dialect.PageAutoDialect;
 import org.jeecgframework.minidao.pojo.MiniDaoPage;
 import org.jeecgframework.minidao.sqlparser.AbstractSqlProcessor;
-import org.jeecgframework.minidao.sqlparser.impl.JsqlparserSqlProcessor;
+import org.jeecgframework.minidao.sqlparser.impl.JsqlparserSqlProcessor46;
 //import org.jeecgframework.minidao.sqlparser.impl.JsqlparserSqlProcessor49;
 import org.jeecgframework.minidao.sqlparser.impl.SimpleSqlProcessor;
 import org.jeecgframework.minidao.sqlparser.impl.util.SqlParserUtils;
@@ -89,7 +89,7 @@ public class MiniDaoUtil {
 //			abstractSqlProcessor = new JsqlparserSqlProcessor49();
 //		} else 
 		if (MiniDaoUtil.isJSqlParserAvailable()) {
-			abstractSqlProcessor = new JsqlparserSqlProcessor();
+			abstractSqlProcessor = new JsqlparserSqlProcessor46();
 		} else {
 			abstractSqlProcessor = new SimpleSqlProcessor();
 		}

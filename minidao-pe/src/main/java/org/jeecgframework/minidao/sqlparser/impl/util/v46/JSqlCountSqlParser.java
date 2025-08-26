@@ -1,4 +1,4 @@
-package org.jeecgframework.minidao.sqlparser.impl.util;
+package org.jeecgframework.minidao.sqlparser.impl.util.v46;
 
 import net.sf.jsqlparser.JSQLParserException;
 import net.sf.jsqlparser.expression.Alias;
@@ -11,6 +11,7 @@ import net.sf.jsqlparser.statement.select.*;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.jeecgframework.minidao.sqlparser.impl.util.SqlParserUtils;
 
 import java.util.*;
 import java.util.regex.Matcher;

@@ -1,4 +1,4 @@
-package org.jeecgframework.minidao.sqlparser.impl.util;
+package org.jeecgframework.minidao.sqlparser.impl.util.v46;
 
 import net.sf.jsqlparser.JSQLParserException;
 import net.sf.jsqlparser.expression.*;
@@ -8,10 +8,10 @@ import net.sf.jsqlparser.parser.CCJSqlParserUtil;
 import net.sf.jsqlparser.schema.Column;
 import net.sf.jsqlparser.statement.Statement;
 import net.sf.jsqlparser.statement.select.*;
+import org.jeecgframework.minidao.sqlparser.impl.util.SqlParserUtils;
 
 import java.util.*;
 import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 /**
  * addWhere 工具类（jsqlparser 4.6）
@@ -81,9 +81,10 @@ public class JSqlParserAddWhereHelper {
                     Select newSelect = new Select();
                     newSelect.setSelectBody(newOuterSelect);
                     sql = SqlParserUtils.restoreMyBatisPlaceholders(newSelect.toString(), mbMap);
+                }else {
+                    // 非复合场景：返回修改后的 SQL（还原占位符）
+                    sql = SqlParserUtils.restoreMyBatisPlaceholders(selectStatement.toString(), mbMap);
                 }
-                // 非复合场景：返回修改后的 SQL（还原占位符）
-                sql = SqlParserUtils.restoreMyBatisPlaceholders(selectStatement.toString(), mbMap);
             }
             //---------------------------------------------------------------------------------------------
             // 如果包含mybatis变量，恢复占位符

@@ -180,3 +180,20 @@ minidao-pe/src/main/java/org/jeecgframework/minidao/sqlparser/impl/SimpleSqlProc
 minidao-pe/src/main/java/org/jeecgframework/minidao/sqlparser/AbstractSqlProcessor.java
 minidao-pe/src/main/java/org/jeecgframework/minidao/util/MiniDaoUtil.java
 ---author:chenrui---date:2025/8/20-----for:[QQYUN-13476]online 报表SqlServer兼容改造完---
+
+---author:chenrui---date:2025/8/26-----for:[QQYUN-13490]minidao代码结构调整---
+minidao-pe/src/main/java/org/jeecgframework/minidao/pagehelper/dialect/helper/SqlServerDialect.java
+minidao-pe/src/main/java/org/jeecgframework/minidao/sqlparser/impl/util/v46/JSqlCountSqlParser.java
+minidao-pe/src/main/java/org/jeecgframework/minidao/sqlparser/impl/util/v46/JSqlParserAddWhereHelper.java
+minidao-pe/src/main/java/org/jeecgframework/minidao/sqlparser/impl/util/v46/JSqlParserAllTableManager.java
+minidao-pe/src/main/java/org/jeecgframework/minidao/sqlparser/impl/util/v46/JSqlParserSelectInfoUtil.java
+minidao-pe/src/main/java/org/jeecgframework/minidao/sqlparser/impl/util/v46/JSqlRemoveSqlOrderBy.java
+minidao-pe/src/main/java/org/jeecgframework/minidao/sqlparser/impl/util/v46/JSqlServerPagesHelper.java
+minidao-pe/src/main/java/org/jeecgframework/minidao/sqlparser/impl/util/v46/JSqlSubSelectBody.java
+minidao-pe/src/main/java/org/jeecgframework/minidao/sqlparser/impl/util/v46/JSqlTableInfoHelper.java
+minidao-pe/src/main/java/org/jeecgframework/minidao/sqlparser/impl/JsqlparserSqlProcessor46.java
+minidao-pe/src/main/java/org/jeecgframework/minidao/util/MiniDaoUtil.java
+minidao-pe-example/src/test/java/test/ParseSqlFieldsTest.java
+minidao-pe-example/src/test/java/test/SqlParserTest.java
+minidao-pe-example/src/test/java/test/SqlParserWhereTest.java
+---author:chenrui---date:2025/8/26-----for:[QQYUN-13490]minidao代码结构调整---

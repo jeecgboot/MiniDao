@@ -10,6 +10,7 @@ import net.sf.jsqlparser.statement.select.*;
 import org.jeecgframework.minidao.pojo.MiniDaoPage;
 import org.jeecgframework.minidao.sqlparser.AbstractSqlProcessor;
 import org.jeecgframework.minidao.sqlparser.impl.util.*;
+import org.jeecgframework.minidao.sqlparser.impl.util.v46.*;
 import org.jeecgframework.minidao.sqlparser.impl.vo.QueryTable;
 import org.jeecgframework.minidao.sqlparser.impl.vo.SelectSqlInfo;
 
@@ -20,7 +21,7 @@ import java.util.*;
  *
  * @author zhang
  */
-public class JsqlparserSqlProcessor implements AbstractSqlProcessor {
+public class JsqlparserSqlProcessor46 implements AbstractSqlProcessor {
     protected static JSqlCountSqlParser jsqlCountSqlParser = new JSqlCountSqlParser();
     protected static JSqlServerPagesHelper jsqlServerPagesHelper = new JSqlServerPagesHelper();
     protected static JSqlRemoveSqlOrderBy jsqlRemoveSqlOrderBy = new JSqlRemoveSqlOrderBy();

@@ -1,7 +1,7 @@
 package test;
 
 import org.jeecgframework.minidao.sqlparser.AbstractSqlProcessor;
-import org.jeecgframework.minidao.sqlparser.impl.JsqlparserSqlProcessor;
+import org.jeecgframework.minidao.sqlparser.impl.JsqlparserSqlProcessor46;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -22,7 +22,7 @@ public class ParseSqlFieldsTest {
     @Before
     public void setUp() {
         // 初始化 SQL 解析器
-        sqlProcessor = new JsqlparserSqlProcessor();
+        sqlProcessor = new JsqlparserSqlProcessor46();
 //        sqlProcessor = new SimpleSqlProcessor();
     }
 
