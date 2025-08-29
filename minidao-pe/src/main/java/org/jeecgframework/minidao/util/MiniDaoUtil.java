@@ -7,9 +7,10 @@ import org.jeecgframework.minidao.pagehelper.dialect.AbstractHelperDialect;
 import org.jeecgframework.minidao.pagehelper.dialect.PageAutoDialect;
 import org.jeecgframework.minidao.pojo.MiniDaoPage;
 import org.jeecgframework.minidao.sqlparser.AbstractSqlProcessor;
-import org.jeecgframework.minidao.sqlparser.impl.JsqlparserSqlProcessor;
+import org.jeecgframework.minidao.sqlparser.impl.JsqlparserSqlProcessor46;
 //import org.jeecgframework.minidao.sqlparser.impl.JsqlparserSqlProcessor49;
 import org.jeecgframework.minidao.sqlparser.impl.SimpleSqlProcessor;
+import org.jeecgframework.minidao.sqlparser.impl.util.SqlParserUtils;
 import org.jeecgframework.minidao.sqlparser.impl.vo.QueryTable;
 import org.jeecgframework.minidao.sqlparser.impl.vo.SelectSqlInfo;
 import org.springframework.util.CollectionUtils;
@@ -24,6 +25,7 @@ import java.lang.reflect.Modifier;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -87,7 +89,7 @@ public class MiniDaoUtil {
 //			abstractSqlProcessor = new JsqlparserSqlProcessor49();
 //		} else 
 		if (MiniDaoUtil.isJSqlParserAvailable()) {
-			abstractSqlProcessor = new JsqlparserSqlProcessor();
+			abstractSqlProcessor = new JsqlparserSqlProcessor46();
 		} else {
 			abstractSqlProcessor = new SimpleSqlProcessor();
 		}
@@ -212,7 +214,16 @@ public class MiniDaoUtil {
 		MiniDaoPage pageSetting = new MiniDaoPage();
 		pageSetting.setPage(page);
 		pageSetting.setRows(rows);
+		//---------------------------------------------------------------------------------------------
+		// 如果包含mybatis变量，先将其替换为占位符，避免解析时出错
+		Map<String,String> tokenToRaw = new LinkedHashMap<>();
+		sql = SqlParserUtils.maskMyBatisPlaceholders(sql, tokenToRaw);
+		//---------------------------------------------------------------------------------------------
 		String executePageSql = dialect.getPageSql(sql,pageSetting);
+		//---------------------------------------------------------------------------------------------
+		// 如果包含mybatis变量，恢复占位符
+		executePageSql = SqlParserUtils.restoreMyBatisPlaceholders(executePageSql, tokenToRaw);
+		//---------------------------------------------------------------------------------------------
 		return executePageSql;
 	}
 
@@ -265,6 +276,39 @@ public class MiniDaoUtil {
 		return sql;
 	}
 
+	/**
+	 * 为SQL语句增加查询条件（直接使用条件语句）
+	 * for [issues/8336]支持SqlServer数据使用sql排序，新方案。
+	 * @param sql 原始SQL
+	 * @param condition 查询条件（不含where关键字）
+	 * @return 添加查询条件后的SQL
+	 */
+	public static String addWhereCondition(String sql, String condition) {
+		try {
+			sql = abstractSqlProcessor.addWhereCondition(sql, condition);
+		} catch (Exception e) {
+			logger.warn("addWhereCondition error:" + e.getMessage());
+		}
+		return sql;
+	}
+
+	/**
+	 * 为SQL语句增加查询条件（使用字段、值和操作符）
+	 * for [issues/8336]支持SqlServer数据使用sql排序，新方案。
+	 * @param sql 原始SQL
+	 * @param field 字段名
+	 * @param value 字段值
+	 * @param operator 比较操作符（如：=, >, <, !=, like等）
+	 * @return 添加查询条件后的SQL
+	 */
+	public static String addWhereCondition(String sql, String field, Object value, String operator) {
+		try {
+			sql = abstractSqlProcessor.addWhereCondition(sql, field, value, operator);
+		} catch (Exception e) {
+			logger.warn("addWhereCondition error:" + e.getMessage());
+		}
+		return sql;
+	}
 
 	/**
 	 * 解析SQL查询字段
@@ -300,6 +344,25 @@ public class MiniDaoUtil {
 		}
 
 		return null;
+	}
+
+	/**
+	 * 解析 SQL 查询，将 SELECT 字段映射到 (alias或列名) -> (完整字段表达式) 的 Map 中。
+	 * for [QQYUN-13476]online 报表SqlServer兼容改造完
+	 *
+	 * @param parsedSql 要解析的 SQL 查询语句
+	 * @return 字段映射：key 为别名（若有）或列名（无表名前缀），value 为对应的完整表达式字符串
+	 * @author chenrui
+	 * @date 2025/8/20 16:41
+	 */
+	public static Map<String, String> parseSelectAliasMap(String parsedSql) {
+		Map<String, String> resp = new LinkedHashMap<>();
+		try {
+			resp = abstractSqlProcessor.parseSelectAliasMap(parsedSql);
+		} catch (Exception e) {
+			logger.warn("parseSelectAliasMap error:" + e.getMessage());
+		}
+		return resp;
 	}
 	
 	/**

@@ -1,4 +1,4 @@
-package org.jeecgframework.minidao.sqlparser.impl.util;
+package org.jeecgframework.minidao.sqlparser.impl.util.v46;
 
 import net.sf.jsqlparser.JSQLParserException;
 import net.sf.jsqlparser.expression.*;
@@ -10,7 +10,7 @@ import net.sf.jsqlparser.statement.select.*;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.jeecgframework.minidao.sqlparser.impl.JsqlparserSqlProcessor;
+import org.jeecgframework.minidao.sqlparser.impl.JsqlparserSqlProcessor46;
 import org.jeecgframework.minidao.sqlparser.impl.vo.SelectSqlInfo;
 
 import java.io.StringReader;
@@ -18,7 +18,7 @@ import java.util.List;
 import java.util.Map;
 
 public class JSqlParserSelectInfoUtil {
-    private static final Log logger = LogFactory.getLog(JsqlparserSqlProcessor.class);
+    private static final Log logger = LogFactory.getLog(JsqlparserSqlProcessor46.class);
 
     /**
      * 解析 查询（select）sql的信息，

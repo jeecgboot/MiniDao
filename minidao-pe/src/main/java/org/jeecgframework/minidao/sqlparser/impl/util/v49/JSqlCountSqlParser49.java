@@ -11,6 +11,7 @@
 //import org.apache.commons.lang3.StringUtils;
 //import org.apache.commons.logging.Log;
 //import org.apache.commons.logging.LogFactory;
+//import org.jeecgframework.minidao.sqlparser.impl.util.SqlParserUtils;
 //
 //import java.util.*;
 //import java.util.regex.Matcher;
@@ -168,6 +169,11 @@
 //        if (sql.indexOf(KEEP_ORDERBY) >= 0) {
 //            return getSimpleCountSql(sql, countColumn);
 //        }
+//        //---------------------------------------------------------------------------------------------
+//        // 如果包含mybatis变量，先将其替换为占位符，避免解析时出错
+//        Map<String, String> mbMap = new LinkedHashMap<>();
+//        sql = SqlParserUtils.maskMyBatisPlaceholders(sql, mbMap);
+//        //---------------------------------------------------------------------------------------------
 //        try {
 //            stmt = CCJSqlParserUtil.parse(sql);
 //        } catch (Throwable e) {
@@ -193,8 +199,8 @@
 //            }
 //            //----------带点处理-------------------------------------------------------------------------------------
 //        }
-//        ParenthesedSelect select = (ParenthesedSelect) stmt;
-//        Select selectBody = select.getSelect();
+//        PlainSelect select = (PlainSelect) stmt;
+//        Select selectBody = select.getPlainSelect();
 //        try {
 //            //处理body-去order by
 //            processSelectBody(selectBody);
@@ -217,6 +223,10 @@
 //            logger.debug(" --- JSQLParser with DIAN --- convert end sql = " + result);
 //        }
 //        //-----带点处理-------------------------------------------------------------------------------------------
+//        //---------------------------------------------------------------------------------------------
+//        // 如果包含mybatis变量，恢复占位符
+//        result = SqlParserUtils.restoreMyBatisPlaceholders(result, mbMap);
+//        //---------------------------------------------------------------------------------------------
 //        return result;
 //    }
 //
