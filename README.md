@@ -5,9 +5,9 @@ MiniDao
 [![AUR](https://img.shields.io/badge/license-Apache%20License%202.0-blue.svg)](https://github.com/zhangdaiscott/jeecg-boot/blob/master/LICENSE)
 [![](https://img.shields.io/badge/Author-北京国炬软件-orange.svg)](http://jeecg.com/aboutusIndex)
 [![](https://img.shields.io/badge/Blog-官方博客-blue.svg)](https://jeecg.blog.csdn.net)
-[![](https://img.shields.io/badge/version-1.10.12-brightgreen.svg)](https://github.com/zhangdaiscott/jeecg-boot)
-[![GitHub stars](https://img.shields.io/github/stars/zhangdaiscott/jeecg-boot.svg?style=social&label=Stars)](https://github.com/zhangdaiscott/jeecg-boot)
-[![GitHub forks](https://img.shields.io/github/forks/zhangdaiscott/jeecg-boot.svg?style=social&label=Fork)](https://github.com/zhangdaiscott/jeecg-boot)
+[![](https://img.shields.io/badge/version-1.10.14-brightgreen.svg)](https://github.com/zhangdaiscott/jeecg-boot)
+[![GitHub stars](https://img.shields.io/github/stars/jeecgboot/MiniDao.svg?style=social&label=Stars)](https://github.com/zhangdaiscott/jeecg-boot)
+[![GitHub forks](https://img.shields.io/github/forks/jeecgboot/MiniDao.svg?style=social&label=Fork)](https://github.com/zhangdaiscott/jeecg-boot)
 
 
 
@@ -44,7 +44,7 @@ MiniDao 是一款轻量级JAVA持久层框架，基于 SpringJdbc + freemarker �
 <dependency>
     <groupId>org.jeecgframework</groupId>
     <artifactId>minidao-spring-boot-starter-jsqlparser-4.9</artifactId>
-    <version>1.10.12</version>
+    <version>1.10.14</version>
 </dependency>
 ```
 
@@ -53,7 +53,7 @@ MiniDao 是一款轻量级JAVA持久层框架，基于 SpringJdbc + freemarker �
 <dependency>
     <groupId>org.jeecgframework.boot3</groupId>
     <artifactId>minidao-spring-boot-starter-jsqlparser-4.9</artifactId>
-    <version>1.10.12</version>
+    <version>1.10.14</version>
 </dependency>
 ```
 
@@ -76,10 +76,24 @@ MiniDao 是一款轻量级JAVA持久层框架，基于 SpringJdbc + freemarker �
 | 项目名   |         中文名         |  备注 |
 |----------|:-------------------:|------:|
 | minidao-pe|        架构核心包        |     |
-| minidao-spring-boot-starter | SpringBoot3 starter |  |
+| minidao-spring-boot-starter | SpringBoot2 starter |  |
 | minidao-pe-example |        示例代码         |     |	 
-	
-	
+
+
+
+分支说明
+-----------------------------------
+> 注意：目前默认分支已切换成 master-jsqlparser4.9，后期jsqlparser4.6分支均停止维护
+
+| 分支                        |            架构说明             |   状态 |
+|---------------------------|:---------------------------:|-----:|
+| master-jsqlparser4.9      | SpringBoot2 + jsqlparser4.9 | 默认分支 |
+| springboot3-jsqlparser4.9 | SpringBoot3 + jsqlparser4.9 | 持续维护 |
+| master                    | SpringBoot2 + jsqlparser4.6 | 停止维护 |
+| springboot3               | SpringBoot3 + jsqlparser4.6 | 停止维护 |	 
+
+
+
 支持28种数据库
 -----------------------------------
 

@@ -4,7 +4,7 @@
 	
 	<groupId>org.jeecgframework.boot3</groupId>
 	<artifactId>minidao-pe-jsqlparser-4.9</artifactId>
-	<version>1.10.12</version>
+	<version>1.10.14</version>
 	<packaging>jar</packaging>
 	
 	<name>minidao-pe-jsqlparser-4.9</name>
@@ -30,13 +30,13 @@
 	</scm>
     
 	<properties>
+		<org.springframework.version>6.2.10</org.springframework.version>
 		<aspectj.version>1.9.9</aspectj.version>
 		<commons-collections.version>3.2.2</commons-collections.version>
 		<freemarker.version>2.3.32</freemarker.version>
 		<ognl.version>3.2.21</ognl.version>
 		<commons-logging.version>1.2</commons-logging.version>
 		<commons-lang3.version>3.12.0</commons-lang3.version>
-		<org.springframework.version>6.0.13</org.springframework.version>
 		<javassist.version>3.25.0-GA</javassist.version>
 		<jsqlparser.version>4.9</jsqlparser.version>
 		<junit.version>4.13.1</junit.version>

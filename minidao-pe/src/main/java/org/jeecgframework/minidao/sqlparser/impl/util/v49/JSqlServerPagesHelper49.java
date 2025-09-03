@@ -401,7 +401,8 @@ public class JSqlServerPagesHelper49 {
             }
         } else if (fromItem instanceof ParenthesedSelect) {
             ParenthesedSelect pFromItem = (ParenthesedSelect) fromItem;
-            PlainSelect subSelect = pFromItem.getPlainSelect();
+            // 修复：不要假设一定是 PlainSelect，可能是 SetOperationList（如 UNION）
+            Select subSelect = pFromItem.getSelect();
             processSelectBody(subSelect, level + 1);
         }
         //Table时不用处理
