@@ -1,11 +1,11 @@
 MiniDao 
 =======
-当前最新版本： 1.10.12 （发布日期：2025-08-15）
+当前最新版本： 1.10.12 （发布日期：2025-10-09）
 
 [![AUR](https://img.shields.io/badge/license-Apache%20License%202.0-blue.svg)](https://github.com/zhangdaiscott/jeecg-boot/blob/master/LICENSE)
 [![](https://img.shields.io/badge/Author-北京国炬软件-orange.svg)](http://jeecg.com/aboutusIndex)
 [![](https://img.shields.io/badge/Blog-官方博客-blue.svg)](https://jeecg.blog.csdn.net)
-[![](https://img.shields.io/badge/version-1.10.14-brightgreen.svg)](https://github.com/zhangdaiscott/jeecg-boot)
+[![](https://img.shields.io/badge/version-1.10.15-brightgreen.svg)](https://github.com/zhangdaiscott/jeecg-boot)
 [![GitHub stars](https://img.shields.io/github/stars/jeecgboot/MiniDao.svg?style=social&label=Stars)](https://github.com/zhangdaiscott/jeecg-boot)
 [![GitHub forks](https://img.shields.io/github/forks/jeecgboot/MiniDao.svg?style=social&label=Fork)](https://github.com/zhangdaiscott/jeecg-boot)
 
@@ -44,7 +44,7 @@ MiniDao 是一款轻量级JAVA持久层框架，基于 SpringJdbc + freemarker �
 <dependency>
     <groupId>org.jeecgframework</groupId>
     <artifactId>minidao-spring-boot-starter-jsqlparser-4.9</artifactId>
-    <version>1.10.14</version>
+    <version>1.10.15</version>
 </dependency>
 ```
 
@@ -53,7 +53,7 @@ MiniDao 是一款轻量级JAVA持久层框架，基于 SpringJdbc + freemarker �
 <dependency>
     <groupId>org.jeecgframework.boot3</groupId>
     <artifactId>minidao-spring-boot-starter-jsqlparser-4.9</artifactId>
-    <version>1.10.14</version>
+    <version>1.10.15</version>
 </dependency>
 ```
 
