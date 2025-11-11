@@ -196,3 +196,8 @@ minidao-pe-example/src/test/java/test/SqlParserTest.java
 minidao-pe/src/main/java/org/jeecgframework/minidao/sqlparser/impl/util/v49/JSqlCountSqlParser49.java
 minidao-pe/src/main/java/org/jeecgframework/minidao/sqlparser/impl/util/v49/JSqlServerPagesHelper49.java
 ---author:chenrui---date:2025/9/2-----for:[issues/4069]积木报表回收站查询出错 #4069---
+
+---author:chenrui---date:2025/11/11-----for:[issues/9000]Online报表（带参数）预览后台报错---
+minidao-pe/src/main/java/org/jeecgframework/minidao/sqlparser/impl/util/SqlParserUtils.java
+minidao-pe/src/test/java/JSqlParserUtilsTest.java
+---author:chenrui---date:2025/11/11-----for:[issues/9000]Online报表（带参数）预览后台报错---

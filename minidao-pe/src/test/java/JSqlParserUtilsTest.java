@@ -4,6 +4,7 @@ import org.jeecgframework.minidao.util.MiniDaoUtil;
 import org.junit.Assert;
 import org.junit.Test;
 
+import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -184,5 +185,27 @@ public class JSqlParserUtilsTest {
         String result = MiniDaoUtil.addOrderBy(sql,"sex", false);
         System.out.println("after:" + result);
         Assert.assertTrue(result.contains("sex DESC"));
+    }
+
+    /**
+     * [issues/9000]Online报表（带参数）预览后台报错
+     * for [issues/9000]Online报表（带参数）预览后台报错
+     * @author chenrui
+     * @date 2025/11/10 15:31
+     */
+    @Test
+    public void testMaskAlreadyQuotedMybatisPlaceholder() {
+        String sql = "select * from sys_user where sex='${sex}' and type = '#{type}' and name=#{name}";
+        Map<String, String> tokenMap = new HashMap<>();
+        String masked = org.jeecgframework.minidao.sqlparser.impl.util.SqlParserUtils.maskMyBatisPlaceholders(sql, tokenMap);
+        System.out.println("masked:" + masked);
+        Assert.assertFalse(masked.contains("''__MB_PARAM_0__''"));
+        Assert.assertTrue(masked.contains("sex='__MB_PARAM_0__'"));
+        Assert.assertTrue(masked.contains("type = '__MB_PARAM_1__'"));
+        Assert.assertTrue(masked.contains("name='__MB_PARAM_2__'"));
+        String restored = org.jeecgframework.minidao.sqlparser.impl.util.SqlParserUtils.restoreMyBatisPlaceholders(masked, tokenMap);
+        System.out.println("restored:" + restored);
+        // 应该还原为与原始完全一致
+        Assert.assertEquals(sql, restored);
     }
 }
