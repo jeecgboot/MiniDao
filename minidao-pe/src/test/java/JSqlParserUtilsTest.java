@@ -46,6 +46,11 @@ public class JSqlParserUtilsTest {
                     "    demo d " +
                     "LEFT JOIN sys_dict_item AS sd ON d.sex = sd.item_value " +
                     "WHERE sd.dict_id = '3d9a351be3436fbefb1307d4cfb49bf2'",
+            "select distinct org_code from sys_user",
+            "select * from (select * from sys_user) t",
+            "select org_code from (select * from sys_user su ) t where t.org_code is not null group by org_code",
+            "select * from sys_user union select * from sys_user_bk",
+            "select * from sys_user where 1=1 and username like concat('%',#{params.username}) ORDER BY create_time DESC, username ASC"
     };
 
     /**
@@ -207,5 +212,23 @@ public class JSqlParserUtilsTest {
         System.out.println("restored:" + restored);
         // 应该还原为与原始完全一致
         Assert.assertEquals(sql, restored);
+    }
+
+    /**
+     * count SQL测试类
+     */
+    @Test
+    public void testComplexCountSql() {
+        System.out.println("-----------------------------------------");
+        for (String sql : sqlList) {
+            System.out.println("Original SQL: " + sql);
+            try {
+                String countSql = MiniDaoUtil.getCountSql(sql);
+                System.out.println("Count SQL   : " + countSql);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            System.out.println("-----------------------------------------");
+        }
     }
 }
