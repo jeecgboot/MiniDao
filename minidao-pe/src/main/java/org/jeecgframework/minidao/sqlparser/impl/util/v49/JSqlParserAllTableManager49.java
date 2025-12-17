@@ -53,9 +53,37 @@ public class JSqlParserAllTableManager49 {
         // 2. 使用解析器解析sql生成具有层次结构的java类
         Statement stmt = mgr.parse(new StringReader(this.sql));
         if (stmt instanceof Select) {
-            PlainSelect plainSelect = ((Select) stmt).getPlainSelect();
-            // 3. 解析select查询sql的信息
-            this.parsedSql = plainSelect.toString();
+            Select select = (Select) stmt;
+            // 检查是否是 PlainSelect，如果是 SetOperationList（如 UNION），则递归处理
+            if (!(select instanceof PlainSelect)) {
+                // 对于 UNION 等复杂查询，递归处理每个子查询
+                if (select instanceof SetOperationList) {
+                    SetOperationList setOpList = (SetOperationList) select;
+                    for (Select subSelect : setOpList.getSelects()) {
+                        if (subSelect instanceof PlainSelect) {
+                            processPlainSelectInternal((PlainSelect) subSelect);
+                        }
+                    }
+                }
+                return this.allTableMap;
+            }
+            PlainSelect plainSelect = (PlainSelect) select;
+            processPlainSelectInternal(plainSelect);
+        } else {
+            // 非 select 查询sql，不做处理
+            throw new RuntimeException("非 select 查询sql，不做处理");
+        }
+        return this.allTableMap;
+    }
+
+    /**
+     * 处理 PlainSelect 查询
+     *
+     * @param plainSelect
+     */
+    private void processPlainSelectInternal(PlainSelect plainSelect) {
+        // 3. 解析select查询sql的信息
+        this.parsedSql = plainSelect.toString();
             // 4. 合并 fromItems
             List<FromItem> fromItems = new ArrayList<>();
             fromItems.add(plainSelect.getFromItem());
@@ -99,15 +127,19 @@ public class JSqlParserAllTableManager49 {
                 }
                 // 6.2 查询的是全部字段
                 else if (expression instanceof AllColumns) {
-                    // 当 selectItem 为 AllColumns 时，fromItem 必定为 Table
-                    String tableName = plainSelect.getFromItem(Table.class).getName();
-                    // 此处必定不为空，因为在解析 fromItem 时，已经将表名添加到 allTableMap 中
-                    SelectSqlInfo sqlInfo = this.allTableMap.get(tableName);
-                    assert sqlInfo != null;
-                    // 设置为查询全部字段
-                    sqlInfo.setSelectAll(true);
-                    sqlInfo.setSelectFields(null);
-                    sqlInfo.setRealSelectFields(null);
+                    // 当 selectItem 为 AllColumns 时，fromItem 可能是 Table 或 ParenthesedSelect
+                    FromItem fromItem = plainSelect.getFromItem();
+                    if (fromItem instanceof Table) {
+                        String tableName = ((Table) fromItem).getName();
+                        // 此处必定不为空，因为在解析 fromItem 时，已经将表名添加到 allTableMap 中
+                        SelectSqlInfo sqlInfo = this.allTableMap.get(tableName);
+                        assert sqlInfo != null;
+                        // 设置为查询全部字段
+                        sqlInfo.setSelectAll(true);
+                        sqlInfo.setSelectFields(null);
+                        sqlInfo.setRealSelectFields(null);
+                    }
+                    // 如果是子查询，则从子查询中获取的字段，不需要设置为查询全部字段
                 }
                 // 6.3 各种字段表达式处理
                 else {
@@ -115,11 +147,6 @@ public class JSqlParserAllTableManager49 {
                     this.handleExpression(expression, alias, plainSelect.getFromItem());
                 }
             }
-        } else {
-            // 非 select 查询sql，不做处理
-            throw new RuntimeException("非 select 查询sql，不做处理");
-        }
-        return this.allTableMap;
     }
 
     /**
@@ -129,7 +156,14 @@ public class JSqlParserAllTableManager49 {
      */
     private void handleSubSelect(Select subSelect) {
         try {
-            String subSelectSql = subSelect.toString();
+            String subSelectSql;
+            // 如果是 ParenthesedSelect，需要获取其内部的 Select 对象
+            if (subSelect instanceof ParenthesedSelect) {
+                ParenthesedSelect parenthesedSelect = (ParenthesedSelect) subSelect;
+                subSelectSql = parenthesedSelect.getSelect().toString();
+            } else {
+                subSelectSql = subSelect.toString();
+            }
             // 递归调用解析
             Map<String, SelectSqlInfo> map = JSqlParserSelectInfoUtil49.parseAllSelectTable(subSelectSql);
             if (map != null) {
@@ -193,7 +227,13 @@ public class JSqlParserAllTableManager49 {
                 }
             } else {
                 // 当column的table为空时，说明是 fromItem 中的字段
-                tableName = ((Table) fromItem).getName();
+                // fromItem 可能是 Table 或 ParenthesedSelect
+                if (fromItem instanceof Table) {
+                    tableName = ((Table) fromItem).getName();
+                } else {
+                    // 如果是子查询，无法确定表名，跳过处理
+                    return;
+                }
             }
             SelectSqlInfo $sqlInfo = this.allTableMap.get(tableName);
             if ($sqlInfo != null) {

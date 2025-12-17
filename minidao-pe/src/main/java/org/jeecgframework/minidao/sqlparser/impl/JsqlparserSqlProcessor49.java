@@ -255,6 +255,9 @@ public class JsqlparserSqlProcessor49 implements AbstractSqlProcessor {
 
     @Override
     public Map<String, SelectSqlInfo> parseAllSelectTable(String selectSql) throws JSQLParserException {
+        // 处理MyBatis占位符，避免解析失败
+        Map<String, String> mbMap = new LinkedHashMap<>();
+        selectSql = SqlParserUtils.maskMyBatisPlaceholders(selectSql, mbMap);
         return JSqlParserSelectInfoUtil49.parseAllSelectTable(selectSql);
     }
 

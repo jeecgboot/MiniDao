@@ -29,12 +29,6 @@ public class JSqlParserUtilsTest {
             "select CONCAT(CONCAT(' _ ', sex), ' - ' , birthday) as info, id from sys_user",
             // 更复杂的嵌套函数式字段
             "select CONCAT(CONCAT(101,'_',NULL, DATE(create_time),'_',sex),' - ',birthday) as info, id from sys_user",
-            // 子查询SQL
-            "select u.name1 as name2 from (select username as name1 from sys_user) u",
-            // 多层嵌套子查询SQL
-            "select u2.name2 as name3 from (select u1.name1 as name2 from (select username as name1 from sys_user) u1) u2",
-            // 字段子查询SQL
-            "select id, (select username as name1 from sys_user u2 where u1.id = u2.id) as name2 from sys_user u1",
             // 带条件的SQL（不解析where条件里的字段，但不影响解析查询字段）
             "select username as name1 from sys_user where realname LIKE '%张%'",
             // 多重复杂关联表查询解析，包含的表为：sys_user, sys_depart, sys_dict_item, demo
@@ -47,10 +41,20 @@ public class JSqlParserUtilsTest {
                     "LEFT JOIN sys_dict_item AS sd ON d.sex = sd.item_value " +
                     "WHERE sd.dict_id = '3d9a351be3436fbefb1307d4cfb49bf2'",
             "select distinct org_code from sys_user",
+            "select * from sys_user union select * from sys_user_bk",
+            "select * from sys_user where 1=1 and username like concat('%',#{params.username}) ORDER BY create_time DESC, username ASC",
+    };
+
+
+    private static final String[] subSqlList = new String[]{
+            // 子查询SQL
+            "select u.name1 as name2 from (select username as name1 from sys_user) u",
+            // 多层嵌套子查询SQL
+            "select u2.name2 as name3 from (select u1.name1 as name2 from (select username as name1 from sys_user) u1) u2",
+            // 字段子查询SQL
+            "select id, (select username as name1 from sys_user u2 where u1.id = u2.id) as name2 from sys_user u1",
             "select * from (select * from sys_user) t",
             "select org_code from (select * from sys_user su ) t where t.org_code is not null group by org_code",
-            "select * from sys_user union select * from sys_user_bk",
-            "select * from sys_user where 1=1 and username like concat('%',#{params.username}) ORDER BY create_time DESC, username ASC"
     };
 
     /**
@@ -107,6 +111,27 @@ public class JSqlParserUtilsTest {
                 }
             } catch (Exception e) {
                 System.out.println("SQL解析出现异常：" + e.getMessage());
+            }
+            System.out.println("-----------------------------------------");
+        }
+    }
+
+
+    @Test
+    public void testParseSubSelectSql() {
+        System.out.println("-----------------------------------------");
+        for (String sql : subSqlList) {
+            System.out.println("待测试的sql：" + sql);
+            try {
+                // 解析所有的表名，key=表名，value=解析后的sql信息
+                Map<String, SelectSqlInfo> parsedMap = MiniDaoUtil.parseAllSelectTable(sql);
+                assert parsedMap != null;
+                for (Map.Entry<String, SelectSqlInfo> entry : parsedMap.entrySet()) {
+                    System.out.println("表名：" + entry.getKey());
+                    this.printSqlInfo(entry.getValue(), 1);
+                }
+            } catch (Exception e) {
+                System.err.println("SQL解析出现异常：" + e.getMessage());
             }
             System.out.println("-----------------------------------------");
         }
@@ -220,7 +245,10 @@ public class JSqlParserUtilsTest {
     @Test
     public void testComplexCountSql() {
         System.out.println("-----------------------------------------");
-        for (String sql : sqlList) {
+        // 组合所有SQL进行测试
+        String[] allSqlList = org.apache.commons.lang3.ArrayUtils.addAll(sqlList, subSqlList);
+        
+        for (String sql : allSqlList) {
             System.out.println("Original SQL: " + sql);
             try {
                 String countSql = MiniDaoUtil.getCountSql(sql);
