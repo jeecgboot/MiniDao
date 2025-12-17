@@ -6,6 +6,7 @@ import org.junit.Test;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.List;
 
 /**
  * 针对 JSqlParserUtils 的单元测试
@@ -253,6 +254,24 @@ public class JSqlParserUtilsTest {
             try {
                 String countSql = MiniDaoUtil.getCountSql(sql);
                 System.out.println("Count SQL   : " + countSql);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            System.out.println("-----------------------------------------");
+        }
+    }
+
+    /**
+     * 测试 MiniDaoUtil.parseSqlFields
+     */
+    @Test
+    public void testParseSqlFields() {
+        System.out.println("-----------------------------------------");
+        for (String sql : sqlList) {
+            System.out.println("Original SQL: " + sql);
+            try {
+                List<Map<String, Object>> fields = MiniDaoUtil.parseSqlFields(sql);
+                System.out.println("Parsed Fields: " + fields);
             } catch (Exception e) {
                 e.printStackTrace();
             }

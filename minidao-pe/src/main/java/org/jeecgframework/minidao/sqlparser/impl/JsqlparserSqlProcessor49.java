@@ -70,36 +70,73 @@ public class JsqlparserSqlProcessor49 implements AbstractSqlProcessor {
      */
     @Override
     public List<Map<String, Object>> parseSqlFields(String parsedSql) {
+        // 处理MyBatis占位符，避免解析失败
+        Map<String, String> mbMap = new LinkedHashMap<>();
+        parsedSql = SqlParserUtils.maskMyBatisPlaceholders(parsedSql, mbMap);
+
         List<Map<String, Object>> list = new ArrayList<>();
-        ParenthesedSelect parenthesedSelect;
+        Statement statement;
         try {
             //update-begin---author:wangshuai ---date:20220215  for：[issues/I4STNJ]SQL Server表名关键字查询失败
-            parenthesedSelect = (ParenthesedSelect) CCJSqlParserUtil.parse(parsedSql, parser -> parser.withSquareBracketQuotation(true));
+            statement = CCJSqlParserUtil.parse(parsedSql, parser -> parser.withSquareBracketQuotation(true));
             //update-end---author:wangshuai ---date:20220215  for：[issues/I4STNJ]SQL Server表名关键字查询失败
         } catch (JSQLParserException e) {
             throw new RuntimeException(e);
         }
-        SetOperationList setOperationList = parenthesedSelect.getSetOperationList();
-        // union的情况都会放到setOperationList中
-        List<Select> selects = setOperationList.getSelects();
-        for (Select value : selects) {
-            PlainSelect select = (PlainSelect) value;
-            // 获取字段名的集合
-            List<String> tableAndColumns = getTableAndColumns(select);
-            // 将list循环放到map中(key和value均是字段名)
-            getMapFiled(list, tableAndColumns);
 
-            // 处理 from (SELECT xxx) 的情况
-            FromItem fromItem = select.getFromItem();
-            while (fromItem instanceof ParenthesedSelect) {
-                PlainSelect subSelect = ((ParenthesedSelect) fromItem).getPlainSelect();
-                List<String> tableAndColumnsSub = getTableAndColumns(subSelect);
-                // 将list循环放到map中(key和value均是字段名)
-                getMapFiled(list, tableAndColumnsSub);
-                fromItem = subSelect.getFromItem();
-            }
+        if (statement instanceof Select) {
+            //解析select字段
+            processSelect((Select) statement, list);
         }
         return list;
+    }
+
+    /**
+     * 递归处理Select语句，支持PlainSelect, SetOperationList(UNION), ParenthesedSelect
+     * @param select Select对象
+     * @param list 结果列表
+     */
+    private void processSelect(Select select, List<Map<String, Object>> list) {
+        if (select instanceof PlainSelect) {
+            processPlainSelect((PlainSelect) select, list);
+        } else if (select instanceof SetOperationList) {
+            // 处理 UNION, INTERSECT, EXCEPT 等集合操作
+            SetOperationList setOperationList = (SetOperationList) select;
+            for (Select s : setOperationList.getSelects()) {
+                processSelect(s, list);
+            }
+        } else if (select instanceof ParenthesedSelect) {
+            // 处理带括号的 Select，如 (SELECT ...)
+            processSelect(((ParenthesedSelect) select).getSelect(), list);
+        }
+    }
+
+    /**
+     * 处理普通的 Select 语句
+     * @param plainSelect PlainSelect对象
+     * @param list 结果列表
+     */
+    private void processPlainSelect(PlainSelect plainSelect, List<Map<String, Object>> list) {
+        // 获取字段名的集合
+        List<String> tableAndColumns = getTableAndColumns(plainSelect);
+        // 将list循环放到map中(key和value均是字段名)
+        getMapFiled(list, tableAndColumns);
+
+        // 处理 from (SELECT xxx) 的情况，递归解析子查询字段
+        FromItem fromItem = plainSelect.getFromItem();
+        processFromItem(fromItem, list);
+    }
+
+    /**
+     * 处理 FromItem，如果是子查询则递归处理
+     * @param fromItem FromItem对象
+     * @param list 结果列表
+     */
+    private void processFromItem(FromItem fromItem, List<Map<String, Object>> list) {
+        if (fromItem instanceof ParenthesedSelect) {
+            Select subSelect = ((ParenthesedSelect) fromItem).getSelect();
+            processSelect(subSelect, list);
+        }
     }
 
     /**
@@ -170,6 +207,11 @@ public class JsqlparserSqlProcessor49 implements AbstractSqlProcessor {
         list.add(map);
     }
 
+    /**
+     * 解析 PlainSelect 中的查询字段
+     * @param plain PlainSelect对象
+     * @return 字段名列表
+     */
     private static List<String> getTableAndColumns(PlainSelect plain) {
         // 获取select后面的语句
         List<SelectItem<?>> selectItems = plain.getSelectItems();
@@ -181,45 +223,44 @@ public class JsqlparserSqlProcessor49 implements AbstractSqlProcessor {
                 if (expression instanceof AllTableColumns) {
                     AllTableColumns allTableColumns = (AllTableColumns) expression;
                     items.add(allTableColumns.toString());
+                } else if (expression instanceof AllColumns) {
+                    items.add("*");
                 } else {
                     String columnName = "";
                     Alias alias = selectItem.getAlias();
-                    if (expression instanceof CaseExpression) {
-                        // case表达式
+                    //根据不同的表达式返回表名称
+                    if (alias != null) {
                         columnName = alias.getName();
-                    } else if (expression instanceof LongValue || expression instanceof StringValue
-                            || expression instanceof DateValue || expression instanceof DoubleValue) {
-                        // 值表达式
-                        columnName = Objects.nonNull(alias.getName()) ? alias.getName()
-                                : expression.getASTNode().jjtGetValue().toString();
-                    } else if (expression instanceof TimeKeyExpression) {
-                        // 日期
-                        columnName = alias.getName();
+                    } else if (expression instanceof Column) {
+                        columnName = ((Column) expression).getColumnName();
+                    } else if (expression instanceof Function) {
+                        columnName = expression.toString();
+                    } else if (expression instanceof StringValue) {
+                        columnName = ((StringValue) expression).getValue();
+                    } else if (expression instanceof LongValue) {
+                        columnName = ((LongValue) expression).getStringValue();
+                    } else if (expression instanceof DoubleValue) {
+                        columnName = String.valueOf(((DoubleValue) expression).getValue());
+                    } else if (expression instanceof DateValue) {
+                        columnName = ((DateValue) expression).getValue().toString();
                     } else {
-                        if (alias != null) {
-                            columnName = alias.getName();
-                        } else {
-                            SimpleNode node = expression.getASTNode();
+                        // 兜底尝试使用 ASTNode，如果不可用则使用 toString
+                        // 注意：getASTNode() 可能返回 null，必须进行判空
+                        SimpleNode node = expression.getASTNode();
+                        if (node != null && node.jjtGetValue() != null) {
                             Object value = node.jjtGetValue();
-                            if (value instanceof Column) {
-                                columnName = ((Column) value).getColumnName();
-                            } else if (value instanceof Function) {
-                                columnName = value.toString();
-                            } else {
-                                // 增加对select 'aaa' from table; 的支持
-                                columnName = String.valueOf(value);
-                                columnName = columnName.replace("'", "");
-                                columnName = columnName.replace("\"", "");
-                                columnName = columnName.replace("`", "");
-                            }
+                            columnName = String.valueOf(value);
+                        } else {
+                            columnName = expression.toString();
                         }
                     }
 
-                    columnName = columnName.replace("'", "");
-                    columnName = columnName.replace("\"", "");
-                    columnName = columnName.replace("`", "");
-
-                    items.add(columnName);
+                    if (columnName != null) {
+                        columnName = columnName.replace("'", "")
+                                .replace("\"", "")
+                                .replace("`", "");
+                        items.add(columnName);
+                    }
                 }
             }
         }
