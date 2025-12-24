@@ -1,45 +1,47 @@
+[中文](./README.zh-CN.md) | [English](./README.md)
+
 MiniDao 
 =======
-当前最新版本： 1.10.17 （发布日期：2025-12-18）
+Current Version: 1.10.17 (Release Date: 2025-12-18)
 
 [![AUR](https://img.shields.io/badge/license-Apache%20License%202.0-blue.svg)](https://github.com/zhangdaiscott/jeecg-boot/blob/master/LICENSE)
-[![](https://img.shields.io/badge/Author-北京国炬软件-orange.svg)](http://jeecg.com/aboutusIndex)
-[![](https://img.shields.io/badge/Blog-官方博客-blue.svg)](https://jeecg.blog.csdn.net)
+[![](https://img.shields.io/badge/Author-Beijing%20Guoju%20Software-orange.svg)](http://jeecg.com/aboutusIndex)
+[![](https://img.shields.io/badge/Blog-Official%20Blog-blue.svg)](https://jeecg.blog.csdn.net)
 [![](https://img.shields.io/badge/version-1.10.17-brightgreen.svg)](https://github.com/zhangdaiscott/jeecg-boot)
 [![GitHub stars](https://img.shields.io/github/stars/jeecgboot/MiniDao.svg?style=social&label=Stars)](https://github.com/zhangdaiscott/jeecg-boot)
 [![GitHub forks](https://img.shields.io/github/forks/jeecgboot/MiniDao.svg?style=social&label=Fork)](https://github.com/zhangdaiscott/jeecg-boot)
 
 
 
- > 反馈问题：发现bug请在github [发issue](https://github.com/jeecgboot/MiniDao/issues/new)
+ > Feedback: Please [create an issue](https://github.com/jeecgboot/MiniDao/issues/new) on GitHub if you find any bugs
 
-### MiniDao 简介及特征
+### MiniDao Introduction and Features
 
 An powerful enhanced toolkit of SpringJdbc for simplify development
 
-MiniDao 是一款轻量级JAVA持久层框架，基于 SpringJdbc + freemarker 实现，具备Mybatis一样的SQL分离和逻辑标签能力。Minidao产生的初衷是为了解决Hibernate项目，在复杂SQL具备Mybatis一样的灵活能力，同时支持事务同步。 
+MiniDao is a lightweight JAVA persistence layer framework based on SpringJdbc + Freemarker implementation. It has the same SQL separation and logical tag capabilities as MyBatis. The original intention of MiniDao is to provide Hibernate projects with the same flexible capabilities as MyBatis for complex SQL, while supporting transaction synchronization.
 
 
-具有以下特征:
+Key Features:
 
-*  O/R mapping不用设置xml，零配置便于维护
-* 不需要了解JDBC的知识
-* SQL语句和java代码的分离
-* 只需接口定义，无需接口实现
-* SQL支持脚本语言（强大脚本语言，freemarker语法）
-* 支持与hibernate轻量级无缝集成
-* 支持自动事务处理和手动事务处理
-* 性能优于Mybatis
-* 比Mybatis更简单易用
-* SQL 支持注解方式
-* SQL 支持独立文件方式，SQL文件的命名规则: 类名_方法名; SQL文件更容易定位，方便后期维护，项目越大此优势越明显
-* SQL标签采用[Freemarker的基本语法](http://blog.csdn.net/zhangdaiscott/article/details/77505453)
+* O/R mapping without XML configuration, zero configuration for easy maintenance
+* No need to understand JDBC knowledge
+* Separation of SQL statements and Java code
+* Only interface definition required, no interface implementation needed
+* SQL supports scripting language (powerful scripting with Freemarker syntax)
+* Supports seamless lightweight integration with Hibernate
+* Supports both automatic and manual transaction processing
+* Better performance than MyBatis
+* Simpler and easier to use than MyBatis
+* SQL supports annotation mode
+* SQL supports separate file mode. SQL file naming rule: ClassName_MethodName; SQL files are easier to locate, convenient for later maintenance. The larger the project, the more obvious this advantage is
+* SQL tags use [Freemarker's basic syntax](http://blog.csdn.net/zhangdaiscott/article/details/77505453)
 
 
 
-如何快速集成minidao?
+How to Quickly Integrate MiniDao?
 -----------------------------------
-- springboot2集成方式
+- SpringBoot 2 Integration
 ```
 <dependency>
     <groupId>org.jeecgframework</groupId>
@@ -48,7 +50,7 @@ MiniDao 是一款轻量级JAVA持久层框架，基于 SpringJdbc + freemarker �
 </dependency>
 ```
 
-- springboot3集成方式
+- SpringBoot 3 Integration
 ```
 <dependency>
     <groupId>org.jeecgframework.boot3</groupId>
@@ -57,66 +59,66 @@ MiniDao 是一款轻量级JAVA持久层框架，基于 SpringJdbc + freemarker �
 </dependency>
 ```
 
-- [springboot2与minidao集成](http://minidao.jeecg.com/2392296)
-- [springmvc与Minidao集成](http://minidao.jeecg.com/2392293)
+- [SpringBoot 2 with MiniDao Integration](http://minidao.jeecg.com/2392296)
+- [SpringMVC with MiniDao Integration](http://minidao.jeecg.com/2392293)
 
 
 		
 
-技术交流
+Technical Communication
 -----------------------------------
-* 文 档： [http://minidao.jeecg.com](http://minidao.jeecg.com)
-* JEECG低代码： [www.jeecg.com](http://www.jeecg.com)
-* 敲敲云零代码： [www.qiaoqiaoyun.com](https://www.qiaoqiaoyun.com)
+* Documentation: [http://minidao.jeecg.com](http://minidao.jeecg.com)
+* JEECG Low-Code: [www.jeecg.com](http://www.jeecg.com)
+* QiaoQiaoYun No-Code: [www.qiaoqiaoyun.com](https://www.qiaoqiaoyun.com)
 
-项目介绍
+Project Structure
 -----------------------------------
 
 
-| 项目名   |         中文名         |  备注 |
+| Project Name   |         Description         |  Remarks |
 |----------|:-------------------:|------:|
-| minidao-pe|        架构核心包        |     |
-| minidao-spring-boot-starter | SpringBoot2 starter |  |
-| minidao-pe-example |        示例代码         |     |	 
+| minidao-pe|        Core Architecture Package        |     |
+| minidao-spring-boot-starter | SpringBoot2 Starter |  |
+| minidao-pe-example |        Sample Code         |     |	 
 
 
 
-分支说明
+Branch Description
 -----------------------------------
-> 注意：目前默认分支已切换成 master-jsqlparser4.9，后期jsqlparser4.6分支均停止维护
+> Note: The default branch has been switched to master-jsqlparser4.9. The jsqlparser4.6 branch will no longer be maintained.
 
-| 分支                        |            架构说明             |   状态 |
+| Branch                        |            Architecture Description             |   Status |
 |---------------------------|:---------------------------:|-----:|
-| master-jsqlparser4.9      | SpringBoot2 + jsqlparser4.9 | 默认分支 |
-| springboot3-jsqlparser4.9 | SpringBoot3 + jsqlparser4.9 | 持续维护 |
-| master                    | SpringBoot2 + jsqlparser4.6 | 停止维护 |
-| springboot3               | SpringBoot3 + jsqlparser4.6 | 停止维护 |	 
+| master-jsqlparser4.9      | SpringBoot2 + jsqlparser4.9 | Default Branch |
+| springboot3-jsqlparser4.9 | SpringBoot3 + jsqlparser4.9 | Active Maintenance |
+| master                    | SpringBoot2 + jsqlparser4.6 | Deprecated |
+| springboot3               | SpringBoot3 + jsqlparser4.6 | Deprecated |	 
 
 
 
-支持28种数据库
+Supports 28 Databases
 -----------------------------------
 
-|  数据库   |  支持   |
+|  Database   |  Support   |
 | --- | --- |
 |   MySQL   |  √   |
-|  Oracle、Oracle9i   |  √   |
-|  SqlServer、SqlServer2012   |  √   |
+|  Oracle, Oracle9i   |  √   |
+|  SqlServer, SqlServer2012   |  √   |
 |   PostgreSQL   |  √   |
-|   DB2、Informix   |  √   |
+|   DB2, Informix   |  √   |
 |   MariaDB   |  √   |
-|  SQLite、Hsqldb、Derby、H2   |  √   |
-|   达梦、人大金仓、神通   |  √   |
-|   华为高斯、虚谷、瀚高数据库   |  √   |
-|   阿里云PolarDB、PPAS、HerdDB   |  √   |
-|  Hive、HBase、CouchBase   |  √   |
+|  SQLite, Hsqldb, Derby, H2   |  √   |
+|   DM (达梦), KingBase (人大金仓), ShenTong (神通)   |  √   |
+|   GaussDB (华为高斯), XuGu (虚谷), HighGo (瀚高)   |  √   |
+|   Alibaba Cloud PolarDB, PPAS, HerdDB   |  √   |
+|  Hive, HBase, CouchBase   |  √   |
 
 
 
 	
-代码体验
+Code Examples
 -----------------------------------
-#### 1. 接口定义[EmployeeDao.java]  
+#### 1. Interface Definition [EmployeeDao.java]  
     @MiniDao
     public interface EmployeeDao {
 	
@@ -142,7 +144,7 @@ MiniDao 是一款轻量级JAVA持久层框架，基于 SpringJdbc + freemarker �
    }
     
     
-#### 2. SQL文件[EmployeeDao_getAllEmployees.sql]
+#### 2. SQL File [EmployeeDao_getAllEmployees.sql]
     SELECT * FROM employee where 1=1 
     <#if employee.age ?exists>
 	and age = :employee.age
@@ -154,12 +156,12 @@ MiniDao 是一款轻量级JAVA持久层框架，基于 SpringJdbc + freemarker �
 	and empno = :employee.empno
     </#if>
 
-#### 3. 接口和SQL文件对应目录
+#### 3. Interface and SQL File Directory Structure
 
 ![github](http://www.jeecg.org/data/attachment/forum/201308/18/224051ey14ehqe000iegja.jpg "minidao")
 
 	
-#### 4. 测试代码
+#### 4. Test Code
     public class Client {
     public static void main(String args[]) {
 		BeanFactory factory = new ClassPathXmlApplicationContext("applicationContext.xml");
@@ -173,7 +175,7 @@ MiniDao 是一款轻量级JAVA持久层框架，基于 SpringJdbc + freemarker �
 		employee.setBirthday(new Date());
 		employee.setName("scott");
 		employee.setAge(25);
-		//调用minidao方法插入
+		//Call minidao method to insert
 		employeeDao.insert(employee);
 	}
     }
