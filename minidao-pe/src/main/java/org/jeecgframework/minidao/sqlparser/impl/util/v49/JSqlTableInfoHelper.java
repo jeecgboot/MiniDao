@@ -132,8 +132,11 @@ public class JSqlTableInfoHelper {
         List<Join> list = plainSelect.getJoins();
         if (list != null) {
             for (Join join : list) {
-                Table joinTable = (Table) join.getRightItem();
-                addTableAlias(joinTable);
+                //update-begin---author:scott ---date:2026-01-07  for：左联SQL解析表名失败 JeecgBoot/issues/9220---
+                FromItem rightItem = join.getRightItem();
+                // 处理 JOIN 右侧的项，可能是表或子查询
+                this.handleFromItem(rightItem);
+                //update-end---author:scott ---date::2026-01-07  for：左联SQL解析表名失败 JeecgBoot/issues/9220---
             }
         }
     }
@@ -142,17 +145,41 @@ public class JSqlTableInfoHelper {
      * 处理 fromItem，可 flat fromItem
      */
     private void handleFromItem(FromItem fromItem) {
+        if (fromItem == null) {
+            return;
+        }
         if (fromItem instanceof ParenthesedFromItem) {
             this.handleFromItem(((ParenthesedFromItem) fromItem).getFromItem());
         } else if (fromItem instanceof Table) {
             Table table = (Table) fromItem;
             addTableAlias(table);
+        } else if (fromItem instanceof ParenthesedSelect) {
+            //update-begin---author:scott ---date:2026-01-07  for：左联SQL解析表名失败 JeecgBoot/issues/9220---
+            // 处理括号包裹的子查询，如 (SELECT ... FROM ...) AS alias
+            ParenthesedSelect parenthesedSelect = (ParenthesedSelect) fromItem;
+            Select select = parenthesedSelect.getSelect();
+            if (select instanceof PlainSelect) {
+                PlainSelect plainSelect = (PlainSelect) select;
+                handleTable(plainSelect);
+                handleColumn(plainSelect);
+            } else if (select instanceof SetOperationList) {
+                SetOperationList setOperationList = (SetOperationList) select;
+                for (Select s : setOperationList.getSelects()) {
+                    if (s instanceof PlainSelect) {
+                        handleTable((PlainSelect) s);
+                        handleColumn((PlainSelect) s);
+                    }
+                }
+            }
+            //update-end---author:scott ---date:2026-01-07  for：左联SQL解析表名失败 JeecgBoot/issues/9220---
         } else if (fromItem instanceof Select) {
             PlainSelect select = ((Select) fromItem).getPlainSelect();
-            handleTable(select);
-            handleColumn(select);
+            if (select != null) {
+                handleTable(select);
+                handleColumn(select);
+            }
         } else {
-            logger.error("不支持的类型: " + fromItem.getClass().getName());
+            logger.warn("未处理的 FromItem 类型: " + fromItem.getClass().getName());
         }
     }
 
