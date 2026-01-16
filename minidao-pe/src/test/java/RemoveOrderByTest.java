@@ -32,21 +32,25 @@ public class RemoveOrderByTest {
     @Test
     public void testRemoveOrderWithUnionAll() {
         String sql = "SELECT COUNT(1) total FROM ( SELECT * FROM (\n" +
-                "SELECT " +
+                "SELECT \n" +
                 "    u.username AS 登录账号,\n" +
                 "    u.realname AS 真实姓名,\n" +
                 "    u.sex AS 性别,\n" +
                 "    u.create_time AS 用户创建时间,\n" +
                 "    '系统用户' AS 用户类型\n" +
                 "FROM sys_user u\n" +
+                "\n" +
+                "\n" +
                 "UNION ALL\n" +
+                "\n" +
                 "SELECT \n" +
                 "    d.name AS 登录账号,\n" +
-                "    d.name AS 真实姓名,\n" +
+                "\t\td.name AS 真实姓名,\n" +
                 "    d.sex AS 性别,\n" +
                 "    d.create_time AS 用户创建时间,\n" +
                 "    '测试用户' AS 用户类型\n" +
                 "FROM test_demo d\n" +
+                "\n" +
                 ") AA ORDER BY AA.用户创建时间 DESC ) temp_count";
         //System.out.println("before:" + sql);
         String result = MiniDaoUtil.removeOrderBy(sql);

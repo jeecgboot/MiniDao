@@ -205,3 +205,7 @@ minidao-pe/src/test/java/JSqlParserUtilsTest.java
 --author:scott ---date:2026-01-16  for：【issues/4474】UNION+子sql写法，去掉sql排序失败--
 org/jeecgframework/minidao/sqlparser/impl/util/v49/JSqlRemoveSqlOrderBy49.java
 --author:scott ---date:2026-01-16  for：【issues/4474】UNION+子sql写法，去掉sql排序失败--
+
+--author:scott ---date:2026-01-16  for：规范化SQL：将多个连续换行符替换为单个换行符，避免JSqlParser解析错误--
+org/jeecgframework/minidao/sqlparser/impl/util/v49/JSqlRemoveSqlOrderBy49.java
+--author:scott ---date:2026-01-16  for：规范化SQL：将多个连续换行符替换为单个换行符，避免JSqlParser解析错误--
