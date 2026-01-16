@@ -201,3 +201,7 @@ minidao-pe/src/main/java/org/jeecgframework/minidao/sqlparser/impl/util/v49/JSql
 minidao-pe/src/main/java/org/jeecgframework/minidao/sqlparser/impl/util/SqlParserUtils.java
 minidao-pe/src/test/java/JSqlParserUtilsTest.java
 ---author:chenrui---date:2025/11/11-----for:[issues/9000]Online报表（带参数）预览后台报错---
+
+--author:scott ---date:2026-01-16  for：【issues/4474】UNION+子sql写法，去掉sql排序失败--
+org/jeecgframework/minidao/sqlparser/impl/util/v49/JSqlRemoveSqlOrderBy49.java
+--author:scott ---date:2026-01-16  for：【issues/4474】UNION+子sql写法，去掉sql排序失败--

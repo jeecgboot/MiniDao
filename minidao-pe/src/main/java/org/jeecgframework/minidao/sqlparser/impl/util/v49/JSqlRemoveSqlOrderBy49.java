@@ -161,7 +161,10 @@ public class JSqlRemoveSqlOrderBy49 {
             }
         } else if (fromItem instanceof ParenthesedSelect) {
             ParenthesedSelect pFromItem = (ParenthesedSelect) fromItem;
-            PlainSelect subSelect = pFromItem.getPlainSelect();
+            //update-begin---author:scott ---date:2026-01-16  for：【issues/4474】UNION+子sql写法，去掉sql排序失败--
+            // 使用getSelect()而不是getPlainSelect()，因为可能包含SetOperationList(UNION ALL等)
+            Select subSelect = pFromItem.getSelect();
+            //update-end---author:scott ---date::2026-01-16  for：【issues/4474】UNION+子sql写法，去掉sql排序失败--
             processSelectBody(subSelect);
         }
     }

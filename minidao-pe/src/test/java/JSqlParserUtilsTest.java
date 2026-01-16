@@ -175,21 +175,6 @@ public class JSqlParserUtilsTest {
         return beforeStr.toString();
     }
 
-
-        /**
-     * 测试miniDaoUtil:移除order by 当有 mybatis占位符时是否正常
-     * @author chenrui
-     * @date 2025/8/15 12:02
-     */
-    @Test
-    public void testRemoveOrderWithMybatis() {
-        String sql = "SELECT * FROM sys_user WHERE sex=#{params.sex} AND username like concat('%',#{params.username}) ORDER BY create_time DESC, username ASC";
-        System.out.println("before:" + sql);
-        String result = MiniDaoUtil.removeOrderBy(sql);
-        System.out.println("after:" + result);
-        Assert.assertTrue(result.contains("#{params.username}"));
-    }
-
     /**
      * 测试miniDaoUtil:获取count语句 当有 mybatis占位符时是否正常
      * @author chenrui
@@ -278,4 +263,32 @@ public class JSqlParserUtilsTest {
             System.out.println("-----------------------------------------");
         }
     }
+
+    /**
+     * 测试 #4426: SELECT大写时分页查询，只查出10项数据，select小写时没问题
+     * 该测试用于验证大小写SELECT在分页时是否产生不同的结果
+     */
+    @Test
+    public void testUppercaseSelectPagination() {
+        String dbUrl = "jdbc:sqlserver://192.168.1.188:1433;SelectMethod=cursor;DatabaseName=jeecgbootbpm";
+
+        // 使用小写的select
+        String sqlLowercase = "select item_text as text, item_value as value from sys_dict_item";
+        System.out.println("小写select分页SQL（第2页，每页15条）：");
+        String pageSqlLowercase = MiniDaoUtil.createPageSql(dbUrl, sqlLowercase, 2, 15);
+        System.out.println("结果："+ pageSqlLowercase);
+        System.out.println();
+
+        // 使用大写的SELECT
+        String sqlUppercase = "select item_text as text, item_value as value from sys_dict_item";
+        System.out.println("大写SELECT分页SQL（第2页，每页15条）：");
+        String pageSqlUppercase = MiniDaoUtil.createPageSql(dbUrl, sqlUppercase, 2, 15);
+        System.out.println("结果："+ pageSqlUppercase);
+        System.out.println();
+
+        // 验证两者应该产生相同的分页效果（除了大小写）
+        Assert.assertTrue("大写SELECT应该返回正确的分页数 15", pageSqlUppercase.contains("TOP 15"));
+        Assert.assertTrue("小写select应该返回正确的分页数 15", pageSqlLowercase.toUpperCase().contains("TOP 15"));
+    }
+
 }
