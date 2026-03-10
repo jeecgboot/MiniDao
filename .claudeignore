@@ -1,0 +1,21 @@
+# Build output
+**/target/
+
+# IDE
+.idea/
+*.iml
+**/.project
+**/.classpath
+**/.settings/
+**/rebel.xml
+
+# Logs
+**/logs/
+docs/修改日志.log
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Lock files
+**/*.lock
