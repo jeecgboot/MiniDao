@@ -184,7 +184,7 @@ MiniDao 是一款轻量级 JAVA 持久层框架，基于 SpringJdbc + Freemarker
 
 #### 3. 接口与 SQL 文件目录结构
 
-![github](http://www.jeecg.org/data/attachment/forum/201308/18/224051ey14ehqe000iegja.jpg "minidao")
+![github](https://help.jeecg.com/assets/images/screenshot_1693806133613-bb0533008ee25bdb949c15efc251bbd5.png "minidao")
 
 
 #### 4. 测试代码

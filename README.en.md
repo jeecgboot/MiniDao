@@ -183,7 +183,7 @@ Code Examples
 
 #### 3. Interface and SQL File Directory Structure
 
-![github](http://www.jeecg.org/data/attachment/forum/201308/18/224051ey14ehqe000iegja.jpg "minidao")
+![github](https://help.jeecg.com/assets/images/screenshot_1693806133613-bb0533008ee25bdb949c15efc251bbd5.png "minidao")
 
 
 #### 4. Test Code
