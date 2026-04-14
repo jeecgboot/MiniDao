@@ -38,7 +38,7 @@
 		<commons-logging.version>1.2</commons-logging.version>
 		<commons-lang3.version>3.12.0</commons-lang3.version>
 		<javassist.version>3.25.0-GA</javassist.version>
-		<jsqlparser.version>4.9</jsqlparser.version>
+		<jsqlparser.version>5.0</jsqlparser.version>
 		<junit.version>4.13.1</junit.version>
 	</properties>
 
