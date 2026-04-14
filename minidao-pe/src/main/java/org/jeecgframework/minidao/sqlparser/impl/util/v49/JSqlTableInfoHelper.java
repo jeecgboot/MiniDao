@@ -1,6 +1,7 @@
 package org.jeecgframework.minidao.sqlparser.impl.util.v49;
 
 import net.sf.jsqlparser.JSQLParserException;
+import net.sf.jsqlparser.expression.Alias;
 import net.sf.jsqlparser.expression.DoubleValue;
 import net.sf.jsqlparser.expression.Expression;
 import net.sf.jsqlparser.expression.LongValue;
@@ -207,87 +208,105 @@ public class JSqlTableInfoHelper {
         List<SelectItem<?>> list = plainSelect.getSelectItems();
         String mainTable = threadLocalMainTableAlias.get();
         for (SelectItem<?> selectItem : list) {
-            selectItem.accept(new SelectItemVisitorAdapter() {
-                @Override
-                public void visit(SelectItem item) {
-                    // 添加列
-                    Expression exp = item.getExpression();
-                    if (exp instanceof AllTableColumns) {
-                        AllTableColumns columns = (AllTableColumns) exp;
-                        // select t.* from tablet t
-                        String alias = null;
-                        try {
-                            alias = columns.getTable().getName();
-                        } catch (Exception ignored) {
-                        }
-                        if (alias == null) {
-                            alias = mainTable;
-                        }
-                        //tableMap.get(alias).setAll(true);
-                        getQueryTable(alias).setAll(true);
+            //update-begin---author:wangshuai---date:20260409---for:[issue#1995]JSqlParser 4.9升级到5.0后 SelectItem.accept 方法签名变化------------
+            // 添加列
+            Expression exp = selectItem.getExpression();
+            if (exp instanceof AllTableColumns) {
+                AllTableColumns columns = (AllTableColumns) exp;
+                // select t.* from tablet t
+                String alias = null;
+                try {
+                    alias = columns.getTable().getName();
+                } catch (Exception ignored) {
+                }
+                if (alias == null) {
+                    alias = mainTable;
+                }
+                //tableMap.get(alias).setAll(true);
+                QueryTable qtAlias = getQueryTable(alias);
+                if (qtAlias != null) {
+                    qtAlias.setAll(true);
+                }
 
-                    } else if (exp instanceof AllColumns) {
-                        AllColumns columns = (AllColumns) exp;
-                        // select * from table
-                        if ("*".equals(columns.toString())) {
-                            // tableMap.get(mainTable).setAll(true);
-                            getQueryTable(mainTable).setAll(true);
-                        }
-
-                    } else if (exp instanceof Column) {
-                        // 如果查询出来的是 确定的列 获取表的别名 a.name 获取a
-                        Column c = (Column) exp;
-                        if (c.getTable() == null) {
-                            // select name from table
-                            String str = c.getColumnName();
-                            //tableMap.get(mainTable).addField(str);
-                            addQueryTableField(mainTable, str);
-                        } else {
-                            // select t.name from table t
-                            String tableAlias = c.getTable().getName();
-                            QueryTable queryTable = null;
-                            //找到queryTable
-                            if (tableAlias == null || tableAlias.isEmpty()) {
-                                //没有别名 认为他是mainTable的字段，无奈之举
-                                //queryTable = tableMap.get(mainTable);
-                                queryTable = getQueryTable(mainTable);
-                            } else {
-                                //queryTable = tableMap.get(tableAlias);
-                                queryTable = getQueryTable(tableAlias);
-                            }
-                            if (queryTable != null) {
-                                // 出现null的情况是 select x.name from table y
-                                queryTable.addField(c.getColumnName());
-                            }
-                        }
-                    } else if (exp instanceof Select) {
-                        // 处理子查询
-                        Select select = (Select) exp;
-                        PlainSelect selectBody = select.getPlainSelect();
-                        handleTable(selectBody);
-                        handleColumn(selectBody);
-                    } else if (isSimpleValue(exp)) {
-                        // 如果查询出来的是 固定的值  不做处理
-                    } else {
-                        // 函数什么的--
-                        String str = exp.toString();
-                        boolean isAdded = false;
-                        Set<String> keySet = threadLocalMap.get().keySet();
-                        for (String alias : keySet) {
-                            String temp = alias + ".";
-                            if (str.contains(temp)) {
-                                isAdded = true;
-                                // tableMap.get(alias).addField(str);
-                                addQueryTableField(alias, str);
-                            }
-                        }
-                        if (!isAdded) {
-                            // tableMap.get(mainTable).addField(str);
-                            addQueryTableField(mainTable, str);
-                        }
+            } else if (exp instanceof AllColumns) {
+                AllColumns columns = (AllColumns) exp;
+                // select * from table
+                if ("*".equals(columns.toString())) {
+                    // tableMap.get(mainTable).setAll(true);
+                    QueryTable qtMain = getQueryTable(mainTable);
+                    if (qtMain != null) {
+                        qtMain.setAll(true);
                     }
                 }
-            });
+
+            } else if (exp instanceof Column) {
+                // 如果查询出来的是 确定的列 获取表的别名 a.name 获取a
+                Column c = (Column) exp;
+                Alias alias = selectItem.getAlias();
+                // 有别名时优先使用别名
+                if (alias != null) {
+                    String aliasName = alias.getName();
+                    if (c.getTable() == null) {
+                        addQueryTableField(mainTable, aliasName);
+                    } else {
+                        String tableAlias = c.getTable().getName();
+                        QueryTable queryTable = getQueryTable(tableAlias);
+                        if (queryTable != null) {
+                            queryTable.addField(aliasName);
+                        } else {
+                            addQueryTableField(mainTable, aliasName);
+                        }
+                    }
+                } else if (c.getTable() == null) {
+                    // select name from table
+                    String str = c.getColumnName();
+                    //tableMap.get(mainTable).addField(str);
+                    addQueryTableField(mainTable, str);
+                } else {
+                    // select t.name from table t
+                    String tableAlias = c.getTable().getName();
+                    QueryTable queryTable = null;
+                    //找到queryTable
+                    if (tableAlias == null || tableAlias.isEmpty()) {
+                        //没有别名 认为他是mainTable的字段，无奈之举
+                        //queryTable = tableMap.get(mainTable);
+                        queryTable = getQueryTable(mainTable);
+                    } else {
+                        //queryTable = tableMap.get(tableAlias);
+                        queryTable = getQueryTable(tableAlias);
+                    }
+                    if (queryTable != null) {
+                        // 出现null的情况是 select x.name from table y
+                        queryTable.addField(c.getColumnName());
+                    }
+                }
+            } else if (exp instanceof Select) {
+                // 处理子查询
+                Select select = (Select) exp;
+                PlainSelect selectBody = select.getPlainSelect();
+                handleTable(selectBody);
+                handleColumn(selectBody);
+            } else if (isSimpleValue(exp)) {
+                // 如果查询出来的是 固定的值  不做处理
+            } else {
+                // 函数什么的--
+                String str = exp.toString();
+                boolean isAdded = false;
+                Set<String> keySet = threadLocalMap.get().keySet();
+                for (String alias : keySet) {
+                    String temp = alias + ".";
+                    if (str.contains(temp)) {
+                        isAdded = true;
+                        // tableMap.get(alias).addField(str);
+                        addQueryTableField(alias, str);
+                    }
+                }
+                if (!isAdded) {
+                    // tableMap.get(mainTable).addField(str);
+                    addQueryTableField(mainTable, str);
+                }
+            }
+            //update-end---author:wangshuai---date:20260409---for:[issue#1995]JSqlParser 4.9升级到5.0后 SelectItem.accept 方法签名变化------------
         }
     }
 

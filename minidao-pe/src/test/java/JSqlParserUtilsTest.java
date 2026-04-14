@@ -1,4 +1,5 @@
 import org.apache.commons.lang3.StringUtils;
+import org.jeecgframework.minidao.sqlparser.impl.vo.QueryTable;
 import org.jeecgframework.minidao.sqlparser.impl.vo.SelectSqlInfo;
 import org.jeecgframework.minidao.util.MiniDaoUtil;
 import org.junit.Assert;
@@ -44,6 +45,7 @@ public class JSqlParserUtilsTest {
             "select distinct org_code from sys_user",
             "select * from sys_user union select * from sys_user_bk",
             "select * from sys_user where 1=1 and username like concat('%',#{params.username}) ORDER BY create_time DESC, username ASC",
+            "select * from demo where name='张三' order by create_time asc limit 1 for update",
     };
 
 
@@ -291,4 +293,33 @@ public class JSqlParserUtilsTest {
         Assert.assertTrue("小写select应该返回正确的分页数 15", pageSqlLowercase.toUpperCase().contains("TOP 15"));
     }
 
+
+    /**
+     * 测试 MiniDaoUtil.getQueryTableInfo - 获取 SQL 中的表和字段信息【issues/9323】
+     */
+    @Test
+    public void testGetQueryTableInfo() {
+
+        System.out.println("========== getQueryTableInfo 测试 ==========");
+        for (String sql : sqlList) {
+            System.out.println("-----------------------------------------");
+            System.out.println("Original SQL: " + sql);
+            try {
+                List<QueryTable> tableList = MiniDaoUtil.getQueryTableInfo(sql);
+                if (tableList != null) {
+                    for (QueryTable qt : tableList) {
+                        System.out.println("表名: " + qt.getName() + ", 别名: " + qt.getAlias());
+                        System.out.println("字段: " + qt.getFields());
+                        System.out.println("是否查询全部字段: " + qt.isAll());
+                    }
+                } else {
+                    System.out.println("结果为 null");
+                }
+            } catch (Exception e) {
+                System.err.println("解析异常: " + e.getMessage());
+                e.printStackTrace();
+            }
+            System.out.println("-----------------------------------------");
+        }
+    }
 }
