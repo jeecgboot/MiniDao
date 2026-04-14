@@ -2,12 +2,12 @@
 
 MiniDao 
 =======
-Current Version: 1.10.20 (Release Date: 2026-01-16)
+Current Version: 1.10.21 (Release Date: 2026-04-14)
 
 [![AUR](https://img.shields.io/badge/license-Apache%20License%202.0-blue.svg)](https://github.com/zhangdaiscott/jeecg-boot/blob/master/LICENSE)
 [![](https://img.shields.io/badge/Author-Beijing%20Guoju%20Software-orange.svg)](http://jeecg.com/aboutusIndex)
 [![](https://img.shields.io/badge/Blog-Official%20Blog-blue.svg)](https://jeecg.blog.csdn.net)
-[![](https://img.shields.io/badge/version-1.10.20-brightgreen.svg)](https://github.com/zhangdaiscott/jeecg-boot)
+[![](https://img.shields.io/badge/version-1.10.21-brightgreen.svg)](https://github.com/zhangdaiscott/jeecg-boot)
 [![GitHub stars](https://img.shields.io/github/stars/jeecgboot/MiniDao.svg?style=social&label=Stars)](https://github.com/zhangdaiscott/jeecg-boot)
 [![GitHub forks](https://img.shields.io/github/forks/jeecgboot/MiniDao.svg?style=social&label=Fork)](https://github.com/zhangdaiscott/jeecg-boot)
 
@@ -55,7 +55,7 @@ How to Quickly Integrate MiniDao?
 <dependency>
     <groupId>org.jeecgframework.boot3</groupId>
     <artifactId>minidao-spring-boot-starter-jsqlparser-4.9</artifactId>
-    <version>1.10.20</version>
+    <version>1.10.21</version>
 </dependency>
 ```
 
