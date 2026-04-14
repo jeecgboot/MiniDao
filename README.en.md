@@ -41,16 +41,8 @@ Key Features:
 
 How to Quickly Integrate MiniDao?
 -----------------------------------
-- Spring Boot 2 integration
-```
-<dependency>
-    <groupId>org.jeecgframework</groupId>
-    <artifactId>minidao-spring-boot-starter-jsqlparser-4.9</artifactId>
-    <version>1.10.15</version>
-</dependency>
-```
+**Spring Boot 3** is the recommended default (maps to the `main` branch, actively maintained):
 
-- Spring Boot 3 integration
 ```
 <dependency>
     <groupId>org.jeecgframework.boot3</groupId>
@@ -59,15 +51,24 @@ How to Quickly Integrate MiniDao?
 </dependency>
 ```
 
-- [Spring Boot 2 with MiniDao](http://minidao.jeecg.com/2392296)
-- [SpringMVC with MiniDao](http://minidao.jeecg.com/2392293)
+If your project is still on Spring Boot 2, use the `springboot2-jsqlparser4.9` maintenance branch:
+
+```
+<dependency>
+    <groupId>org.jeecgframework</groupId>
+    <artifactId>minidao-spring-boot-starter-jsqlparser-4.9</artifactId>
+    <version>1.10.15</version>
+</dependency>
+```
+
+- [MiniDao Official Documentation](https://help.jeecg.com/minidao)
 
 
 
 
 Technical Communication
 -----------------------------------
-* Documentation: [http://minidao.jeecg.com](http://minidao.jeecg.com)
+* Documentation: [https://help.jeecg.com/minidao](https://help.jeecg.com/minidao)
 * JEECG Low-Code: [www.jeecg.com](http://www.jeecg.com)
 * QiaoQiaoYun No-Code: [www.qiaoqiaoyun.com](https://www.qiaoqiaoyun.com)
 

@@ -42,16 +42,8 @@ MiniDao 是一款轻量级 JAVA 持久层框架，基于 SpringJdbc + Freemarker
 
 如何快速集成 MiniDao ?
 -----------------------------------
-- SpringBoot 2 集成方式
-```
-<dependency>
-    <groupId>org.jeecgframework</groupId>
-    <artifactId>minidao-spring-boot-starter-jsqlparser-4.9</artifactId>
-    <version>1.10.15</version>
-</dependency>
-```
+默认推荐 **Spring Boot 3** 集成方式（对应 `main` 分支，持续更新）：
 
-- SpringBoot 3 集成方式
 ```
 <dependency>
     <groupId>org.jeecgframework.boot3</groupId>
@@ -60,15 +52,24 @@ MiniDao 是一款轻量级 JAVA 持久层框架，基于 SpringJdbc + Freemarker
 </dependency>
 ```
 
-- [SpringBoot 2 与 MiniDao 集成](http://minidao.jeecg.com/2392296)
-- [SpringMVC 与 MiniDao 集成](http://minidao.jeecg.com/2392293)
+若项目仍停留在 Spring Boot 2，可使用维护分支 `springboot2-jsqlparser4.9`：
+
+```
+<dependency>
+    <groupId>org.jeecgframework</groupId>
+    <artifactId>minidao-spring-boot-starter-jsqlparser-4.9</artifactId>
+    <version>1.10.15</version>
+</dependency>
+```
+
+- [MiniDao 官方文档](https://help.jeecg.com/minidao)
 
 
 
 
 技术交流
 -----------------------------------
-* 文　档：[http://minidao.jeecg.com](http://minidao.jeecg.com)
+* 文　档：[https://help.jeecg.com/minidao](https://help.jeecg.com/minidao)
 * JEECG 低代码：[www.jeecg.com](http://www.jeecg.com)
 * 敲敲云零代码：[www.qiaoqiaoyun.com](https://www.qiaoqiaoyun.com)
 
