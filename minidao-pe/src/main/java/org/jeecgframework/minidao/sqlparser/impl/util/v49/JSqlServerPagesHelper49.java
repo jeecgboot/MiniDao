@@ -121,6 +121,26 @@ public class JSqlServerPagesHelper49 {
         //获取分页查询的select
         Select pageSelect = getPageSelect((Select) stmt);
         String pageSql = pageSelect.toString();
+
+        //update-begin---author:wangshuai ---date:20260610  for：【QQYUN-16026】sqlServer下下拉查询有问题：JSqlParser AST转换可能丢失命名参数(:param)，检测到丢失时降级为OFFSET/FETCH包装原始SQL------------
+        Matcher paramMatcherOriginal = dynamic.matcher(sqlOriginal);
+        Set<String> originalParams = new LinkedHashSet<>();
+        while (paramMatcherOriginal.find()) {
+            originalParams.add(paramMatcherOriginal.group().trim());
+        }
+        if (!originalParams.isEmpty()) {
+            Matcher paramMatcherResult = dynamic.matcher(pageSql);
+            Set<String> resultParams = new LinkedHashSet<>();
+            while (paramMatcherResult.find()) {
+                resultParams.add(paramMatcherResult.group().trim());
+            }
+            if (!resultParams.containsAll(originalParams)) {
+                logger.warn("JSqlParser分页转换丢失了命名参数, original=" + originalParams + ", result=" + resultParams + ", 降级为OFFSET/FETCH");
+                pageSql = "SELECT * FROM (" + sqlOriginal + ") TMP_PAGE ORDER BY (SELECT NULL) OFFSET " + START_ROW + " ROWS FETCH NEXT " + PAGE_SIZE + " ROWS ONLY";
+            }
+        }
+        //update-end---author:wangshuai ---date:20260610  for：【QQYUN-16026】sqlServer下下拉查询有问题：JSqlParser AST转换可能丢失命名参数(:param)，检测到丢失时降级为OFFSET/FETCH包装原始SQL------------
+
         //缓存移到外面了，所以不替换参数
         if (offset != null) {
             pageSql = pageSql.replace(START_ROW, String.valueOf(offset));
