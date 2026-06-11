@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
-MiniDao is a lightweight Java persistence framework based on SpringJdbc + Freemarker. It provides MyBatis-like SQL separation and dynamic SQL via Freemarker templates, with JDK dynamic proxies generating DAO implementations from annotated interfaces. Current version: 1.10.21, targeting Java 17 and Spring Boot 3.5.5.
+MiniDao is a lightweight Java persistence framework based on SpringJdbc + Freemarker. It provides MyBatis-like SQL separation and dynamic SQL via Freemarker templates, with JDK dynamic proxies generating DAO implementations from annotated interfaces. Current version: 1.10.22, targeting Java 17 and Spring Boot 3.5.5.
 
 ## Build Commands
 

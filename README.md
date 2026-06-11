@@ -3,12 +3,12 @@
 
 MiniDao 
 =======
-当前最新版本： 1.10.21 （发布日期：2026-04-14）
+当前最新版本： 1.10.22 （发布日期：2026-04-14）
 
 [![AUR](https://img.shields.io/badge/license-Apache%20License%202.0-blue.svg)](https://github.com/zhangdaiscott/jeecg-boot/blob/master/LICENSE)
 [![](https://img.shields.io/badge/Author-北京国炬软件-orange.svg)](http://jeecg.com/aboutusIndex)
 [![](https://img.shields.io/badge/Blog-官方博客-blue.svg)](https://jeecg.blog.csdn.net)
-[![](https://img.shields.io/badge/version-1.10.21-brightgreen.svg)](https://github.com/zhangdaiscott/jeecg-boot)
+[![](https://img.shields.io/badge/version-1.10.22-brightgreen.svg)](https://github.com/zhangdaiscott/jeecg-boot)
 [![GitHub stars](https://img.shields.io/github/stars/jeecgboot/MiniDao.svg?style=social&label=Stars)](https://github.com/zhangdaiscott/jeecg-boot)
 [![GitHub forks](https://img.shields.io/github/forks/jeecgboot/MiniDao.svg?style=social&label=Fork)](https://github.com/zhangdaiscott/jeecg-boot)
 
@@ -48,7 +48,7 @@ MiniDao 是一款轻量级 JAVA 持久层框架，基于 SpringJdbc + Freemarker
 <dependency>
     <groupId>org.jeecgframework.boot3</groupId>
     <artifactId>minidao-spring-boot-starter-jsqlparser-4.9</artifactId>
-    <version>1.10.21</version>
+    <version>1.10.22</version>
 </dependency>
 ```
 
@@ -91,7 +91,7 @@ MiniDao 是一款轻量级 JAVA 持久层框架，基于 SpringJdbc + Freemarker
 
 | 分支 | Spring Boot | Java | JSqlParser | GroupId | 版本 | 状态 |
 | --- | --- | --- | --- | --- | --- | --- |
-| main | 3.5.5 | 17 | 5.0 | `org.jeecgframework.boot3` | 1.10.21 | 默认 / 活跃 |
+| main | 3.5.5 | 17 | 5.0 | `org.jeecgframework.boot3` | 1.10.22 | 默认 / 活跃 |
 | springboot2-jsqlparser4.9 | 2.x | 8 | 4.9 | `org.jeecgframework` | 1.10.15 | 维护 |
 | springboot2-jsqlparser4.6 | 2.x | 8 | 4.6 | `org.jeecgframework` | 1.10.11 | 停止维护 |
 
@@ -103,7 +103,7 @@ MiniDao 是一款轻量级 JAVA 持久层框架，基于 SpringJdbc + Freemarker
 - 模板引擎：Freemarker 实现动态 SQL 组装（`<#if>`、`<#list>`、命名参数 `:name`）
 - SQL 解析：JSqlParser 5.0，通过 `JsqlparserSqlProcessor49` 实现（COUNT 语句派生、ORDER BY 剥离、UNION / 子查询改写），`SimpleSqlProcessor` 作为降级兜底
 - 自动装配：`minidao-spring-boot-starter` 通过 Spring Boot 3 的 `AutoConfiguration.imports` 机制注册 `MiniDaoBeanScannerConfigurer`
-- Maven 坐标：`org.jeecgframework.boot3:minidao-spring-boot-starter-jsqlparser-4.9:1.10.21`
+- Maven 坐标：`org.jeecgframework.boot3:minidao-spring-boot-starter-jsqlparser-4.9:1.10.22`
 
 **springboot2-jsqlparser4.9**（Spring Boot 2 + 新版解析器）
 - 运行时：Spring Boot 2.7.x、Spring Framework 5.x、`javax.*` 命名空间、Java 8

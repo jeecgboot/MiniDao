@@ -2,12 +2,12 @@ English | [中文](./README.md)
 
 MiniDao 
 =======
-Current Version: 1.10.21 (Release Date: 2026-04-14)
+Current Version: 1.10.22 (Release Date: 2026-04-14)
 
 [![AUR](https://img.shields.io/badge/license-Apache%20License%202.0-blue.svg)](https://github.com/zhangdaiscott/jeecg-boot/blob/master/LICENSE)
 [![](https://img.shields.io/badge/Author-Beijing%20Guoju%20Software-orange.svg)](http://jeecg.com/aboutusIndex)
 [![](https://img.shields.io/badge/Blog-Official%20Blog-blue.svg)](https://jeecg.blog.csdn.net)
-[![](https://img.shields.io/badge/version-1.10.21-brightgreen.svg)](https://github.com/zhangdaiscott/jeecg-boot)
+[![](https://img.shields.io/badge/version-1.10.22-brightgreen.svg)](https://github.com/zhangdaiscott/jeecg-boot)
 [![GitHub stars](https://img.shields.io/github/stars/jeecgboot/MiniDao.svg?style=social&label=Stars)](https://github.com/zhangdaiscott/jeecg-boot)
 [![GitHub forks](https://img.shields.io/github/forks/jeecgboot/MiniDao.svg?style=social&label=Fork)](https://github.com/zhangdaiscott/jeecg-boot)
 
@@ -47,7 +47,7 @@ How to Quickly Integrate MiniDao?
 <dependency>
     <groupId>org.jeecgframework.boot3</groupId>
     <artifactId>minidao-spring-boot-starter-jsqlparser-4.9</artifactId>
-    <version>1.10.21</version>
+    <version>1.10.22</version>
 </dependency>
 ```
 
@@ -90,7 +90,7 @@ Branch Description
 
 | Branch | Spring Boot | Java | JSqlParser | GroupId | Version | Status |
 | --- | --- | --- | --- | --- | --- | --- |
-| main | 3.5.5 | 17 | 5.0 | `org.jeecgframework.boot3` | 1.10.21 | Default / Active |
+| main | 3.5.5 | 17 | 5.0 | `org.jeecgframework.boot3` | 1.10.22 | Default / Active |
 | springboot2-jsqlparser4.9 | 2.x | 8 | 4.9 | `org.jeecgframework` | 1.10.15 | Maintenance |
 | springboot2-jsqlparser4.6 | 2.x | 8 | 4.6 | `org.jeecgframework` | 1.10.11 | Deprecated |
 
@@ -102,7 +102,7 @@ Branch Description
 - Template engine: Freemarker for dynamic SQL composition (`<#if>`, `<#list>`, named params `:name`)
 - SQL parser: JSqlParser 5.0 via `JsqlparserSqlProcessor49` (COUNT derivation, ORDER BY removal, UNION / sub-query rewriting), with `SimpleSqlProcessor` fallback
 - Auto-config: `minidao-spring-boot-starter` registers `MiniDaoBeanScannerConfigurer` through Spring Boot 3 `AutoConfiguration.imports`
-- Coordinates: `org.jeecgframework.boot3:minidao-spring-boot-starter-jsqlparser-4.9:1.10.21`
+- Coordinates: `org.jeecgframework.boot3:minidao-spring-boot-starter-jsqlparser-4.9:1.10.22`
 
 **springboot2-jsqlparser4.9** (Spring Boot 2 + modern parser)
 - Runtime: Spring Boot 2.7.x, Spring Framework 5.x, `javax.*` namespace, Java 8
