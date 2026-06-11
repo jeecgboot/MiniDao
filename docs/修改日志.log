@@ -209,3 +209,7 @@ org/jeecgframework/minidao/sqlparser/impl/util/v49/JSqlRemoveSqlOrderBy49.java
 --author:scott ---date:2026-01-16  for：规范化SQL：将多个连续换行符替换为单个换行符，避免JSqlParser解析错误--
 org/jeecgframework/minidao/sqlparser/impl/util/v49/JSqlRemoveSqlOrderBy49.java
 --author:scott ---date:2026-01-16  for：规范化SQL：将多个连续换行符替换为单个换行符，避免JSqlParser解析错误--
+
+--author:wangshuai ---date:2026-06-10  for：【QQYUN-16026】sqlServer下下拉查询有问题：JSqlParser AST转换可能丢失命名参数(:param)，检测到丢失时降级为OFFSET/FETCH包装原始SQL--
+src/main/java/org/jeecgframework/minidao/sqlparser/impl/util/v49/JSqlServerPagesHelper49.java
+--author:wangshuai ---date:2026-06-10  for：【QQYUN-16026】sqlServer下下拉查询有问题：JSqlParser AST转换可能丢失命名参数(:param)，检测到丢失时降级为OFFSET/FETCH包装原始SQL--
