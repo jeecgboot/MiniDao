@@ -1,6 +1,6 @@
 package ${serviceImplPackage};
 
-import javax.annotation.Resource;
+import jakarta.annotation.Resource;
 import java.util.List;
 import org.jeecgframework.minidao.pojo.MiniDaoPage;
 import org.springframework.stereotype.Service;

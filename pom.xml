@@ -3,7 +3,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.jeecgframework</groupId>
 	<artifactId>minidao-parent-jsqlparser-4.9</artifactId>
-	<version>1.10.16</version>
+	<version>1.10.22</version>
 	<packaging>pom</packaging>
 	
 	<!-- 项目属性 -->
@@ -16,6 +16,7 @@
         <module>minidao-pe</module>
         <module>minidao-spring-boot-starter</module>
     </modules>
+
 	<build>
 		<plugins>
 			<plugin>

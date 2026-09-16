@@ -199,11 +199,11 @@ public class JSqlCountSqlParser49 {
             }
             //----------带点处理-------------------------------------------------------------------------------------
         }
-        PlainSelect select = (PlainSelect) stmt;
-        Select selectBody = select.getPlainSelect();
+        //解决union解析失败
+        Select select = (Select) stmt;
         try {
             //处理body-去order by
-            processSelectBody(selectBody);
+            processSelectBody(select);
         } catch (Exception e) {
             //当 sql 包含 group by 时，不去除 order by
             return getSimpleCountSql(sqlOriginal, countColumn);
@@ -211,9 +211,17 @@ public class JSqlCountSqlParser49 {
         //处理with-去order by
         processWithItemsList(select.getWithItemsList());
         //处理为count查询
-        sqlToCount(select, countColumn);
-        String result = select.toString();
-
+        
+        //update-begin---author:wangshuai---date:2025-12-16---for:【issues/4376】带groupby和子查询的情况下SQL数据集SQL解析报错 #4376---
+        String result = null;
+        if (select instanceof PlainSelect && isSimpleCount((PlainSelect) select)) {
+            sqlToCount(select, countColumn);
+            result = select.toString();
+        } else {
+            result = getSimpleCountSql(select.toString(), countColumn);
+        }
+        //update-end---author:wangshuai---date:2025-12-16---for:【issues/4376】带groupby和子查询的情况下SQL数据集SQL解析报错 #4376---
+        
         //------带点处理-----------------------------------------------------------------------------------------
         //如果是 :user.name 类似含点的表达式，特殊处理下sql再解析
         if (sqList != null) {

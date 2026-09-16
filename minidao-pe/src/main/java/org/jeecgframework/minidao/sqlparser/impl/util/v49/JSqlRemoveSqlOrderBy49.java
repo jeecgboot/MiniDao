@@ -39,6 +39,11 @@ public class JSqlRemoveSqlOrderBy49 {
         Map<String, String> mbMap = new LinkedHashMap<>();
         sql = SqlParserUtils.maskMyBatisPlaceholders(sql, mbMap);
         //---------------------------------------------------------------------------------------------
+        //update-begin---author:scott ---date:2026-01-16  for：【issues/4474】UNION+子sql写法，去掉sql排序失败--
+        // 规范化SQL：将多个连续换行符替换为单个换行符，避免JSqlParser解析错误
+        sql = sql.replaceAll("(\r?\n){2,}", "\n");
+        //update-end---author:scott ---date:2026-01-16  for：【issues/4474】UNION+子sql写法，去掉sql排序失败--
+        //---------------------------------------------------------------------------------------------
         try {
             //update-begin---author:wangshuai ---date:20220215  for：[issues/I4STNJ]SQL Server表名关键字查询失败
             stmt = CCJSqlParserUtil.parse(sql, parser -> parser.withSquareBracketQuotation(true));
@@ -161,7 +166,10 @@ public class JSqlRemoveSqlOrderBy49 {
             }
         } else if (fromItem instanceof ParenthesedSelect) {
             ParenthesedSelect pFromItem = (ParenthesedSelect) fromItem;
-            PlainSelect subSelect = pFromItem.getPlainSelect();
+            //update-begin---author:scott ---date:2026-01-16  for：【issues/4474】UNION+子sql写法，去掉sql排序失败--
+            // 使用getSelect()而不是getPlainSelect()，因为可能包含SetOperationList(UNION ALL等)
+            Select subSelect = pFromItem.getSelect();
+            //update-end---author:scott ---date::2026-01-16  for：【issues/4474】UNION+子sql写法，去掉sql排序失败--
             processSelectBody(subSelect);
         }
     }

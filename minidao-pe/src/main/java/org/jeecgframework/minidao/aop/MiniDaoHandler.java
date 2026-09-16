@@ -8,6 +8,9 @@ import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
+
+import net.sf.jsqlparser.JSQLParserException;
+import netscape.javascript.JSException;
 import ognl.Ognl;
 import ognl.OgnlException;
 
