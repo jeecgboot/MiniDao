@@ -117,7 +117,10 @@ public class JSqlRemoveSqlOrderBy49 {
                         processPlainSelect((PlainSelect) optSelect);
                     } else if (optSelect instanceof WithItem) {
                         WithItem withItem = (WithItem) optSelect;
-                        processSelectBody(withItem.getPlainSelect());
+                        //update-begin---author:scott---date:2026-09-23---for:【issues/4798】CTE表达式在分页查询模式下报错 java.lang.NoSuchMethodError----
+                        // jsqlparser 5.1+ 的 WithItem 已无 getPlainSelect() 方法，统一走 getItemSelectBody 兼容获取
+                        processSelectBody(JSqlSubSelectBody49.getItemSelectBody(withItem));
+                        //update-end---author:scott---date:2026-09-23---for:【issues/4798】CTE表达式在分页查询模式下报错 java.lang.NoSuchMethodError----
                     }
                 }
             }
