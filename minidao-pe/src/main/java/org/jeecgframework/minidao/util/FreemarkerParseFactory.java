@@ -58,6 +58,12 @@ public class FreemarkerParseFactory {
         _sqlConfig.setNewBuiltinClassResolver(TemplateClassResolver.SAFER_RESOLVER);
         _tplConfig.setNewBuiltinClassResolver(TemplateClassResolver.SAFER_RESOLVER);
         //update-end-author:scott date:2023-8-15 for: freemarker模板注入问题 禁止解析ObjectConstructor，Execute和freemarker.template.utility.JythonRuntime。
+        //update-begin---author:wangshuai---date:20261110---for:【LHZP-2745】积木报表 1=1的写法去掉，SQL模板新增<@where>标签---
+        // <@where> 对标 MyBatis 的 <where>：有条件才输出 where，并去掉开头多余的 and / or
+        WhereDirective whereDirective = new WhereDirective();
+        _tplConfig.setSharedVariable(WhereDirective.NAME, whereDirective);
+        _sqlConfig.setSharedVariable(WhereDirective.NAME, whereDirective);
+        //update-end---author:wangshuai---date:20261110---for:【LHZP-2745】积木报表 1=1的写法去掉，SQL模板新增<@where>标签---
     }
 
     /**
@@ -163,6 +169,14 @@ public class FreemarkerParseFactory {
         // 去掉where and 这样的问题
         int index = 0;
         while ((index = StringUtils.indexOfIgnoreCase(sql, "where and", index)) != -1) {
+            //update-begin---author:wangshuai---date:20261110---for:【LHZP-2745】where、and 都是独立的词才去掉 and，避免把 where android_id 改成 whereroid_id---
+            boolean partOfWord = (index > 0 && isWordChar(sql.charAt(index - 1)))
+                    || (index + 9 < sql.length() && isWordChar(sql.charAt(index + 9)));
+            if (partOfWord) {
+                index += 9;
+                continue;
+            }
+            //update-end---author:wangshuai---date:20261110---for:【LHZP-2745】where、and 都是独立的词才去掉 and，避免把 where android_id 改成 whereroid_id---
             sql = sql.substring(0, index + 5)
                     + sql.substring(index + 9, sql.length());
         }
@@ -178,4 +192,15 @@ public class FreemarkerParseFactory {
         }
         return sql;
     }
+
+    //update-begin---author:wangshuai---date:20261110---for:【LHZP-2745】where、and 都是独立的词才去掉 and，避免把 where android_id 改成 whereroid_id---
+    /**
+     * 是否是组成标识符的字符（字母、数字、下划线）
+     * @param c 字符
+     * @return 是返回 true
+     */
+    private static boolean isWordChar(char c) {
+        return Character.isLetterOrDigit(c) || c == '_';
+    }
+    //update-end---author:wangshuai---date:20261110---for:【LHZP-2745】where、and 都是独立的词才去掉 and，避免把 where android_id 改成 whereroid_id---
 }
