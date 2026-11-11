@@ -213,3 +213,11 @@ org/jeecgframework/minidao/sqlparser/impl/util/v49/JSqlRemoveSqlOrderBy49.java
 --author:wangshuai ---date:2026-06-10  for：【QQYUN-16026】sqlServer下下拉查询有问题：JSqlParser AST转换可能丢失命名参数(:param)，检测到丢失时降级为OFFSET/FETCH包装原始SQL--
 src/main/java/org/jeecgframework/minidao/sqlparser/impl/util/v49/JSqlServerPagesHelper49.java
 --author:wangshuai ---date:2026-06-10  for：【QQYUN-16026】sqlServer下下拉查询有问题：JSqlParser AST转换可能丢失命名参数(:param)，检测到丢失时降级为OFFSET/FETCH包装原始SQL--
+
+--author:wangshuai ---date:2026-11-11  for：【LHZP-2745】积木报表 1=1的写法去掉: 增加类似 mybatis的 where属性 --
+src/main/java/org/jeecgframework/minidao/util/FreemarkerParseFactory.java
+src/main/java/org/jeecgframework/minidao/util/WhereDirective.java(+)
+src/test/java/WhereDirectiveTest.java(+)
+src/test/resources/whereDirective/WhereDirectiveTest_condition.sql(+)
+src/test/resources/whereDirective/WhereDirectiveTest_list.sql(+)
+--author:wangshuai ---date:2026-11-11  for：【LHZP-2745】积木报表 1=1的写法去掉: 增加类似 mybatis的 where属性 --
